@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1580114268616.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "687694745",
+    "id" : "B3125F0E",
+    "lastKnownWriteTime" : 1580056043,
+    "last_content_update" : 1580056043,
+    "path" : "~/ownCloud/multOpt/optimLandusePackage/optimLanduse/R/helper.R",
+    "project_path" : "R/helper.R",
+    "properties" : {
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,9 @@
+{
+    "path" : "~/ownCloud/multOpt/optimLandusePackage/optimLanduse/man",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
