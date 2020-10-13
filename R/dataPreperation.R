@@ -5,9 +5,8 @@
 # Tue Oct 13 15:41:41 2020 ------------------------------
 
 
-#' Initialize the robust optimization
+#' Preperation of the data for the robust optimization
 #'
-#' The function translates the indicators values and uncertainties for the land-use options into a solvable *optimLanduse* object.
 #'
 #' @param dat Untransformed data table as shown in the example
 #' @param uncertainty SE or SD
