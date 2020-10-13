@@ -1,11 +1,11 @@
 ##--##################--##
-#### Data preperation ####
+#### Data preparation ####
 ##--##################--##
 
 # Tue Oct 13 15:41:41 2020 ------------------------------
 
 
-#' Preperation of the data for the robust optimization
+#' Preparation of the data for the robust optimization
 #'
 #'
 #' @param dat Untransformed data table as shown in the example
@@ -18,7 +18,7 @@
 
 
 #' @export
-dataPreperation <- function(dat, uncertainty = "SE"){
+dataPreparation <- function(dat, uncertainty = "SE"){
   ## Filter all Rows with only NA ##
   dat.final <- dat[rowSums(is.na(dat)) != ncol(dat), ]
   dat.final <- dat.final %>% drop_na(...4)
