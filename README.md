@@ -72,6 +72,7 @@ install_git("https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse/opt
 <h3>
 <a name="6. Beispielhafte Anwendung">6. Beispielhafte Anwendung</a>
 </h3>
+
 Einfache Anwendung
 <pre>
 <code>
@@ -87,5 +88,76 @@ object.size(init)
 
 # Optimierung durchführen
 result <- solveScenario(x = init)
+</code>
+</pre>
+
+Batch Anwendung für mehrere Unsicherheiten u
+<pre>
+<code>
+library(optimLanduse) 
+library(readxl)
+
+# Daten einlesen
+dat <- read_xlsx("1 simulateDataSource/simDat-9-3-3.xlsx", sheet = "dataRecommended")
+
+# Sequenz definieren
+u <- seq(1, 5, 1)
+
+# Batch vorbereiten
+loopDf <- data.frame(u = u, matrix(NA, nrow = length(u), ncol = 1 + length(unique(dat$landUse))))
+names(loopDf) <- c("u", "beta", unique(dat$landUse))
+
+# Optimierungen initialisieren und durchführen
+
+# Alternative 1: Schleife, einfach zu programmieren
+
+loopDf <- data.frame(u = u, matrix(NA, nrow = length(u), ncol = 1 + length(unique(dat$landUse))))
+names(loopDf) <- c("u", "beta", unique(dat$landUse))
+
+for(i in u) {
+  init <- initScenario(dat, uValue = i, optimisticRule = "expectation")
+  result <- solveScenario(x = init)
+  loopDf[loopDf$u == i,] <- c(i, result$beta, as.matrix(result$landUse))
+}
+
+# Alternative 2: apply, schneller
+applyDf <- data.frame(u = u)
+
+applyFun <- function(x) {
+  init <- initScenario(dat, uValue = x, optimisticRule = "expectation")
+  result <- solveScenario(x = init)
+  return(c(result$beta, as.matrix(result$landUse)))
+}
+
+applyDf <- cbind(applyDf,
+      t(apply(applyDf, 1, applyFun)))
+
+</code>
+</pre>
+
+Batch Anwendung - parallel
+<pre>
+<code>
+library(optimLanduse) 
+library(readxl)
+library(doParallel)
+
+# Daten einlesen
+dat <- read_xlsx("1 simulateDataSource/simDat-9-3-3.xlsx", sheet = "dataRecommended")
+
+# Kerne initialisieren, bspw. 8 Kerne
+registerDoParallel(8)
+
+# Sequenz definieren
+u <- seq(1, 5, 1)
+
+# Batch initialisieren und durchführen
+loopDf1 <- foreach(i = u, .combine = rbind) %dopar% {
+  init <- initScenario(dat, uValue = i, optimisticRule = "expectation")
+  result <- solveScenario(x = init)
+  c(i, result$beta, as.matrix(result$landUse))
+}
+# Falls die Kerne wieder freigegeben werden sollen
+stopImplicitCluster()
 </code>
 </pre>
