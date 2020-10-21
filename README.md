@@ -11,7 +11,6 @@ optimLanduse
 <li>
 <a href="#1. Einleitung">1. Einleitung</a>
 </li>
-Die
 <li>
 <a href="#2. Grundlegende Theorie">2. Grundlegende Theorie</a>
 </li>
@@ -35,7 +34,7 @@ Die
 <h3>
 <a name="1. Einleitung">1. Einleitung</a>
 </h3>
-
+Die robuste multikriterielle Optimierung, in der Form wie Sie bspw. in LIT beschrieben ist 
 
 
 <h3>
@@ -56,6 +55,14 @@ Die
 <h3>
 <a name="5. Hinweise zur Anwendung">5. Hinweise zur Anwendung</a>
 </h3>
+Um die aktuellste stabile Version zu installieren, führen Sie den folgenden Code aus.
+library(devtools)
+library(lpSolveAPI)
+library(dplyr)
+library(tidyr)
+
+install_git("https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse/optimLanduse.git")
+
 <h3>
 <a name="6. Beispielhafte Anwendung">6. Beispielhafte Anwendung</a>
 </h3>
