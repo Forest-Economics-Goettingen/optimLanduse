@@ -1,7 +1,7 @@
 optimLanduse
 -----------
 
-*optimLanduse* ist ein R Paket für die multikriterielle robuste Landschaftsoptimierung. Ziel des Pakets ist es, die von der Arbeitsgruppe Knoke entwickelte bzw. für die Landschaftsoptimierung erstmalig vewendete multikriterielle robuste Landschaftsoptimierung komfortabel und skalierbar anwenden zu können. Durch das Eibetten des Optimierungsverfahrens in die R Umgebung werden insbesondere Wiederholungsanwendungen (bspw. Sensitivitätsanalysen oder Distanzanalysen) vereinfach und schnell möglich. Der modulare Aufbau des Pakets soll eine Basis schaffen zu der zukünftige Erweiterungen schnell und einfach hinzugefügt werden können. Damit soll die Zusammenarbeit zwischen interessierten Arbeitsgruppen der robusten Landschaftsoptimierung vereinfacht werden.
+*optimLanduse* ist ein R Paket für die multikriterielle robuste Landschaftsoptimierung. Ziel des Pakets ist es, die von der Arbeitsgruppe Knoke entwickelte bzw. für die Landschaftsoptimierung erstmalig vewendete multikriterielle robuste Landschaftsoptimierung komfortabel und skalierbar anwenden zu können. Durch das Eibetten des Optimierungsverfahrens in die R Umgebung werden insbesondere Wiederholungsanwendungen (bspw. Sensitivitätsanalysen oder Distanzanalysen) vereinfach und schnell möglich. Der modulare Aufbau des Pakets soll eine Basis schaffen zu der zukünftige Erweiterungen schnell und einfach hinzugefügt werden können. Damit soll die Zusammenarbeit zwischen interessierten Arbeitsgruppen der robusten Landschaftsoptimierung vereinfacht werden. Für einfache Anwendungen existiert auch eine graphische Oberfläche für dieses Paket (LINK zu Volkers Shiny)
 
 
 <h3>
@@ -57,7 +57,7 @@ Die robuste multikriterielle Optimierung, in der Form wie Sie bspw. in LIT besch
 </h3>
 Um die aktuellste stabile Version zu installieren, führen Sie den folgenden Code aus.  
 <pre>
-<code class="language-perl">
+<code>
 library(devtools)  
 library(lpSolveAPI)  
 library(dplyr)  
@@ -67,5 +67,22 @@ install_git("https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse/opt
 </pre>
 <h3>
 <a name="6. Beispielhafte Anwendung">6. Beispielhafte Anwendung</a>
+Einfache Anwendung und visuelle Darstellung
+<pre>
+<code>
+library(optimLanduse) 
+library(readxl)
+
+# Daten einlesen
+dat <- read_xlsx("1 simulateDataSource/simDat-9-3-3.xlsx", sheet = "dataRecommended")
+
+# Optimierung initialisieren
+init <- initScenario(dat, uValue = 2, optimisticRule = "expectation")
+object.size(init)
+
+# Optimierung durchführen
+result <- solveScenario(x = init)
+</code>
+</pre>
 </h3>
 
