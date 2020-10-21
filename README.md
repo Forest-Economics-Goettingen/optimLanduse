@@ -29,7 +29,11 @@ optimLanduse
 <li>
 <a href="#7. Literatur">7. Literatur</a>
 </li>
+<li>
+<a href="#7. Dateien">8. Dateien</a>
+</li>
 </ul>
+
 
 <h3>
 <a name="1. Einleitung">1. Einleitung</a>
@@ -57,7 +61,7 @@ Die robuste multikriterielle Optimierung, in der Form wie Sie bspw. in LIT besch
 </h3>
 Um die aktuellste stabile Version zu installieren, führen Sie den folgenden Code aus.  
 <pre>
-<code>
+<code class="language-perl">
 library(devtools)  
 library(lpSolveAPI)  
 library(dplyr)  
@@ -67,7 +71,8 @@ install_git("https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse/opt
 </pre>
 <h3>
 <a name="6. Beispielhafte Anwendung">6. Beispielhafte Anwendung</a>
-Einfache Anwendung und visuelle Darstellung
+</h3>
+Einfache Anwendung
 <pre>
 <code>
 library(optimLanduse) 
@@ -84,5 +89,3 @@ object.size(init)
 result <- solveScenario(x = init)
 </code>
 </pre>
-</h3>
-
