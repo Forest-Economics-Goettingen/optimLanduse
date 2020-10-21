@@ -56,13 +56,13 @@ Die robuste multikriterielle Optimierung, in der Form wie Sie bspw. in LIT besch
 <a name="5. Hinweise zur Anwendung">5. Hinweise zur Anwendung</a>
 </h3>
 Um die aktuellste stabile Version zu installieren, führen Sie den folgenden Code aus.  
+```
 library(devtools)  
 library(lpSolveAPI)  
 library(dplyr)  
 library(tidyr)  
-  
 install_git("https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse/optimLanduse.git")  
-
+```
 <h3>
 <a name="6. Beispielhafte Anwendung">6. Beispielhafte Anwendung</a>
 </h3>
