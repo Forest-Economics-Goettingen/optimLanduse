@@ -1,8 +1,7 @@
 optimLanduse
 -----------
 
-#### Kurzbeschreibung des Modells
-
+*optimLanduse* ist ein R Paket für die multikriterielle robuste Landschaftsoptimierung. Ziel des Pakets ist es, die von der Arbeitsgruppe Knoke entwickelte bzw. für die Landschaftsoptimierung erstmalig vewendete multikriterielle robuste Landschaftsoptimierung komfortabel und skalierbar anwenden zu können. Durch das Eibetten des Optimierungsverfahrens in die R Umgebung werden insbesondere Wiederholungsanwendungen (bspw. Sensitivitätsanalysen oder Distanzanalysen) vereinfach und schnell möglich. Der modulare Aufbau des Pakets soll eine Basis schaffen zu der zukünftige Erweiterungen schnell und einfach hinzugefügt werden können. Damit soll die Zusammenarbeit zwischen interessierten Arbeitsgruppen der robusten Landschaftsoptimierung vereinfacht werden.
 
 
 <h3>
@@ -12,6 +11,7 @@ optimLanduse
 <li>
 <a href="#1. Einleitung">1. Einleitung</a>
 </li>
+Die
 <li>
 <a href="#2. Grundlegende Theorie">2. Grundlegende Theorie</a>
 </li>
