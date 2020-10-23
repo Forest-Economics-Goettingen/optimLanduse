@@ -61,12 +61,25 @@ Die robuste multikriterielle Optimierung, in der Form wie Sie bspw. in LIT besch
 </h3>
 Um die aktuellste stabile Version zu installieren, führen Sie den folgenden Code aus.  
 <pre>
-<code class="language-perl">
-library(devtools)  
-library(lpSolveAPI)  
-library(dplyr)  
-library(tidyr)  
-install_git("https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse/optimLanduse.git")  
+<code>
+## Benötigte Pakete
+packages = c("devtools", "lpSolveAPI",
+             "dplyr", "tidyr", "janitor",
+             "remotes")
+
+## Herunterladen und installieren oder aktivieren
+package.check <- lapply(
+  packages,
+  FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  }
+)
+
+install_gitlab("forest_economics_goettingen/optimlanduse", host = "gitlab.gwdg.de")
+
 </code>
 </pre>
 <h3>
