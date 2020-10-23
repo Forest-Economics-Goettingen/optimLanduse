@@ -62,12 +62,15 @@ Die robuste multikriterielle Optimierung, in der Form wie Sie bspw. in LIT besch
 Um die aktuellste stabile Version zu installieren, führen Sie den folgenden Code aus.  
 <pre>
 <code>
+
 ## Benötigte Pakete
+
 packages <- c("devtools", "lpSolveAPI",
              "dplyr", "tidyr", "janitor",
              "remotes")
 
 ## Herunterladen und installieren oder aktivieren
+
 package.check <- lapply(
   packages,
   FUN = function(x) {
