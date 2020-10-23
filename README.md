@@ -59,9 +59,9 @@ Die robuste multikriterielle Optimierung, in der Form wie Sie bspw. in LIT besch
 <h3>
 <a name="5. Hinweise zur Anwendung">5. Hinweise zur Anwendung</a>
 </h3>
-Um die aktuellste stabile Version zu installieren, führen Sie den folgenden Code aus.  
-<pre>
-<code>
+Um die aktuellste stabile Version zu installieren, führen Sie den folgenden Code aus.
+
+``` r
 
 ## Benötigte Pakete
 
@@ -83,8 +83,8 @@ package.check <- lapply(
 
 install_gitlab("forest_economics_goettingen/optimlanduse", host = "gitlab.gwdg.de")
 
-</code>
-</pre>
+```
+
 <h3>
 <a name="6. Beispielhafte Anwendung">6. Beispielhafte Anwendung</a>
 </h3>
