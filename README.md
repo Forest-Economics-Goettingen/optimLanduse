@@ -90,31 +90,42 @@ install_gitlab("forest_economics_goettingen/optimlanduse", host = "gitlab.gwdg.d
 </h3>
 
 Einfache Anwendung
-<pre>
-<code>
+``` r
+# Pakete laden
 library(optimLanduse) 
 library(readxl)
+library(lpSolveAPI)  
+library(dplyr)  
+library(tidyr) 
 
 # Daten einlesen
-dat <- read_xlsx("1 simulateDataSource/simDat-9-3-3.xlsx", sheet = "dataRecommended")
+dat <- read_xlsx("database (shrinked).xlsx", col_names = FALSE)
+dat <- dataPreparation(dat = dat, uncertainty = "SE")
 
 # Optimierung initialisieren
 init <- initScenario(dat, uValue = 2, optimisticRule = "expectation")
-object.size(init)
 
 # Optimierung durchführen
 result <- solveScenario(x = init)
-</code>
-</pre>
+
+# Resultate ansehen
+result$landUse # Landnutzungsanteile
+result$scenarioTable # Szenariotabelle
+result$scenarioSettings # Einstellungen anzeigen
+result$status # Erfolgreich optimiert oder abgebrochen?
+result$beta # Beta
+result$landUse # Landnutzungsanteile
+```
 
 Batch Anwendung für mehrere Unsicherheiten u
-<pre>
-<code>
-library(optimLanduse) 
+``` r
+# Pakete laden
+library(optimLanduse)
 library(readxl)
 
 # Daten einlesen
-dat <- read_xlsx("1 simulateDataSource/simDat-9-3-3.xlsx", sheet = "dataRecommended")
+dat <- read_xlsx("database (shrinked).xlsx", col_names = FALSE)
+dat <- dataPreparation(dat = dat, uncertainty = "SE")
 
 # Sequenz definieren
 u <- seq(1, 5, 1)
@@ -124,6 +135,7 @@ loopDf <- data.frame(u = u, matrix(NA, nrow = length(u), ncol = 1 + length(uniqu
 names(loopDf) <- c("u", "beta", unique(dat$landUse))
 
 # Optimierungen initialisieren und durchführen
+# Beispielhaft werden nur die Landnutzungsanteile gespeichert.
 
 # Alternative 1: Schleife, einfach zu programmieren
 
@@ -146,20 +158,20 @@ applyFun <- function(x) {
 }
 
 applyDf <- cbind(applyDf,
-      t(apply(applyDf, 1, applyFun)))
-
-</code>
-</pre>
+                 t(apply(applyDf, 1, applyFun)))
+```
 
 Batch Anwendung - parallel
-<pre>
-<code>
+
+``` r
+# Pakete laden
 library(optimLanduse) 
 library(readxl)
 library(doParallel)
 
 # Daten einlesen
-dat <- read_xlsx("1 simulateDataSource/simDat-9-3-3.xlsx", sheet = "dataRecommended")
+dat <- read_xlsx("database (shrinked).xlsx", col_names = FALSE)
+dat <- dataPreparation(dat = dat, uncertainty = "SE")
 
 # Kerne initialisieren, bspw. 8 Kerne
 registerDoParallel(8)
@@ -175,5 +187,4 @@ loopDf1 <- foreach(i = u, .combine = rbind) %dopar% {
 }
 # Falls die Kerne wieder freigegeben werden sollen
 stopImplicitCluster()
-</code>
-</pre>
+```
