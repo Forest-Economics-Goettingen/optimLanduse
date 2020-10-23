@@ -63,7 +63,7 @@ Um die aktuellste stabile Version zu installieren, führen Sie den folgenden Cod
 <pre>
 <code>
 ## Benötigte Pakete
-packages = c("devtools", "lpSolveAPI",
+packages <- c("devtools", "lpSolveAPI",
              "dplyr", "tidyr", "janitor",
              "remotes")
 
