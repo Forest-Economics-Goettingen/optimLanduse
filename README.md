@@ -53,7 +53,7 @@ Die robuste multikriterielle Optimierung, in der Form wie Sie bspw. in LIT besch
 
 #### Input
 - Parameterdatei mit Erwartungen und Unsicherheiten. Formatiert wie in der Bespieldatei **dataset.xlsx**.
-- Unsicherheit $u$.
+- Unsicherheit `u`.
 - Form des optimistischen Szenarios. Erwartung oder Erwartung + Unsicherheit?
 
 <h3>
