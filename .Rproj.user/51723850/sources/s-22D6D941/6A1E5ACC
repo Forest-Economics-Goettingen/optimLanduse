@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1602596350889.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "6A1E5ACC",
+    "lastKnownWriteTime" : 1602595655,
+    "last_content_update" : 1602595655,
+    "path" : "~/gitlab/optimlanduse/R/initScenario.R",
+    "project_path" : "R/initScenario.R",
+    "properties" : {
+        "cursorPosition" : "19,82",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

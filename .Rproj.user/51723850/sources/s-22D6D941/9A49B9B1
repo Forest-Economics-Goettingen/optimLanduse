@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1602596353765.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "9A49B9B1",
+    "lastKnownWriteTime" : 1602595655,
+    "last_content_update" : 1602595655,
+    "path" : "~/gitlab/optimlanduse/R/helper.R",
+    "project_path" : "R/helper.R",
+    "properties" : {
+        "cursorPosition" : "5,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
