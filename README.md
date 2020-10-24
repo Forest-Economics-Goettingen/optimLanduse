@@ -53,13 +53,13 @@ Die robuste multikriterielle Optimierung, in der Form wie Sie bspw. in LIT besch
 
 #### Input (mehr Details siehe Pakethilfe)
 - Parameterdatei mit Erwartungen und Unsicherheiten. Formatiert wie in der Bespieldatei **dataset.xlsx**.
-- Unsicherheit `u`.
+- Unsicherheit **u**.
 - Form des optimistischen Szenarios. Erwartung oder Erwartung + Unsicherheit?
 
 #### Output (mehr Details siehe Pakethilfe)
 - Landnutzungsanteile
 - Szenarientabelle mit Abständen der Szenarien
-- Mindestabstand `&beta;`
+- Mindestabstand **&beta;**
 
 <h3>
 <a name="4. Aufbau des Modells">4. Aufbau des Modells</a>

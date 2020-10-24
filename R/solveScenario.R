@@ -54,7 +54,7 @@ solveScenario <- function (x, digitsPrecision = 4) {
     }
 
     set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
-    statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
+      statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
 
     if(all(c(piConstraintRhs[3] - piConstraintRhs[2], piConstraintRhs[2] - piConstraintRhs[1]) <= precision)) {
       break()

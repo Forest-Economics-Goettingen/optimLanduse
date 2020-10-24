@@ -125,7 +125,7 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation")
   ## Define the coefficients for the linear objective function ##
   #-------------------------------------------------------------#
 
-  #and the restrictions.
+  #and the restrictions. (Simplify the scenario to a row problem)
   coefObjective <- defineObjectiveCoefficients(scenarioTable)
 
   #-------------------------------------#
