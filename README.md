@@ -52,19 +52,20 @@ Siehe zum Beispiel (in Arbeit)
 - https://pubmed.ncbi.nlm.nih.gov/27292766/
 - https://pubmed.ncbi.nlm.nih.gov/28189309/
 - https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.15003
+- https://link.springer.com/article/10.1007/s10457-020-00519-0
 
 <h3>
 <a name="3. Input und Output">3. Input und Output</a>
 </h3>
 
 #### Input (mehr Details siehe Pakethilfe)
-- Parameterdatei mit Erwartungen und Unsicherheiten. Formatiert wie in der Bespieldatei **dataset.xlsx**.
-- Unsicherheit **u**.
-- Form des optimistischen Szenarios. Erwartung oder Erwartung + Unsicherheit?
+- Parameterdatei mit Erwartungen und Unsicherheiten. Formatiert wie in der Bespieldatei **dataset.xlsx**
+- Unsicherheit **u**
+- Form des optimistischen Szenarios, Erwartung oder Erwartung + Unsicherheit?
 
 #### Output (mehr Details siehe Pakethilfe)
 - Landnutzungsanteile
-- Szenarientabelle mit Abständen der Szenarien
+- Szenarientabelle
 - Mindestabstand **&beta;**
 
 <h3>
