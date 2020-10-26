@@ -2,10 +2,19 @@ Package: optimLanduse
 Title: Robust land-use optimization
 Version: 0.0.1
 Authors@R: 
+    c(
     person(given = "Kai",
            family = "Husmann",
            role = c("aut", "cre"),
-           email = "kai.husmann@uni-goettingen.de")
+           email = "kai.husmann@uni-goettingen.de"),
+    person(given = "Volker",
+           family = "von Groß",
+           role = "aut",
+           email = "volker.vongross@uni-goettingen.de"),
+    person(given = "Jasper",
+           family = "Fuchs",
+           role = "aut",
+           email = "jasper.fuchs@uni-goettingen.de"))
 Description: Robust land-use optimization using stepwise linear iterative optimizations.
 License: What license it uses
 Encoding: UTF-8
