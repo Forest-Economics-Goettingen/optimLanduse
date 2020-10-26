@@ -7,12 +7,12 @@
 dataPreparation(dat, uncertainty = "SE")
 }
 \arguments{
-\item{dat}{Untransformed data table as shown in the example}
+\item{dat}{Untransformed data table as shown in the example.}
 
-\item{uncertainty}{SE or SD}
+\item{uncertainty}{Indicates whether the uncertainty shall be repesented by SE or SD. Please be aware that the respective chosen uncertainty must be included in the data. Best would be to consider the format of the exemplary data (database.xlsx) in the GitLab.}
 }
 \value{
-An initialized landUse portfolio ready for initScenario
+An initialized landUse object ready for initScenario.
 }
 \description{
 Preparation of the data for the robust optimization

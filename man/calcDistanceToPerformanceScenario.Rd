@@ -9,6 +9,9 @@ calcDistanceToPerformanceScenario(x)
 \arguments{
 \item{x}{An optimized optimLanduse object.}
 }
+\value{
+An optimized optimLanduse object with attached portfolio performance.
+}
 \description{
-The function calculates and attaches the portfolio performance and distance to target. See Gosling et al. Equations 10 and 11.
+The function calculates and attaches the portfolio performance and distance to target. See Gosling, Reith, Knoke, Gerique and Paul (2020): Exploring farmer perceptions of agroforestry via multi-objective optimisation: a test application in Eastern Panama. Formula S5 (supplementary).
 }

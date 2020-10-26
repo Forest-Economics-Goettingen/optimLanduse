@@ -8,9 +8,9 @@
 #'
 #' The function solves the initialized *optimLanduse* object.
 #'
-#' @param x The *optimLanduse* object.
+#' @param x The initialized *optimLanduse* object.
 #' @param digitsPrecision Precision.
-#' @return A solved landUse portfolio.
+#' @return A solved landUse portfolio ready for export or further data processing.
 
 #' @import lpSolveAPI
 

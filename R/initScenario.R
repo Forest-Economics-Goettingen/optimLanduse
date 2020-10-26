@@ -6,12 +6,12 @@
 
 #' Initialize the robust optimization
 #'
-#' The function translates the indicators values and uncertainties for the land-use options into a solvable *optimLanduse* object.
+#' The function translates the prepared lanUse object into a solvable *optimLanduse* S3 object. Aim of the separation of the initialization and the optimization is to save time in the (possibly time-cunsuming) optimization.
 #'
-#' @param coefTable See the exemplary import folder.
+#' @param coefTable Parameter and uncertainties in a specific format. Usage of the 'dataPreparation' function is recommended to make sure, the format requiremnts are met.
 #' @param uValue u Value.
-#' @param optimisticRule Either *expectation* or *uncertaintyAdjustedExpectation*. It indicates weather the optimistic outcomes of an indicator are directly reflected by the *expectation* or if the indicator is *adjusted*.
-#' @return An initialized landUse portfolio ready for optimization.
+#' @param optimisticRule Either *expectation* or *uncertaintyAdjustedExpectation*. It indicates whether the optimistic outcomes of an indicator are directly reflected by the *expectation* or if the indicator is calculated *adjusted* by *expectation* + *uncertainty*.
+#' @return An initialized landUse object ready for optimization.
 
 #' @import dplyr
 #' @import tidyr

@@ -7,12 +7,12 @@
 solveScenario(x, digitsPrecision = 4)
 }
 \arguments{
-\item{x}{The *optimLanduse* object.}
+\item{x}{The initialized *optimLanduse* object.}
 
 \item{digitsPrecision}{Precision.}
 }
 \value{
-A solved landUse portfolio.
+A solved landUse portfolio ready for export or further data processing.
 }
 \description{
 The function solves the initialized *optimLanduse* object.

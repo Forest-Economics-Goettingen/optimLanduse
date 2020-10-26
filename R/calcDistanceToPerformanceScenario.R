@@ -6,9 +6,9 @@
 
 #' Attach portfolio performance and distance to target
 #'
-#' The function calculates and attaches the portfolio performance and distance to target. See Gosling, Reith, Knoke, Gerique and Paul (2020): Exploring farmer perceptions of agroforestry via multi-objective optimisation: a test application in Eastern Panama. Formula S5.
+#' The function calculates and attaches the portfolio performance and distance to target. See Gosling, Reith, Knoke, Gerique and Paul (2020): Exploring farmer perceptions of agroforestry via multi-objective optimisation: a test application in Eastern Panama. Formula S5 (supplementary).
 #' @param x An optimized optimLanduse object.
-#' @return x.
+#' @return An optimized optimLanduse object with attached portfolio performance.
 
 #'@export
 calcDistanceToPerformanceScenario <- function(x) {

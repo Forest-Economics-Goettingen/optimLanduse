@@ -71,6 +71,9 @@ Siehe zum Beispiel (in Arbeit)
 <h3>
 <a name="4. Aufbau des Modells">4. Aufbau des Modells</a>
 </h3>
+
+In dem Paket wird ein robustes multikriterielles Optimierungsproblem so umformuliert, dass es schritweise mit dem lpSolveAPI Paket gelöst werden kann. Das lpSolveAPI Paket ist in C++ geschrieben. Es gilt als eins der schnellsten Pakete der lineare Optimierung.
+
 <p align="center">
   <img width="720" height="643" src="./fig/flussdiagrammOptimLanduse.PNG">
 </p>

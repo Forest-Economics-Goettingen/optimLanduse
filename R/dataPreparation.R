@@ -8,9 +8,9 @@
 #' Preparation of the data for the robust optimization
 #'
 #'
-#' @param dat Untransformed data table as shown in the example
-#' @param uncertainty SE or SD
-#' @return An initialized landUse portfolio ready for initScenario
+#' @param dat Untransformed data table as shown in the example.
+#' @param uncertainty Indicates whether the uncertainty shall be repesented by SE or SD. Please be aware that the respective chosen uncertainty must be included in the data. Best would be to consider the format of the exemplary data (database.xlsx) in the GitLab.
+#' @return An initialized landUse object ready for initScenario.
 
 
 #' @import dplyr
