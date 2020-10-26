@@ -46,7 +46,9 @@ Für eine schnelle, einfache Anwendung des Pakets existiert eine grafische Web-O
 <h3>
 <a name="2. Theoretischer Hintergrund">2. Theoretischer Hintergrund</a>
 </h3>
+
 Siehe zum Beispiel (in Arbeit)
+
 - https://pubmed.ncbi.nlm.nih.gov/27292766/
 - https://pubmed.ncbi.nlm.nih.gov/28189309/
 - https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.15003
