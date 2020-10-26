@@ -35,11 +35,12 @@ optimLanduse
 <h3>
 <a name="1. Einleitung">1. Einleitung</a>
 </h3>
+
 **optimLanduse** ist ein R Paket für die multikriterielle robuste Landschaftsoptimierung. Ziel des Pakets ist es, die von der Arbeitsgruppe Knoke entwickelte bzw. für die Landschaftsoptimierung erstmalig vewendete multikriterielle robuste Landschaftsoptimierung komfortabel und skalierbar anwenden zu können. Durch das Einbetten des Optimierungsverfahrens in die R Umgebung werden Datenvor- und nachbereitung vereinfacht. So werden insbesondere Wiederholungsanwendungen (bspw. Sensitivitätsanalysen oder Distanzanalysen) einfach und schnell möglich.
 
 Das Paket wird von Anfang an möglichst generisch und modular aufgebaut. So können zukünftige Erweiterungen schnell und einfach hinzugefügt werden. Außerdem können verschiedene Arbeitsgruppen Ihre Kenntnisse und Interessen gezielt einbringen, in dem sie sich auf die Entwicklung ihres spezifischen Moduls konzentrieren. Hintergrund ist, dass das Paket eine Basis bilden soll, mit der die Zusammenarbeit zwischen interessierten Arbeitsgruppen der robusten Landschaftsoptimierung vereinfacht werden soll. In diesem Repository ist der aktuelle Arbeitsstand widergespiegelt. Das Paket kann direkt aus dem Repository installiert werden. Es ist öffentlich erreichbar. Entwicklerinnen und Entwicklern bekommen einen Zugang zum GitLab. Ihnen stehen dann alle Funktionen des GitLab zur Verfügung.
 
-Für schnelle, einfache Anwendung des Pakets existiert auch eine graphische Oberfläche (https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse_shiny)
+Für schnelle, einfache Anwendung des Pakets existiert eine graphische Oberfläche (https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse_shiny).
 
 
 <h3>
