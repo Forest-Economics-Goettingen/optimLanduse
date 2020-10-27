@@ -43,12 +43,12 @@ dataPreparation <- function(dat, uncertainty = "SE"){
   ## select mean values, rename columns and gather ##
   importValues <- dat.final %>% select(branch, indicatorGroup, indicator, direction, starts_with("mean"))
   colnames(importValues)[grepl("mean", colnames(importValues))] <- landUse
-  importValues <- importValues %>%  gather(key = "landUse", value = "indicatorValue", Forest:`Oil palm plantation`)
+  importValues <- importValues %>%  gather(key = "landUse", value = "indicatorValue", landUse[1]:landUse[length(landUse)])
 
   ## select uncertainty, rename columns and gather ##
   importUnc <- dat.final %>% select(branch, indicatorGroup, indicator, direction, starts_with(uncertainty))
   colnames(importUnc)[grepl(uncertainty, colnames(importUnc))] <- landUse
-  importUnc <- importUnc %>%  gather(key = "landUse", value = "indicatorUncertainty", Forest:`Oil palm plantation`)
+  importUnc <- importUnc %>%  gather(key = "landUse", value = "indicatorUncertainty", landUse[1]:landUse[length(landUse)])
 
   ## combine mean and uncertainty ##
   dataSource <- left_join(importValues, importUnc, by = c("branch", "indicatorGroup", "indicator", "direction", "landUse"))
