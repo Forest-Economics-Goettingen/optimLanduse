@@ -87,8 +87,7 @@ Um die aktuellste stabile Version zu installieren, führen Sie den folgenden Cod
 ## Benötigte Pakete
 # Gestestet mit R Version 4.0.3. Bei älteren Versionen müssen die Pakete womöglich einzeln nacheinander installiert werden.
 packages <- c("devtools", "lpSolveAPI",
-             "dplyr", "tidyr", "janitor",
-             "remotes")
+             "dplyr", "tidyr", "remotes")
 
 ## Herunterladen und installieren oder aktivieren
 

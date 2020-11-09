@@ -4,7 +4,7 @@
 \alias{dataPreparation}
 \title{Preparation of the data for the robust optimization}
 \usage{
-dataPreparation(dat, uncertainty = "SE")
+dataPreparation(dat, uncertainty = "SE", expVAL = "mean")
 }
 \arguments{
 \item{dat}{Untransformed data table as shown in the example.}
