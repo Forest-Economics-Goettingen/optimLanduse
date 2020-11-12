@@ -19,6 +19,28 @@
 #' @export
 initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation") {
 
+  #-----------------------------------------#
+  #### Check the format of the coefTable ####
+  #-----------------------------------------#
+
+  if (!all(c("indicator", "direction", "landUse", "indicatorValue", "indicatorUncertainty") %in% names(coefTable))) {
+    stop ("At least one necessary variable for the optimization is not available. Are the requirements of the data structure met? Check the variable names.")
+  }
+
+  indicatorNamesCheck <- unique(coefTable$indicator)
+
+  all(indicatorNamesCheck %in% coefTable$indicator[coefTable$landUse == "Forest"])
+  testLandUseIndicators <- function (x) {
+    all(indicatorNamesCheck %in% x)
+  }
+
+  if (!coefTable %>% group_by(landUse) %>% summarise(checkLanduse = testLandUseIndicators(indicator)) %>% pull(checkLanduse) %>% all()) {
+    stop ("At least one indicator is not available for at least one land-use option.")
+  }
+  if (!length(indicatorNamesCheck) * length(unique(coefTable$landUse)) == nrow(coefTable)) {
+    stop ("The indicator names are not unique. Have you assigned an indicator name twice?")
+  }
+
   #----------------------------#
   #### Initialise the table ####
   #----------------------------#
@@ -147,4 +169,5 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation")
   class(retList) <- "optimLanduse"
   return(retList)
 }
+
 
