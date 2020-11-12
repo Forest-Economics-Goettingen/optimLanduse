@@ -11,7 +11,7 @@ dataPreparation(dat, uncertainty = "SE", expVAL = "mean")
 
 \item{uncertainty}{Indicates whether the uncertainty shall be repesented by SE or SD. Please be aware that the respective chosen uncertainty must be included in the data. Best would be to consider the format of the exemplary data (database.xlsx) in the GitLab.}
 
-\item{expVAL}{Indicates how the expected Value should be represented}
+\item{expVAL}{Indicates how the expected Value should be represented.}
 }
 \value{
 An initialized landUse object ready for initScenario.
