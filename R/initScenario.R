@@ -17,7 +17,7 @@
 #' @import tidyr
 
 #' @export
-initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation") {
+initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation", fixDistance = NULL) {
 
   #-----------------------------------------#
   #### Check the format of the coefTable ####
@@ -27,17 +27,17 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation")
     stop ("At least one necessary variable for the optimization is not available. Are the requirements of the data structure met? Check the variable names.")
   }
 
-  indicatorNamesCheck <- unique(coefTable$indicator)
+  indicatorNames <- as.character(unique(coefTable$indicator))
 
-  all(indicatorNamesCheck %in% coefTable$indicator[coefTable$landUse == "Forest"])
+  # all(indicatorNamesCheck %in% coefTable$indicator[coefTable$landUse == "Forest"]) # useless
   testLandUseIndicators <- function (x) {
-    all(indicatorNamesCheck %in% x)
+    all(indicatorNames %in% x)
   }
 
   if (!coefTable %>% group_by(landUse) %>% summarise(checkLanduse = testLandUseIndicators(indicator)) %>% pull(checkLanduse) %>% all()) {
     stop ("At least one indicator is not available for at least one land-use option.")
   }
-  if (!length(indicatorNamesCheck) * length(unique(coefTable$landUse)) == nrow(coefTable)) {
+  if (!length(indicatorNames) * length(unique(coefTable$landUse)) == nrow(coefTable)) {
     stop ("The indicator names are not unique. Have you assigned an indicator name twice?")
   }
 
@@ -46,7 +46,6 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation")
   #----------------------------#
 
   landUse <- as.character(unique(coefTable$landUse))
-  indicatorNames <- as.character(unique(coefTable$indicator))
 
   expandList <- list()
   expandList[landUse] <- list(c("High", "Low"))
@@ -59,7 +58,10 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation")
   #   left_join(indicatorNames, by = "indicator") %>% bind_cols(as_tibble(expandMatrix2))
   # Alter Version. Evtl relevant bei Fehlersuche. Ich weiß nicht mehr was ich mir bei dem left join gedacht habe.
   # tbd. Tidy raus
-  scenarioTable <- scenarioTable %>% rename_at(.vars = vars(!!landUse[1] : !!landUse[length(landUse)]), .funs = funs(paste0("outcome", .)))
+  # scenarioTable <- scenarioTable %>% rename_at(.vars = vars(!!landUse[1] : !!landUse[length(landUse)]),
+  #                                              .funs = funs(paste0("outcome", .))) #.funs deprecated
+
+  names(scenarioTable)[names(scenarioTable) %in% landUse] <- paste0("outcome",names(scenarioTable)[names(scenarioTable) %in% landUse])
 
   #--------------------#
   ## Attach direction ##
@@ -90,7 +92,7 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation")
     scenarioTable <- left_join(scenarioTable, spread2[, c("indicator", paste0("sem", i))], by = byIndicator)
   }
 
-  scenarioTable <- scenarioTable %>% select(-contains("mean"), everything()) # Order the variables, such that the means and uncertainties follow in direct succession
+  # scenarioTable <- scenarioTable %>% select(-contains("mean"), everything()) # Order the variables, such that the means and uncertainties follow in direct succession
   scenarioTable <- scenarioTable %>% select(-contains("sem"), everything()) # Alternatively, but slower, a second loop would be suitable
 
   if(!dim(scenarioTableTemp1)[1] == dim(scenarioTable)[1]) {cat("Error: Attaching expectation or uncertainty failed.")}
@@ -139,9 +141,17 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation")
   #--------------------------#
   ## calculate Min Max Diff ##
   #--------------------------#
+  if(is.null(fixDistance)){
+    scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
+      apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
+            function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
+  } else if (length(fixDistance) == dim(scenarioTable)[1]) {
+    scenarioTable[, c("minAdjSem", "maxAdjSem")] <-
+    apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
+          function(x) {c(min(x), max(x))}) %>% t()
+    scenarioTable$diffAdjSem <- fixDistance
+  } else {stop("The dimension of the fixed distance does not fit the dimension of the scenario table.")}
 
-  scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
-    apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1, function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
 
   #-------------------------------------------------------------#
   ## Define the coefficients for the linear objective function ##
@@ -161,6 +171,7 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation")
                   scenarioTable = scenarioTable,
                   coefObjective = coefObjective,
                   coefConstraint = constraintCoefficients,
+                  distance = scenarioTable$diffAdjSem,
                   status = "initialized",
                   beta = NA,
                   landUse = setNames(data.frame(matrix(rep(NA, length(landUse)), ncol = length(landUse), nrow = 1)), landUse),

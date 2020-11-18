@@ -22,6 +22,7 @@ dataPreparation <- function(dat, uncertainty = "SE", expVAL = "mean"){   #added 
     ## Convert input Data to dat.final ##
     ## Filter all Rows with only NA ##
     dat.final <- dat[rowSums(is.na(dat)) != ncol(dat), ]
+    dat.final <- dat.final[colSums(!is.na(dat.final)) > 2] # columns filled with NAs will otherwise be deleted <- can be fatal if e.g., column "branch" left empty
     if(any(is.na(dat.final[, 1]))){dat.final <- dat.final[-1, ]}
 
     ## Create column names ##
@@ -52,12 +53,12 @@ dataPreparation <- function(dat, uncertainty = "SE", expVAL = "mean"){   #added 
     landUse <- names(landUse)
 
     ## select mean values, rename columns and gather ##
-    importValues <- dat.final %>% select((1:chtr.cols), starts_with(expVAL))
+    importValues <- dat.final %>% select((1:all_of(chtr.cols)), starts_with(expVAL))
     colnames(importValues)[grepl(expVAL, colnames(importValues))] <- landUse
     importValues <- importValues %>%  gather(key = "landUse", value = "indicatorValue", landUse[1]:landUse[length(landUse)])
 
     ## select uncertainty, rename columns and gather ##
-    importUnc <- dat.final %>% select((1:chtr.cols), starts_with(uncertainty))
+    importUnc <- dat.final %>% select((1:all_of(chtr.cols)), starts_with(uncertainty))
     colnames(importUnc)[grepl(uncertainty, colnames(importUnc))] <- landUse
     importUnc <- importUnc %>%  gather(key = "landUse", value = "indicatorUncertainty", landUse[1]:landUse[length(landUse)])
 
