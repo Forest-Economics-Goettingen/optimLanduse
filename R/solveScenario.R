@@ -46,6 +46,7 @@ solveScenario <- function (x, digitsPrecision = 4) {
 
     counter <- counter + 1
 
+    # Hier könnten die Restriktionen (oder andere Angaben) geändert werden.
 
     if (statusOpt == 0) {
       piConstraintRhs <- c(piConstraintRhs[2], round((piConstraintRhs[2] + piConstraintRhs[3]) / 2, digitsPrecision), piConstraintRhs[3])
