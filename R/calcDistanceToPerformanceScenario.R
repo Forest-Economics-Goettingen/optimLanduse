@@ -15,7 +15,7 @@ calcDistanceToPerformanceScenario <- function(x) {
 
   if(!all(names(x$scenarioTable[, startsWith(names(x$scenarioTable), "adj")]) ==
           paste0("adjSem", names(x$landUse)))) {
-    cat("Error: Unexpected variables in the scenario table.")
+    stop ("Error: Unexpected variables in the scenario table.")
   }
 
   if(!x$status == "optimized") {cat("Error: No optimim found. Did you call solveScenario?")}
@@ -40,7 +40,7 @@ calcDistanceToPerformanceScenario <- function(x) {
                                                                                            ((portfolioPerformance - minAdjSem) / diffAdjSem),
                                                                                            ((maxAdjSem - portfolioPerformance) / diffAdjSem)))
 
-  x$status <- "optimized - information updated"
+  x$status <- "optimized - information updated" # function will show an Error if it is run twice
 
   return(x)
 

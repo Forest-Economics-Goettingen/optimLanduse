@@ -4,7 +4,12 @@
 \alias{initScenario}
 \title{Initialize the robust optimization}
 \usage{
-initScenario(coefTable, uValue = 3, optimisticRule = "expectation")
+initScenario(
+  coefTable,
+  uValue = 3,
+  optimisticRule = "expectation",
+  fixDistance = NULL
+)
 }
 \arguments{
 \item{coefTable}{Parameter and uncertainties in a specific format. Usage of the 'dataPreparation' function is recommended to make sure, the format requiremnts are met.}
