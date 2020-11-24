@@ -33,7 +33,7 @@ solveScenario <- function (x, digitsPrecision = 4) {
   set.objfn(lprec = lpaObj, obj = coefObjective)
   add.constraint(lprec = lpaObj, xt = rep(1, length(coefObjective)),
                  type = "=", rhs = 1)
-  # Additional min-max constraints could be implemented here.
+  # Additional min-max constraints could be implemented here
   apply(piConstraintCoefficients,
         1,
         function(x) {add.constraint(lprec = lpaObj, xt =x, type = ">=", rhs = piConstraintRhs[2])}
