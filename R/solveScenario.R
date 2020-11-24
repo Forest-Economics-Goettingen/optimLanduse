@@ -50,10 +50,10 @@ solveScenario <- function (x, digitsPrecision = 4) {
     solutionFeasible <- TRUE
 
     counter <- counter + 1
-    if (refreshCoef) {
+    #if (refreshCoef) {
       # tbd. Bisher platzhalter.
 
-    }
+    #}
 
 
     if (statusOpt == 0) {
