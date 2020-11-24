@@ -15,7 +15,7 @@
 #' @import lpSolveAPI
 
 #' @export
-solveScenario <- function (x, digitsPrecision = 4) {
+solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0) {
 
   coefObjective <- x$coefObjective
   piConstraintCoefficients <- x$coefConstraint
