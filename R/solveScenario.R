@@ -16,7 +16,6 @@
 
 #' @export
 solveScenario <- function (x, digitsPrecision = 4) {
-  # Bases on funDraft4 (rProgramming/uncertaintyOptimization/helperFunctions.R)
 
   coefObjective <- x$coefObjective
   piConstraintCoefficients <- x$coefConstraint
@@ -32,12 +31,17 @@ solveScenario <- function (x, digitsPrecision = 4) {
   # Init lpa Object
   lpaObj <- make.lp(nrow = 0, ncol = length(coefObjective))
   set.objfn(lprec = lpaObj, obj = coefObjective)
-  add.constraint(lprec = lpaObj, xt = rep(1, length(coefObjective)), type = "=", rhs = 1)
-  apply(piConstraintCoefficients, 1, function(x) {add.constraint(lprec = lpaObj, xt =x, type = ">=", rhs = piConstraintRhs[2])})
+  add.constraint(lprec = lpaObj, xt = rep(1, length(coefObjective)),
+                 type = "=", rhs = 1)
+  apply(piConstraintCoefficients,
+        1,
+        function(x) {add.constraint(lprec = lpaObj, xt =x, type = ">=", rhs = piConstraintRhs[2])}
+        )
   lp.control(lprec = lpaObj, sense = "max")
   counter <- 1 # 1 as the first iteration is outside the loop
 
-  set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
+  set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2],
+                                       dim(piConstraintCoefficients)[1])))
   statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
 
   # Stepwise approximation loop
@@ -45,8 +49,11 @@ solveScenario <- function (x, digitsPrecision = 4) {
     solutionFeasible <- TRUE
 
     counter <- counter + 1
+    if (refreshCoef) {
+      # tbd. Bisher platzhalter.
 
-    # Hier könnten die Restriktionen (oder andere Angaben) geändert werden.
+    }
+
 
     if (statusOpt == 0) {
       piConstraintRhs <- c(piConstraintRhs[2], round((piConstraintRhs[2] + piConstraintRhs[3]) / 2, digitsPrecision), piConstraintRhs[3])
