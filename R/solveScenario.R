@@ -38,7 +38,7 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0) {
         function(x) {add.constraint(lprec = lpaObj, xt = x, type = ">=", rhs = piConstraintRhs[2])}
   )
 
-  if(any(lowerBound <= 0)) { # lower bounds
+  if(any(lowerBound >= 0)) { # lower bounds
     for(i in 1 : length(coefObjective)) {
       add.constraint(lprec = lpaObj, xt = diag(length(coefObjective))[, i], type = ">=", lowerBound[i])
     }
@@ -47,7 +47,7 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0) {
   lp.control(lprec = lpaObj, sense = "max")
   counter <- 1 # 1 as the first iteration is outside the loop
 
-  if(any(lowerBound <= 0)) {
+  if(any(lowerBound >= 0)) {
     set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1]), lowerBound))
   } else {
     set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
@@ -71,7 +71,7 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0) {
     } else {
       piConstraintRhs <- c(piConstraintRhs[1], round((piConstraintRhs[1] + piConstraintRhs[2]) / 2, digitsPrecision), piConstraintRhs[2])
     }
-    if(any(lowerBound <= 0)) {
+    if(any(lowerBound >= 0)) {
       set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1]), lowerBound))
     } else {
       set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
@@ -86,7 +86,7 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0) {
   }
 
   if(statusOpt == 2) {
-    if(any(lowerBound <= 0)) {
+    if(any(lowerBound >= 0)) {
       set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1]), lowerBound))
     } else {
       set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
