@@ -2,9 +2,9 @@
 % Please edit documentation in R/solveScenario.R
 \name{solveScenario}
 \alias{solveScenario}
-\title{Perform the robust optimization}
+\title{Perform the optimization}
 \usage{
-solveScenario(x, digitsPrecision = 4)
+solveScenario(x, digitsPrecision = 4, lowerBound = 0)
 }
 \arguments{
 \item{x}{The initialized *optimLanduse* object.}
