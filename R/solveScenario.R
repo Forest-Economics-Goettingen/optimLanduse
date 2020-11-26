@@ -15,7 +15,7 @@
 #' @import lpSolveAPI
 
 #' @export
-solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0) {
+solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0, upperBound = 1) {
 
   coefObjective <- x$coefObjective
   piConstraintCoefficients <- x$coefConstraint
@@ -38,20 +38,19 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0) {
         function(x) {add.constraint(lprec = lpaObj, xt = x, type = ">=", rhs = piConstraintRhs[2])}
   )
 
-  if(any(lowerBound >= 0)) { # lower bounds
-    for(i in 1 : length(coefObjective)) {
-      add.constraint(lprec = lpaObj, xt = diag(length(coefObjective))[, i], type = ">=", lowerBound[i])
-    }
+  if (any(lowerBound > 0)) { # lower bounds
+    lpSolveAPI::set.bounds(lprec = lpaObj, lower = lowerBound)
   }
+  if (any(upperBound < 1)) { # upper bounds
+    lpSolveAPI::set.bounds(lprec = lpaObj, upper = upperBound)
+  }
+
 
   lp.control(lprec = lpaObj, sense = "max")
   counter <- 1 # 1 as the first iteration is outside the loop
 
-  if(any(lowerBound >= 0)) {
-    set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1]), lowerBound))
-  } else {
-    set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
-  }
+  # Update the right hand side
+  set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
 
   statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
 
@@ -65,17 +64,14 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0) {
 
     #}
 
-
     if (statusOpt == 0) {
       piConstraintRhs <- c(piConstraintRhs[2], round((piConstraintRhs[2] + piConstraintRhs[3]) / 2, digitsPrecision), piConstraintRhs[3])
     } else {
       piConstraintRhs <- c(piConstraintRhs[1], round((piConstraintRhs[1] + piConstraintRhs[2]) / 2, digitsPrecision), piConstraintRhs[2])
     }
-    if(any(lowerBound >= 0)) {
-      set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1]), lowerBound))
-    } else {
-      set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
-    }
+
+    set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
+
 
 
     statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
@@ -86,11 +82,9 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0) {
   }
 
   if(statusOpt == 2) {
-    if(any(lowerBound >= 0)) {
-      set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1]), lowerBound))
-    } else {
-      set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
-    }
+
+    set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
+
     statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
     retPiConstraintRhs <- piConstraintRhs[1]
   } else {
@@ -105,4 +99,5 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0) {
   x$beta <- round(retPiConstraintRhs, digitsPrecision)
   x$landUse[1, ] <- get.variables(lpaObj)
   return(x)
+
 }
