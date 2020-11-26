@@ -93,9 +93,12 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0, upperBound = 
 
   if(statusOpt != 0) {
     cat("No optimum found.")
+    x$status <- "no optimum found"
+  } else {
+    x$status <- "optimized"
   }
 
-  x$status <- "optimized"
+
   x$beta <- round(retPiConstraintRhs, digitsPrecision)
   x$landUse[1, ] <- get.variables(lpaObj)
   return(x)
