@@ -4,7 +4,7 @@
 ##--#############################--##
 # Mon Jan 27 10:35:54 2020 ------------------------------
 
-#' Perform the robust optimization
+#' Perform the optimization
 #'
 #' The function solves the initialized *optimLanduse* object.
 #'
