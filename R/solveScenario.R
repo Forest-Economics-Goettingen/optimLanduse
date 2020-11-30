@@ -10,6 +10,8 @@
 #'
 #' @param x The initialized *optimLanduse* object.
 #' @param digitsPrecision Precision.
+#' @param lowerBound An optional vector lower bounds for the land-use options. Must be in the dimension of the land-use options if delivered.
+#' @param upperBound An optional vector upper bounds for the land-use options. Must be in the dimension of the land-use options if delivered.
 #' @return A solved landUse portfolio ready for export or further data processing.
 
 #' @import lpSolveAPI
@@ -29,13 +31,13 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0, upperBound = 
   emergencyStop <- 1000
 
   # Init lpa Object
-  lpaObj <- make.lp(nrow = 0, ncol = length(coefObjective))
-  set.objfn(lprec = lpaObj, obj = coefObjective)
-  add.constraint(lprec = lpaObj, xt = rep(1, length(coefObjective)),
+  lpaObj <- lpSolveAPI::make.lp(nrow = 0, ncol = length(coefObjective))
+  lpSolveAPI::set.objfn(lprec = lpaObj, obj = coefObjective)
+  lpSolveAPI::add.constraint(lprec = lpaObj, xt = rep(1, length(coefObjective)),
                  type = "=", rhs = 1)
   apply(piConstraintCoefficients,
         1,
-        function(x) {add.constraint(lprec = lpaObj, xt = x, type = ">=", rhs = piConstraintRhs[2])}
+        function(x) {lpSolveAPI::add.constraint(lprec = lpaObj, xt = x, type = ">=", rhs = piConstraintRhs[2])}
   )
 
   if (any(lowerBound > 0)) { # lower bounds
@@ -45,12 +47,11 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0, upperBound = 
     lpSolveAPI::set.bounds(lprec = lpaObj, upper = upperBound)
   }
 
-
-  lp.control(lprec = lpaObj, sense = "max")
+  lpSolveAPI::lp.control(lprec = lpaObj, sense = "max")
   counter <- 1 # 1 as the first iteration is outside the loop
 
   # Update the right hand side
-  set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
+  lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
 
   statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
 
@@ -70,20 +71,21 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0, upperBound = 
       piConstraintRhs <- c(piConstraintRhs[1], round((piConstraintRhs[1] + piConstraintRhs[2]) / 2, digitsPrecision), piConstraintRhs[2])
     }
 
-    set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
-
+    lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
 
 
     statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
 
-    if(all(c(piConstraintRhs[3] - piConstraintRhs[2], piConstraintRhs[2] - piConstraintRhs[1]) <= precision)) {
+    #if(all(c(piConstraintRhs[3] - piConstraintRhs[2], piConstraintRhs[2] - piConstraintRhs[1]) <= precision)) { # Prüfen!
+    if(piConstraintRhs[3] - piConstraintRhs[1] <= precision) {
       break()
     }
   }
 
+
   if(statusOpt == 2) {
 
-    set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
+    lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[1], dim(piConstraintCoefficients)[1])))  # Prüfen!!
 
     statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
     retPiConstraintRhs <- piConstraintRhs[1]
@@ -92,15 +94,14 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0, upperBound = 
   }
 
   if(statusOpt != 0) {
-    cat("No optimum found.")
+    cat(paste0("No optimum found. Status code "), statusOpt, " (see solve.lpExtPtr {lpSolveAPI} documentation).")
     x$status <- "no optimum found"
+    x$beta <- NA
+    x$landUse[1, ] <- rep(NA, length(coefObjective))
   } else {
     x$status <- "optimized"
+    x$beta <- round(retPiConstraintRhs, digitsPrecision)
+    x$landUse[1, ] <- lpSolveAPI::get.variables(lpaObj)
   }
-
-
-  x$beta <- round(retPiConstraintRhs, digitsPrecision)
-  x$landUse[1, ] <- get.variables(lpaObj)
   return(x)
-
 }

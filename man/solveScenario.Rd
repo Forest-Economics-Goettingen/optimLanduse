@@ -4,12 +4,16 @@
 \alias{solveScenario}
 \title{Perform the optimization}
 \usage{
-solveScenario(x, digitsPrecision = 4, lowerBound = 0)
+solveScenario(x, digitsPrecision = 4, lowerBound = 0, upperBound = 1)
 }
 \arguments{
 \item{x}{The initialized *optimLanduse* object.}
 
 \item{digitsPrecision}{Precision.}
+
+\item{lowerBound}{An optional vector lower bounds for the land-use options. Must be in the dimension of the land-use options if delivered.}
+
+\item{upperBound}{An optional vector upper bounds for the land-use options. Must be in the dimension of the land-use options if delivered.}
 }
 \value{
 A solved landUse portfolio ready for export or further data processing.
