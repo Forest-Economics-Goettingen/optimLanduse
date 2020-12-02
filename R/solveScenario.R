@@ -41,9 +41,11 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0, upperBound = 
   )
 
   if (any(lowerBound > 0)) { # lower bounds
+    # tbd. Hier fehlen noch mehrere Prüfungen (Anzahl und Reihenfolge der Optionen, Summe der Restiktionen < 1)
     lpSolveAPI::set.bounds(lprec = lpaObj, lower = lowerBound)
   }
   if (any(upperBound < 1)) { # upper bounds
+    # tbd. s. o.
     lpSolveAPI::set.bounds(lprec = lpaObj, upper = upperBound)
   }
 
