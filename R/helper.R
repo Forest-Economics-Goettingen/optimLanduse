@@ -4,31 +4,33 @@
 # Calculate coefficients, one for each variable from the scenario table
 
 #' @export
-defineConstraintCoefficients <- function (scenarioTable) {
-  tempTableMore <- scenarioTable %>% filter(direction == "more is better") %>%
-  mutate(across(starts_with("adjSem"),
-                ~{(. - minAdjSem) / diffAdjSem},
-                .names = "{.col}_modified"))
+defineObjectiveCoefficients <- function(scenarioTable) {
+  # Set "less is better to negative" and divide by maximum difference
+  scenarioTable[scenarioTable$direction == "less is better", grep(c("^adjSem"), names(scenarioTable))] <-
+    -scenarioTable[scenarioTable$direction == "less is better", grep(c("^adjSem"), names(scenarioTable))]
 
-  tempTableLess <- scenarioTable %>% filter(direction == "less is better") %>%
-  mutate(across(starts_with("adjSem"),
-                ~{(maxAdjSem - .) / diffAdjSem},
-                .names = "{.col}_modified"))
+  scenarioTable[, grep(c("^adjSem"), names(scenarioTable))] <-
+    scenarioTable[, grep(c("^adjSem"), names(scenarioTable))] / scenarioTable$diffAdjSem * 100
 
-  tempTableMore %>% bind_rows(tempTableLess) %>% select(ends_with("modified")) %>% as.matrix() %>%
-    return()
+  coefObjective <- apply(scenarioTable[, grep(c("^adjSem"), names(scenarioTable))], 2, sum)
+
+  return(coefObjective)
 }
+
 #-------------------------------------#
 #### Define the constraints matrix ####
 #-------------------------------------#
-
 #' @export
 defineConstraintCoefficients <- function (scenarioTable) {
   tempTableMore <- scenarioTable %>% filter(direction == "more is better") %>%
-    mutate_at(vars(starts_with("adjSem")), funs(modified = (. - minAdjSem) / diffAdjSem))
+    mutate(across(starts_with("adjSem"),
+                  ~{(. - minAdjSem) / diffAdjSem},
+                  .names = "{.col}_modified"))
 
   tempTableLess <- scenarioTable %>% filter(direction == "less is better") %>%
-    mutate_at(vars(starts_with("adjSem")), funs(modified = (maxAdjSem - .) / diffAdjSem))
+    mutate(across(starts_with("adjSem"),
+                  ~{(maxAdjSem - .) / diffAdjSem},
+                  .names = "{.col}_modified"))
 
   tempTableMore %>% bind_rows(tempTableLess) %>% select(ends_with("modified")) %>% as.matrix() %>%
     return()

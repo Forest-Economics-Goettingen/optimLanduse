@@ -3,6 +3,7 @@
 export(calcDistanceToPerformanceScenario)
 export(dataPreparation)
 export(defineConstraintCoefficients)
+export(defineObjectiveCoefficients)
 export(initScenario)
 export(solveScenario)
 import(dplyr)
