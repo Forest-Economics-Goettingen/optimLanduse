@@ -2,7 +2,8 @@
 #### Attach portfolio performance and distance to target ####
 ##--#####################################################--##
 # Wed Jan 29 16:19:22 2020 ------------------------------
-# Kai Husmann
+# Maintainer: Kai Husmann
+# Developer: Kai Husmann, Kai Bödecker
 
 #' Attach portfolio performance and distance to target
 #'
@@ -10,8 +11,12 @@
 #' @param x An optimized optimLanduse object.
 #' @return An optimized optimLanduse object with attached portfolio performance.
 
+#' @importFrom utils type.convert
+
 #'@export
 calcDistanceToPerformanceScenario <- function(x) {
+  # tbd. Umschreiben: den Scenario Table einmal am Anfang in eine Variable schreiben, um das x$ zu vermeiden. Diese 3 Stufen Indizierung wird vom rCheck angekreidet.
+  # Oder noch besser: Ganz ohne dpyr
 
   if(!all(names(x$scenarioTable[, startsWith(names(x$scenarioTable), "adj")]) ==
           paste0("adjSem", names(x$landUse)))) {

@@ -11,11 +11,13 @@
 #' @param coefTable Parameter and uncertainties in a specific format. Usage of the 'dataPreparation' function is recommended to make sure, the format requiremnts are met.
 #' @param uValue u Value.
 #' @param optimisticRule Either *expectation* or *uncertaintyAdjustedExpectation*. It indicates whether the optimistic outcomes of an indicator are directly reflected by the *expectation* or if the indicator is calculated *adjusted* by *expectation* + *uncertainty*.
+#' @param fixDistance tbd.
 #' @return An initialized landUse object ready for optimization.
 
 #' @import dplyr
 #' @import tidyr
-
+#' @importFrom stats setNames
+#'
 #' @export
 initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation", fixDistance = NULL) {
 

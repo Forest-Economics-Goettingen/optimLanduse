@@ -3,7 +3,8 @@
 ##--##################--##
 
 # Tue Oct 13 15:41:41 2020 ------------------------------
-
+# Maintainer: Kai Husmann
+# Developer: Kai Husmann, Kai Bödecker, Volker von Groß
 
 #' Preparation of the data for the robust optimization
 #'
@@ -13,11 +14,12 @@
 #' @param expVAL Indicates how the expected Value should be represented.
 #' @return An initialized landUse object ready for initScenario.
 
-
 #' @import dplyr
+#' @importFrom stats na.omit
+#' @importFrom utils type.convert
 
 #' @export
-dataPreparation <- function(dat, uncertainty = "SE", expVAL = "mean"){   #added expected value
+dataPreparation <- function(dat, uncertainty = "SE", expVAL = "mean"){   # added expected value
 
     ## Convert input Data to dat.final ##
     ## Filter all Rows with only NA ##

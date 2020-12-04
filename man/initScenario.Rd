@@ -17,6 +17,8 @@ initScenario(
 \item{uValue}{u Value.}
 
 \item{optimisticRule}{Either *expectation* or *uncertaintyAdjustedExpectation*. It indicates whether the optimistic outcomes of an indicator are directly reflected by the *expectation* or if the indicator is calculated *adjusted* by *expectation* + *uncertainty*.}
+
+\item{fixDistance}{tbd.}
 }
 \value{
 An initialized landUse object ready for optimization.
