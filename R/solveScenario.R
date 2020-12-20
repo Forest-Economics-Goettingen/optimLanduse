@@ -19,15 +19,15 @@
 #' @export
 solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0, upperBound = 1) {
 
-  coefObjective <- x$coefObjective
-  piConstraintCoefficients <- x$coefConstraint
+  coefObjective <- x$coefObjective # Summen aus aller Scenarien der LandUse-Optionen (s. helper Funktion)
+  piConstraintCoefficients <- x$coefConstraint # relativie Werte (m. Distanz als Divisor)
   #tbd. Die Variablen sollte ich noch umbenennen. Von piConstraintCoefficients zu coefConstraint
 
-  precision <- 1 / 10^(digitsPrecision)
-  constraintCoef <- rbind(rep(1, length(coefObjective)), piConstraintCoefficients)
-  constraintDirection <- c("==", rep(">=", dim(piConstraintCoefficients)[1]))
-  piConstraintRhs <- c(0, .6, 1)
-  piConstraintRhsFeasible <- rep(FALSE, 3)
+  precision <- 1 / 10^(digitsPrecision) # maximale Differenz zwischen 1. und 3. Wert von piConstraintRhs
+  # constraintCoef <- rbind(rep(1, length(coefObjective)), piConstraintCoefficients) # wird nicht mehr genutzt
+  constraintDirection <- c("==", rep(">=", dim(piConstraintCoefficients)[1])) # maximierung
+  piConstraintRhs <- c(0, .6, 1) # quasi das "beta" das immer enger und enger wird
+  # piConstraintRhsFeasible <- rep(FALSE, 3) # Variable wird nicht mehr verwendet
   emergencyStop <- 1000
 
   # Init lpa Object
@@ -55,7 +55,9 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0, upperBound = 
   # Update the right hand side
   lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
 
-  statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
+  statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj) # Was bedeutet "ExtPtr"?
+
+  # ein gutes Beispiel zum Lernen: https://rpubs.com/nayefahmad/linear-programming
 
   # Stepwise approximation loop
   while (counter < emergencyStop) {
@@ -76,7 +78,7 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0, upperBound = 
     lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
 
 
-    statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
+    (statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj))
 
     #if(all(c(piConstraintRhs[3] - piConstraintRhs[2], piConstraintRhs[2] - piConstraintRhs[1]) <= precision)) { # Prüfen!
     if(piConstraintRhs[3] - piConstraintRhs[1] <= precision) {
@@ -94,6 +96,7 @@ solveScenario <- function (x, digitsPrecision = 4, lowerBound = 0, upperBound = 
   } else {
     retPiConstraintRhs <- piConstraintRhs[2]
   }
+
 
   if(statusOpt != 0) {
     cat(paste0("No optimum found. Status code "), statusOpt, " (see solve.lpExtPtr {lpSolveAPI} documentation).")
