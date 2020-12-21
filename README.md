@@ -121,10 +121,10 @@ library(tidyr)
 
 # Daten einlesen
 dat <- read_xlsx("database (shrinked).xlsx", col_names = FALSE)
-dat <- dataPreparation(dat = dat, uncertainty = "SE")
+dat <- dataPreparation(dat = dat, uncertainty = "SE", expVAL = "mean")
 
 # Optimierung initialisieren
-init <- initScenario(dat, uValue = 2, optimisticRule = "expectation")
+init <- initScenario(dat, uValue = 2, optimisticRule = "expectation", fixDistance = NULL)
 
 # Optimierung durchführen
 result <- solveScenario(x = init)
@@ -208,4 +208,39 @@ loopDf1 <- foreach(i = u, .combine = rbind) %dopar% {
 }
 # Falls die Kerne wieder freigegeben werden sollen
 stopImplicitCluster()
+```
+
+Batch Anwendung für mehrere Unsicherheiten und fixierter Distanz auf dem höchsten Unsicherheits-Level u
+
+``` r
+# Pakete laden
+require(optimLanduse)
+require(dplyr)  
+require(readxl)
+require(lpSolveAPI)  
+
+# Daten einlesen
+dat <- read_xlsx("database (shrinked).xlsx", col_names = FALSE)
+dat <- dataPreparation(dat = dat, uncertainty = "SE")
+
+# Sequenz definieren
+u <- c(5:1) # Wichtig: rueckwaerts!
+
+# Batch vorbereiten
+applyDf <- data.frame(u = u)
+dist <- NULL
+applyFun <- function(x) {
+  init <- initScenario(dat, uValue = x, optimisticRule = "expectation",
+                       fixDistance = dist)
+  result <- optimLanduse::solveScenario(x = init)
+  dist <<- result$distance
+  return(c(result$beta,
+           as.matrix(result$landUse)))
+}
+
+# Run & Ergebnis
+applyDf <- cbind(applyDf,
+                 t(apply(applyDf, 1, applyFun))) %>% 
+                 rename_at(vars(factor(1:(length(unique(dat$landUse))+1))),
+                           ~ c("beta",unique(dat$landUse))) 
 ```
