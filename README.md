@@ -120,6 +120,7 @@ library(dplyr)
 library(tidyr) 
 
 # Daten einlesen
+# Es ist zwingend eine "indicator" und eine "direction" Spalte noetig
 dat <- read_xlsx("database (shrinked).xlsx", col_names = FALSE)
 dat <- dataPreparation(dat = dat, uncertainty = "SE", expVAL = "mean")
 
