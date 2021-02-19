@@ -2,20 +2,37 @@
 % Please edit documentation in R/dataPreparation.R
 \name{dataPreparation}
 \alias{dataPreparation}
-\title{Preparation of the data for the robust optimization}
+\title{Transform data to the expected format}
 \usage{
 dataPreparation(dat, uncertainty = "SE", expVAL = "mean")
 }
 \arguments{
-\item{dat}{Untransformed data table as shown in the example.}
+\item{dat}{Data frame or tibble in the format of the \code{\link{exampleData}}.}
 
-\item{uncertainty}{Indicates whether the uncertainty shall be repesented by SE or SD. Please be aware that the respective chosen uncertainty must be included in the data. Best would be to consider the format of the exemplary data (database.xlsx) in the GitLab.}
+\item{uncertainty}{Indicates the column name of the uncertainty in the data.
+Typical is "SE" for standard
+error or "SD" for standard deviation.}
 
-\item{expVAL}{Indicates how the expected Value should be represented.}
+\item{expVAL}{Indicates the column name of the expected value.}
 }
 \value{
-An initialized landUse object ready for initScenario.
+A formated coefficients table with land-use options and indicator values ready for initialization via \code{\link{initScenario}}.
 }
 \description{
-Preparation of the data for the robust optimization
+The input data must suit to the specific expected optimLanduse format prior to
+initialization and optimization. This function
+provides the possibility to easily transform data from the commonly used form
+of the exemplary data
+\code{\link{exampleData}} into to the expected format. The application of this function
+is not mandatory
+if you want to transform your data yourself or if your data is not formatted as
+the example data. The application example on the
+\href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab project page}
+provides information about the expected structure. Incomplete rows with NA-values are deleted and an error message is displayed.
+}
+\examples{
+require(readxl)
+dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
+                 col_names = FALSE)
+dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
 }

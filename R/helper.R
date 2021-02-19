@@ -9,8 +9,7 @@
 #' @param scenarioTable The fully initialized scenario table.
 #' @return The coefficients of the objective function.
 
-
-#' @export
+#' @noRd
 defineObjectiveCoefficients <- function(scenarioTable) {
   # Set "less is better to negative" and divide by maximum difference
   scenarioTable[scenarioTable$direction == "less is better", grep(c("^adjSem"), names(scenarioTable))] <-
@@ -34,14 +33,17 @@ defineObjectiveCoefficients <- function(scenarioTable) {
 #' @param scenarioTable The fully initialized scenario table.
 #' @return The coefficients of the objective function.
 
-#' @export
+#' @noRd
 defineConstraintCoefficients <- function (scenarioTable) {
-  tempTableMore <- scenarioTable %>% filter(direction == "more is better") %>%
+
+  tempTableMore <- scenarioTable[scenarioTable$direction == "more is better", ]
+  tempTableMore <- tempTableMore %>%
     mutate(across(starts_with("adjSem"),
                   ~{(. - minAdjSem) / diffAdjSem},
                   .names = "{.col}_modified"))
 
-  tempTableLess <- scenarioTable %>% filter(direction == "less is better") %>%
+  tempTableLess <- scenarioTable[scenarioTable$direction == "less is better", ]
+  tempTableLess <- tempTableLess %>%
     mutate(across(starts_with("adjSem"),
                   ~{(maxAdjSem - .) / diffAdjSem},
                   .names = "{.col}_modified"))
