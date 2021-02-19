@@ -27,7 +27,7 @@
 #'
 #' @references Knoke, T., Paul, C., Hildebrandt, P. et al. (2016): Compositional diversity
 #' of rehabilitated tropical lands supports multiple ecosystem services and
-#' buffers uncertainties. \emph{Nat Commun} \strong{7}, 11877. \url{https://doi.org/10.1038/ncomms11877}
+#' buffers uncertainties. \emph{Nat Commun} \strong{7}, 11877. \doi{10.1038/ncomms11877}
 
 
 #' @import lpSolveAPI

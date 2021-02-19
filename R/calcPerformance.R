@@ -23,7 +23,7 @@
 #' @return An optimized optimLanduse object with attached portfolio performance.
 #' @references Gosling, E., Reith, E., Knoke T., Gerique, A., Paul, C. (2020): Exploring
 #' farmer perceptions of agroforestry via multi-objective optimisation: a test application
-#' in Eastern Panama. \emph{Agroforestry Systems} \strong{94}. \url{https://doi.org/10.1007/s10457-020-00519-0}
+#' in Eastern Panama. \emph{Agroforestry Systems} \strong{94}. \doi{10.1007/s10457-020-00519-0}
 #' @examples
 #' require(ggplot2)
 #' require(readxl)
