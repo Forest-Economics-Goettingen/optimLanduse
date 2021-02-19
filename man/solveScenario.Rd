@@ -7,17 +7,36 @@
 solveScenario(x, digitsPrecision = 4, lowerBound = 0, upperBound = 1)
 }
 \arguments{
-\item{x}{The initialized *optimLanduse* object.}
+\item{x}{The initialized \emph{optimLanduse} object. See \code{\link{initScenario}} for the initialization.}
 
-\item{digitsPrecision}{Precision.}
+\item{digitsPrecision}{Precision of the loss value.}
 
-\item{lowerBound}{An optional vector lower bounds for the land-use options. Must be in the dimension of the land-use options if delivered.}
+\item{lowerBound}{Optional lower bounds for the land-use options. Must be 0 or a vector in the dimension of the land-use options.}
 
-\item{upperBound}{An optional vector upper bounds for the land-use options. Must be in the dimension of the land-use options if delivered.}
+\item{upperBound}{Optional upper bounds for the land-use options. Must be 1 or a vector in the dimension of the land-use options.}
 }
 \value{
 A solved landUse portfolio ready for export or further data processing.
 }
 \description{
-The function solves the initialized *optimLanduse* object.
+The function solves the optimization problem, specified by the initialized \emph{optimLanduse} object.
+}
+\details{
+The methodological background and the formulation of the optimization framework are described in Knoke et al. (2016).
+}
+\examples{
+require(readxl)
+dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
+                 col_names = FALSE)
+dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+init <- initScenario(dat, uValue = 2,
+                     optimisticRule = "expectation",
+                     fixDistance = NULL)
+result <- solveScenario(x = init)
+
+}
+\references{
+Knoke, T., Paul, C., Hildebrandt, P. et al. (2016): Compositional diversity
+of rehabilitated tropical lands supports multiple ecosystem services and
+buffers uncertainties. \emph{Nat Commun} \strong{7}, 11877. \url{https://doi.org/10.1038/ncomms11877}
 }

@@ -2,24 +2,63 @@
 #### Transform the input table in an optimLanduse object ####
 ##--#####################################################--##
 
-# Fri Jan 24 23:53:50 2020 ------------------------------
+# Fri Feb  5 10:40:10 2021 ------------------------------
+
 
 #' Initialize the robust optimization
 #'
-#' The function translates the prepared lanUse object into a solvable *optimLanduse* S3 object. Aim of the separation of the initialization and the optimization is to save time in the (possibly time-cunsuming) optimization.
+#' The function initializes an \emph{optimLanduse} S3 object on the
+#' basis of a coefficients table. Please note that the coefficients table must follow
+#' the \emph{optimLanduse} format. The expected format is explained in the example on
+#'  \href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab}.
+#'  Usage of \code{\link{dataPreparation}} is recommended to ensure that
+#'  the format requirements are met.
 #'
-#' @param coefTable Parameter and uncertainties in a specific format. Usage of the 'dataPreparation' function is recommended to make sure, the format requiremnts are met.
-#' @param uValue u Value.
-#' @param optimisticRule Either *expectation* or *uncertaintyAdjustedExpectation*. It indicates whether the optimistic outcomes of an indicator are directly reflected by the *expectation* or if the indicator is calculated *adjusted* by *expectation* + *uncertainty*.
-#' @param fixDistance tbd.
-#' @return An initialized landUse object ready for optimization.
+#'  The aim of separating the initialization from the optimization is to save
+#'  computation time in batch analysis. The separated function calls allow the
+#'  user to perform multiple
+#'  optimizations from one initialized object. This could save time in scenario or
+#'  sensitivity analysis.
+#'
+#' @param coefTable Coefficient table in the expected \emph{optimLanduse} format.
+#' @param uValue \emph{u} Value. The uncertainty (standard deviation or standard error) is
+#' multiplied with the u value. The value therefore enables scenario analyses with differing
+#' uncertainties in relation to indicator values. Higher u values can be interpreted as a higher
+#' risk aversion of the decision maker.
+#' @param optimisticRule Either \emph{expectation} or \emph{uncertaintyAdjustedExpectation}.
+#' The rule indicates whether the optimistic outcomes of an indicator are directly
+#' reflected by their expectations or if the indicator is calculated as expectation +
+#' uncertainty when "more is better", expectation - uncertainty respectively when "less is better".
+#' An optimization based on \emph{expectation} considers only downside risks.
+#' @param fixDistance A two-column table or matrix. The table must
+#' contain the best and the worst performing landuse-type of every uncertainty
+#' scenario, which is influenced by the \emph{uValue}. The difference between
+#' these two variables reflects the uncertainty space, in other words the
+#' distance. This table can always be found (no matter if the distance is fixed
+#' or not) in result list of the \emph{initScenario} function. By default, the
+#' distance is not fixed \emph{NULL}. Fixing the distance allows you to change
+#' the uncertainty level, without changing the uncertainty framework. For
+#' instance, you can then relate the achieved portfolio performance, with a low
+#' uncertainty level, to a wider and constant uncertainty framework within your
+#' analysis; so the \emph{betas} remain comparable with each other over the
+#' course of the uncertainty analysis.
+#' @return An initialized optimLanduse S3 object ready for optimization.
+#' @examples
+#' require(readxl)
+#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
+#'                  col_names = FALSE)
+#' dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+#' init <- initScenario(dat,
+#'                      uValue = 2,
+#'                      optimisticRule = "expectation",
+#'                      fixDistance = NULL)
 
 #' @import dplyr
 #' @import tidyr
 #' @importFrom stats setNames
 #'
 #' @export
-initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation", fixDistance = NULL) {
+initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation", fixDistance = NULL) {
 
   #-----------------------------------------#
   #### Check the format of the coefTable ####
@@ -31,12 +70,14 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation",
 
   indicatorNames <- as.character(unique(coefTable$indicator))
 
-  # all(indicatorNamesCheck %in% coefTable$indicator[coefTable$landUse == "Forest"]) # useless
   testLandUseIndicators <- function (x) {
     all(indicatorNames %in% x)
   }
 
-  if (!coefTable %>% group_by(landUse) %>% summarise(checkLanduse = testLandUseIndicators(indicator)) %>% pull(checkLanduse) %>% all()) {
+  checkLanduseTemp <- stats::aggregate(indicator ~ landUse, FUN = testLandUseIndicators, data = coefTable)
+
+
+  if (!all(checkLanduseTemp$indicator)) {
     stop ("At least one indicator is not available for at least one land-use option.")
   }
   if (!length(indicatorNames) * length(unique(coefTable$landUse)) == nrow(coefTable)) {
@@ -56,12 +97,6 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation",
   expandMatrix2 <- do.call(rbind, replicate(length(indicatorNames), expandMatrix1, simplify = FALSE))
   scenarioTable <- tibble(indicator = rep(indicatorNames, each = dim(expandMatrix1)[1])) %>%
     bind_cols(as_tibble(expandMatrix2))
-  # scenarioTable <- tibble(indicator = rep(indicatorNames, each = dim(expandMatrix1)[1])) %>%
-  #   left_join(indicatorNames, by = "indicator") %>% bind_cols(as_tibble(expandMatrix2))
-  # Alter Version. Evtl relevant bei Fehlersuche. Ich weiß nicht mehr was ich mir bei dem left join gedacht habe.
-  # tbd. Tidy raus
-  # scenarioTable <- scenarioTable %>% rename_at(.vars = vars(!!landUse[1] : !!landUse[length(landUse)]),
-  #                                              .funs = funs(paste0("outcome", .))) #.funs deprecated
 
   names(scenarioTable)[names(scenarioTable) %in% landUse] <- paste0("outcome",names(scenarioTable)[names(scenarioTable) %in% landUse])
 
@@ -70,7 +105,7 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation",
   #--------------------#
 
   scenarioTableTemp1 <- scenarioTable
-  scenarioTable <- merge(scenarioTable, unique(coefTable[, c("indicator","direction")]), by = "indicator")
+  scenarioTable <- merge(scenarioTable, unique(coefTable[, c("indicator", "direction")]), by = "indicator")
   if(!dim(scenarioTableTemp1)[1] == dim(scenarioTable)[1]) {cat("Error: Direction mising or wrong.")}
 
   #---------------------------------------------#
@@ -79,13 +114,17 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation",
 
   scenarioTableTemp2 <- scenarioTable
 
-  # Das muss noch umgeschrieben werden, da funs "deprecated" ist: Am besten ganz ohne tidy ...
-
-  spread1 <- coefTable %>% select(-indicatorUncertainty) %>% spread(key = landUse, value = indicatorValue)
+  spread1 <- tidyr::spread(data = coefTable[, !names(coefTable) == "indicatorUncertainty"],
+                    key = landUse,
+                    value = "indicatorValue")
   names(spread1)[names(spread1) %in% eval(landUse)] <- paste0("mean", names(spread1)[names(spread1) %in% eval(landUse)])
 
-  spread2 <- coefTable %>% select(-indicatorValue) %>% spread(key = landUse, value = indicatorUncertainty)
+
+  spread2 <- tidyr::spread(data = coefTable[, !names(coefTable) == "indicatorValue"],
+                     key = landUse,
+                     value = "indicatorUncertainty")
   names(spread2)[names(spread2) %in% eval(landUse)] <- paste0("sem", names(spread2)[names(spread2) %in% eval(landUse)])
+
 
   for(i in landUse) {
     byIndicator <- c("indicator")
@@ -94,7 +133,7 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation",
     scenarioTable <- left_join(scenarioTable, spread2[, c("indicator", paste0("sem", i))], by = byIndicator)
   }
 
-  # scenarioTable <- scenarioTable %>% select(-contains("mean"), everything()) # Order the variables, such that the means and uncertainties follow in direct succession
+
   scenarioTable <- scenarioTable %>% select(-contains("sem"), everything()) # Alternatively, but slower, a second loop would be suitable
 
   if(!dim(scenarioTableTemp1)[1] == dim(scenarioTable)[1]) {cat("Error: Attaching expectation or uncertainty failed.")}
@@ -150,9 +189,6 @@ initScenario <- function(coefTable,  uValue = 3, optimisticRule = "expectation",
   } else if (dim(fixDistance)[1] == dim(scenarioTable)[1] &&
              length(fixDistance)==2) {
     scenarioTable[, c("minAdjSem", "maxAdjSem")] <- fixDistance
-    # scenarioTable[, c("minAdjSem", "maxAdjSem")] <-
-    # apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
-    #       function(x) {c(min(x), max(x))}) %>% t()
     scenarioTable$diffAdjSem <- scenarioTable$maxAdjSem - scenarioTable$minAdjSem
   } else {stop(paste("The dimension of the 'fixDistance' (min and max) must contain: 2 columns and",
                      dim(scenarioTable)[1], "rows."))}

@@ -6,23 +6,63 @@
 \usage{
 initScenario(
   coefTable,
-  uValue = 3,
+  uValue = 1,
   optimisticRule = "expectation",
   fixDistance = NULL
 )
 }
 \arguments{
-\item{coefTable}{Parameter and uncertainties in a specific format. Usage of the 'dataPreparation' function is recommended to make sure, the format requiremnts are met.}
+\item{coefTable}{Coefficient table in the expected \emph{optimLanduse} format.}
 
-\item{uValue}{u Value.}
+\item{uValue}{\emph{u} Value. The uncertainty (standard deviation or standard error) is
+multiplied with the u value. The value therefore enables scenario analyses with differing
+uncertainties in relation to indicator values. Higher u values can be interpreted as a higher
+risk aversion of the decision maker.}
 
-\item{optimisticRule}{Either *expectation* or *uncertaintyAdjustedExpectation*. It indicates whether the optimistic outcomes of an indicator are directly reflected by the *expectation* or if the indicator is calculated *adjusted* by *expectation* + *uncertainty*.}
+\item{optimisticRule}{Either \emph{expectation} or \emph{uncertaintyAdjustedExpectation}.
+The rule indicates whether the optimistic outcomes of an indicator are directly
+reflected by their expectations or if the indicator is calculated as expectation +
+uncertainty when "more is better", expectation - uncertainty respectively when "less is better".
+An optimization based on \emph{expectation} considers only downside risks.}
 
-\item{fixDistance}{tbd.}
+\item{fixDistance}{A two-column table or matrix. The table must
+contain the best and the worst performing landuse-type of every uncertainty
+scenario, which is influenced by the \emph{uValue}. The difference between
+these two variables reflects the uncertainty space, in other words the
+distance. This table can always be found (no matter if the distance is fixed
+or not) in result list of the \emph{initScenario} function. By default, the
+distance is not fixed \emph{NULL}. Fixing the distance allows you to change
+the uncertainty level, without changing the uncertainty framework. For
+instance, you can then relate the achieved portfolio performance, with a low
+uncertainty level, to a wider and constant uncertainty framework within your
+analysis; so the \emph{betas} remain comparable with each other over the
+course of the uncertainty analysis.}
 }
 \value{
-An initialized landUse object ready for optimization.
+An initialized optimLanduse S3 object ready for optimization.
 }
 \description{
-The function translates the prepared lanUse object into a solvable *optimLanduse* S3 object. Aim of the separation of the initialization and the optimization is to save time in the (possibly time-cunsuming) optimization.
+The function initializes an \emph{optimLanduse} S3 object on the
+basis of a coefficients table. Please note that the coefficients table must follow
+the \emph{optimLanduse} format. The expected format is explained in the example on
+ \href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab}.
+ Usage of \code{\link{dataPreparation}} is recommended to ensure that
+ the format requirements are met.
+}
+\details{
+The aim of separating the initialization from the optimization is to save
+ computation time in batch analysis. The separated function calls allow the
+ user to perform multiple
+ optimizations from one initialized object. This could save time in scenario or
+ sensitivity analysis.
+}
+\examples{
+require(readxl)
+dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
+                 col_names = FALSE)
+dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+init <- initScenario(dat,
+                     uValue = 2,
+                     optimisticRule = "expectation",
+                     fixDistance = NULL)
 }

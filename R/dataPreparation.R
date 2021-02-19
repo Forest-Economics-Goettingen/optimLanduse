@@ -4,22 +4,39 @@
 
 # Tue Oct 13 15:41:41 2020 ------------------------------
 # Maintainer: Kai Husmann
-# Developer: Kai Husmann, Kai Bödecker, Volker von Groß
+# Developer: Kai Husmann, Kai Bödeker, Volker von Groß
 
-#' Preparation of the data for the robust optimization
+#' Transform data to the expected format
 #'
+#' The input data must suit to the specific expected optimLanduse format prior to
+#' initialization and optimization. This function
+#' provides the possibility to easily transform data from the commonly used form
+#' of the exemplary data
+#' \code{\link{exampleData}} into to the expected format. The application of this function
+#' is not mandatory
+#' if you want to transform your data yourself or if your data is not formatted as
+#' the example data. The application example on the
+#' \href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab project page}
+#' provides information about the expected structure. Incomplete rows with NA-values are deleted and an error message is displayed.
 #'
-#' @param dat Untransformed data table as shown in the example.
-#' @param uncertainty Indicates whether the uncertainty shall be repesented by SE or SD. Please be aware that the respective chosen uncertainty must be included in the data. Best would be to consider the format of the exemplary data (database.xlsx) in the GitLab.
-#' @param expVAL Indicates how the expected Value should be represented.
-#' @return An initialized landUse object ready for initScenario.
+#' @param dat Data frame or tibble in the format of the \code{\link{exampleData}}.
+#' @param uncertainty Indicates the column name of the uncertainty in the data.
+#' Typical is "SE" for standard
+#' error or "SD" for standard deviation.
+#' @param expVAL Indicates the column name of the expected value.
+#' @return A formated coefficients table with land-use options and indicator values ready for initialization via \code{\link{initScenario}}.
+#' @examples
+#' require(readxl)
+#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
+#'                  col_names = FALSE)
+#' dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
 
 #' @import dplyr
 #' @importFrom stats na.omit
 #' @importFrom utils type.convert
 
 #' @export
-dataPreparation <- function(dat, uncertainty = "SE", expVAL = "mean"){   # added expected value
+dataPreparation <- function(dat, uncertainty = "SE", expVAL = "mean"){
 
     ## Convert input Data to dat.final ##
     ## Filter all Rows with only NA ##
