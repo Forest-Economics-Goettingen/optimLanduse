@@ -20,7 +20,7 @@ Authors@R:
            role = "aut",
            email = "kai.boedeker@tum.de")
            )
-Description: Robust land-use optimization.
+Description: Robust multi-criteria land-allocation optimization that explicitly accounts for the uncertainty of the indicators in the objective function. Solves the problem of allocating scarce land to various land-use options with regard to multiple, coequal indicators. Aim is to find the land allocation that represents the indicator composition with the best possible trade-off under uncertainty. Includes the actual optimization procedure as described by Knoke et al. (2017) <doi:10.1038/ncomms11877> and the post-hoc calculation of the portfolio performance as presented by Gosling et al. (2020) <doi:10.1007/s10457-020-00519-0>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
