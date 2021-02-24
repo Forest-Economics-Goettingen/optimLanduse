@@ -58,30 +58,10 @@ An **optimLanduse** object containing informations of the optimization model and
 <h3>
 <a name="6. Beispielhafte Anwendung">Exemplary application</a>
 </h3>
-Um die aktuellste stabile Version zu installieren, führen Sie den folgenden Code aus. 
-tbd. Kann nach Migration zu github weg weg.
 
+Install package
 ``` r
-## Benötigte Pakete
-# Tested with R Version 4.0.3.
-packages <- c("devtools", "lpSolveAPI",
-             "dplyr", "tidyr", "remotes",
-             "readxl")
-
-## Herunterladen und installieren oder aktivieren
-
-package.check <- lapply(
-  packages,
-  FUN = function(x) {
-    if (!require(x, character.only = TRUE)) {
-      install.packages(x, dependencies = TRUE)
-      library(x, character.only = TRUE)
-    }
-  }
-)
-
-install_gitlab("forest_economics_goettingen/optimlanduse", host = "gitlab.gwdg.de")
-
+install.packages("optimLanduse")
 ```
 
 Simple example
