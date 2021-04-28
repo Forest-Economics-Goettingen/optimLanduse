@@ -23,7 +23,7 @@ optimLanduse
 <h3>
 <a name="1. Einleitung">Introduction</a>
 </h3>
-Hallo
+
 **optimLanduse** provides methods for robust multi-criterial landscape optimization that explicitly account for uncertainty in the optimization of the land allocation to land-use options. High landscape diversity is assumed to increase the number and level of ecosystem services. However, the interactions between ecosystem service provision, disturbances and landscape composition are poorly understood. Knoke et al. (2016) therefore presented a novel approach to incorporate uncertainty in land allocation optimization to improve the provision of multiple ecosystem services. The optimization framework of Knoke et al. (2016) is implemented in the **optimLanduse** package, aiming to make it easily accessible for practical land-use optimization and to enable efficient batch applications.
 
 The method is already established in land-use optimization and has been applied in a couple of studies. More details about the theory, the definition of the formal optimization problem and also significant examples are listed in the <a href="#7. Literatur">literature</a> section
