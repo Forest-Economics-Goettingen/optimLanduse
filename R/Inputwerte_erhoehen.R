@@ -6,8 +6,8 @@ library(readxl)
 library(optimLanduse)
 
 
-dat <- read_xlsx(path = "C:/Users/felap/ownCloud/optimLanduse/Anwendungsbeispiele/1 simulateDataSource/simDat-3-3-3.xlsx", col_names = T)
-
+#dat <- read_xlsx(path = "C:/Users/felap/ownCloud/optimLanduse/Anwendungsbeispiele/1 simulateDataSource/simDat-3-3-3.xlsx", col_names = T)
+dat <- read_xlsx(path = "inst/simDat-3-3-3.xlsx", col_names = T)
 x <- 0.05
 
 uValue <- 2
