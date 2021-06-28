@@ -8,7 +8,7 @@ library(optimLanduse)
 
 #dat <- read_xlsx(path = "C:/Users/felap/ownCloud/optimLanduse/Anwendungsbeispiele/1 simulateDataSource/simDat-3-3-3.xlsx", col_names = T)
 dat <- read_xlsx(path = "inst/extdata/simDat-3-3-3.xlsx", col_names = T)
-x <- 0.05
+x <- 2
 
 uValue <- 2
 optimisticRule <- "expectation"
@@ -46,4 +46,8 @@ for (i in unique(dat$indicator)) {
 
 sensitivity <- list(increase = increase)
 
+sensitivity$increase[, c( 2 : 4)] <- round(sensitivity$increase[, c( 2 : 4)], digits = 3)
+
+
+apply(sensitivity$increase[ ,c(2 : 4)], 1 ,FUN = function (x) {all(x == c(0, .5, .5))})
 
