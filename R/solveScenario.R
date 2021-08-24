@@ -73,6 +73,11 @@ solveScenario <- function (x, digitsPrecision = 4,
   lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
 
   statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
+
+  ## NOCH ZU PRUEFEN, ERST MAL SCHNELLE LOESUNG
+
+  if(statusOpt == 2) {return("nothing")}
+
   # ein gutes Beispiel zum Lernen: https://rpubs.com/nayefahmad/linear-programming
 
   # Stepwise approximation loop
@@ -103,7 +108,7 @@ solveScenario <- function (x, digitsPrecision = 4,
   }
 
 
-  if(statusOpt == 2) {
+    if(statusOpt == 2) {
 
     lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[1], dim(piConstraintCoefficients)[1])))  # Prüfen!!
 

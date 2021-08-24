@@ -1,6 +1,6 @@
 Package: optimLanduse
 Title: Robust Land-Use Optimization
-Version: 0.0.4.9000
+Version: 0.0.5
 Authors@R:
     c(
     person(given = "Kai",
@@ -18,7 +18,11 @@ Authors@R:
     person(given = "Kai",
            family = "Bödeker",
            role = "aut",
-           email = "kai.boedeker@tum.de")
+           email = "kai.boedeker@tum.de"),
+    person(given = "Leona",
+           family = "Ottens",
+           role = "aut",
+           email = "leona.ottens@uni-goettingen.de")
            )
 Description: Robust multi-criteria land-allocation optimization that explicitly accounts for the uncertainty of the indicators in the objective function. Solves the problem of allocating scarce land to various land-use options with regard to multiple, coequal indicators. The method aims to find the land allocation that represents the indicator composition with the best possible trade-off under uncertainty. optimLanduse includes the actual optimization procedure as described by Knoke et al. (2016) <doi:10.1038/ncomms11877> and the post-hoc calculation of the portfolio performance as presented by Gosling et al. (2020) <doi:10.1007/s10457-020-00519-0>.
 License: MIT + file LICENSE

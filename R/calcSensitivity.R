@@ -1,8 +1,34 @@
-#-----------------------#
-#### calcSensitivity ####
-#-----------------------#
 
+##--#################--##
+#### calcSensitivity ####
+##--#################--##
+# Maintainer: Leona Ottens
+# Developer: Leona Ottens, Kai Husmann, Volker von Groß
+
+#' Some heading
+#'
+#' Text, short description
+#' \code{\link{exampleData}} into to the expected format. The application of this function
+#' is not mandatory
+#' if you want to transform your data yourself or if your data is not formatted as
+#' the example data. The application example on the asdf
+#' \href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab project page}
+#' provides information about the expected structure. Incomplete rows with NA-values are deleted and an error message is displayed.
+#'
+#' @param x Dat
+#' @param y Weiterer Parameter
+
+#' @examples
+#' require(readxl)
+#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
+#'                  col_names = FALSE)
+#' dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+
+#' @import dplyr
+
+#' @export
 calcSensitivity <- function(result, x = 0.01, digits = 3, fixDistance = NULL){
+
 
   #--------------------------------#
   #### Allowable Increase Value ####
