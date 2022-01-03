@@ -11,8 +11,6 @@
 #' basis of a coefficients table. Please note that the coefficients table must follow
 #' the \emph{optimLanduse} format. The expected format is explained in the example on
 #'  \href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab}.
-#'  Usage of \code{\link{dataPreparation}} is recommended to ensure that
-#'  the format requirements are met.
 #'
 #'  The aim of separating the initialization from the optimization is to save
 #'  computation time in batch analysis. The separated function calls allow the
@@ -45,9 +43,8 @@
 #' @return An initialized optimLanduse S3 object ready for optimization.
 #' @examples
 #' require(readxl)
-#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
-#'                  col_names = FALSE)
-#' dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"))
+#'
 #' init <- initScenario(dat,
 #'                      uValue = 2,
 #'                      optimisticRule = "expectation",

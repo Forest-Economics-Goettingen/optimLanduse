@@ -70,9 +70,7 @@ require(readxl)
 library(optimLanduse)
 
 path <- exampleData("exampleGosling_2020.xlsx")
-dat <- read_xlsx(path, col_names = FALSE)
-
-dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+dat <- read_excel(path)
 
 init <- initScenario(dat,
                      uValue = 2,
@@ -95,9 +93,7 @@ require(readxl)
 library(optimLanduse)
 
 path <- exampleData("exampleGosling_2020.xlsx")
-dat <- read_xlsx(path, col_names = FALSE)
-
-dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+dat <- read_excel(path)
 
 # define sequence of uncertainties
 u <- seq(1, 5, 1)
@@ -152,9 +148,7 @@ require(foreach)
 require(doParallel)
 
 path <- exampleData("exampleGosling_2020.xlsx")
-dat <- read_xlsx(path, col_names = FALSE)
-
-dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+dat <- read_excel(path)
 
 registerDoParallel(8)
 
@@ -179,9 +173,7 @@ require(dplyr)
 require(tidyr)
 
 path <- exampleData("exampleGosling_2020.xlsx")
-dat <- read_xlsx(path, col_names = FALSE)
-
-dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+dat <- read_excel(path)
 
 # Sequenz definieren
 u <- c(5:1) # Important: decreasing!
