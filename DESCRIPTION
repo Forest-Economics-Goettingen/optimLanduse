@@ -24,7 +24,7 @@ Description: Robust multi-criteria land-allocation optimization that explicitly 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports: lpSolveAPI (>= 5.5.2.0-17.7), tidyr (>= 1.1.2), dplyr (>= 1.0.0)
 Suggests: readxl, ggplot2
 URL: https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse

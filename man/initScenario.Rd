@@ -46,8 +46,6 @@ The function initializes an \emph{optimLanduse} S3 object on the
 basis of a coefficients table. Please note that the coefficients table must follow
 the \emph{optimLanduse} format. The expected format is explained in the example on
  \href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab}.
- Usage of \code{\link{dataPreparation}} is recommended to ensure that
- the format requirements are met.
 }
 \details{
 The aim of separating the initialization from the optimization is to save
@@ -58,9 +56,8 @@ The aim of separating the initialization from the optimization is to save
 }
 \examples{
 require(readxl)
-dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
-                 col_names = FALSE)
-dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"))
+
 init <- initScenario(dat,
                      uValue = 2,
                      optimisticRule = "expectation",
