@@ -2,27 +2,40 @@
 % Please edit documentation in R/calcSensitivity.R
 \name{calcSensitivity}
 \alias{calcSensitivity}
-\title{Some heading}
+\title{Perform a sensitivity analysis}
 \usage{
-calcSensitivity(result, x = 0.01, digits = 3, fixDistance = NULL)
+calcSensitivity(x, y = 0.01, digits = 3, fixDistance = NULL)
 }
 \arguments{
-\item{x}{Dat}
+\item{x}{A solved optimLanduse S3 object. See \code{\link{solveScenario}} for the optimization.}
 
-\item{y}{Weiterer Parameter}
+\item{y}{Decimal number, giving the percentage by which, the indicator value/uncertainty is increased/decreased.}
+
+\item{digits}{Number of decimal places which are used in the comparison of the result of the iteration and the result of the optimization.}
+
+\item{fixDistance}{See \code{\link{initScenario}} for further information.}
+}
+\value{
+An optimized optimLanduse object with attached sensitivity analysis. The sensitivity analysis gives out 4 data.frames with the results of the Allowable Increase and Decrease for the
+indicator value and uncertainty. For the calculation of the Allowable Increase and Decrease the indicator values and uncertainties are increase/decrease up to 5000 %. In the case that the optimal land allocation still has not changed,
+it will say \emph{Inf}.
+Furthermore the sensitivity analysis gives out 2 data.frames each with the results of the increase/decrease of the indicators by \emph{y}. The data.frames contain the optimal land-use allocation
+for each indicator-landuse-combination. If the optimal land allocation after the increase/decrease of the indicator value/uncertainty equals the original optimization result, the column \emph{sameResult} will say \emph{TRUE}, otherwise it
+will say \emph{FALSE}.
 }
 \description{
-Text, short description
-\code{\link{exampleData}} into to the expected format. The application of this function
-is not mandatory
-if you want to transform your data yourself or if your data is not formatted as
-the example data. The application example on the asdf
-\href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab project page}
-provides information about the expected structure. Incomplete rows with NA-values are deleted and an error message is displayed.
+The function calculates the Allowable Increase and Decrease of the indicator value and uncertainty for each indicator and each land-use option. Furthermore, it calculates the
+optimal land use allocation after the indicator value/uncertainty is increased/decreased by \emph{y} and compares it to the optimal land-use allocation of the optimization.
 }
 \examples{
 require(readxl)
 dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
                  col_names = FALSE)
 dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
+init <- initScenario(dat,
+                     uValue = 2,
+                     optimisticRule = "expectation",
+                     fixDistance = NULL)
+result <- solveScenario(x = init)
+sensitivity <- calcSensitivity(x = result, y = 0.01, digits = 3, fixDistance = NULL)
 }
