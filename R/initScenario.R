@@ -168,7 +168,7 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   #--------------------------#
 
 
-  if (!is.na(fixedUValue)) {
+  if (is.na(fixedUValue)) {
     scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
       apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
             function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
