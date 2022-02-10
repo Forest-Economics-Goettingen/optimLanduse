@@ -112,14 +112,14 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   scenarioTableTemp2 <- scenarioTable
 
   spread1 <- tidyr::spread(data = coefTable[, !names(coefTable) == "indicatorUncertainty"],
-                    key = landUse,
-                    value = "indicatorValue")
+                           key = landUse,
+                           value = "indicatorValue")
   names(spread1)[names(spread1) %in% eval(landUse)] <- paste0("mean", names(spread1)[names(spread1) %in% eval(landUse)])
 
 
   spread2 <- tidyr::spread(data = coefTable[, !names(coefTable) == "indicatorValue"],
-                     key = landUse,
-                     value = "indicatorUncertainty")
+                           key = landUse,
+                           value = "indicatorUncertainty")
   names(spread2)[names(spread2) %in% eval(landUse)] <- paste0("sem", names(spread2)[names(spread2) %in% eval(landUse)])
 
 
@@ -202,11 +202,22 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   #--------------------------#
   ## calculate Min Max Diff ##
   #--------------------------#
-  if(is.null(fixDistance)){
-    scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
-      apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
-            function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
-   }# else if (dim(fixDistance)[1] == dim(scenarioTable)[1] &&
+  scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
+    apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
+          function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
+
+  scenarioTableFix[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
+    apply(scenarioTableFix[, startsWith(names(scenarioTableFix), "adjSem")], 1,
+          function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
+
+
+  if(!is.na(fixedUValue)){scenarioTable <- }
+
+  # if(is.null(fixDistance)){
+  #   scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
+  #     apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
+  #           function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
+  # }# else if (dim(fixDistance)[1] == dim(scenarioTable)[1] &&
   #            length(fixDistance)==2) {
   #   scenarioTable[, c("minAdjSem", "maxAdjSem")] <- fixDistance
   #   scenarioTable$diffAdjSem <- scenarioTable$maxAdjSem - scenarioTable$minAdjSem
@@ -228,7 +239,7 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   constraintCoefficients <- defineConstraintCoefficients(scenarioTable)
 
   retList <- list(scenarioSettings = data.frame(uValue = uValue,
-                              optimisticRule = optimisticRule, stringsAsFactors = FALSE),
+                                                optimisticRule = optimisticRule, stringsAsFactors = FALSE),
                   scenarioTable = scenarioTable,
                   coefObjective = coefObjective,
                   coefConstraint = constraintCoefficients,
@@ -237,7 +248,7 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
                   beta = NA,
                   landUse = setNames(data.frame(matrix(rep(NA, length(landUse)), ncol = length(landUse), nrow = 1)), landUse),
                   optimDetails = list()
-)
+  )
   class(retList) <- "optimLanduse"
   return(retList)
 }
