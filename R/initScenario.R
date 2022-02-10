@@ -173,14 +173,14 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
       apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
             function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
   } else {
-    scenarioTableFix[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
+    scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
       apply(scenarioTableFix[, startsWith(names(scenarioTableFix), "adjSem")], 1,
             function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
 
-    scenarioTableFix[, c("minAdjSem", "maxAdjSem")] <-
-      apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
-          function(x) {c(min(x), max(x))}) %>% t()
-    scenarioTable <- scenarioTableFix
+    # scenarioTableFix[, c("minAdjSem", "maxAdjSem")] <-
+    #   apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
+    #       function(x) {c(min(x), max(x))}) %>% t()
+    #scenarioTable <- scenarioTableFix
   } # Das könnte noch eleganter sein! tbd
 
 
