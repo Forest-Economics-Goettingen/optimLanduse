@@ -143,7 +143,8 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
 
   # add Adjusted SEM to the scenarioTable
 
-  scenarioTable <- addAdjSEM(scenarioTable = scenarioTable, landUse = landUse, uValue = uValue)
+  scenarioTable <- addAdjSEM(scenarioTable = scenarioTable, landUse = landUse,
+                             uValue = uValue, optimisticRule = optimisticRule)
 
 
   if (!(fixedUValue >=0 & fixedUValue <= 10)  & !is.na(fixedUValue)) {
@@ -152,7 +153,10 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   }
 
   if ((fixedUValue >=0 & fixedUValue <= 10)  & !is.na(fixedUValue)) {
-    scenarioTableFix <- addAdjSEM(scenarioTable = scenarioTableTemp3, landUse = landUse, uValue = fixedUValue)
+    scenarioTableFix <- addAdjSEM(scenarioTable = scenarioTableTemp3,
+                                  landUse = landUse,
+                                  uValue = fixedUValue,
+                                  optimisticRule = optimisticRule)
   }
 
 
