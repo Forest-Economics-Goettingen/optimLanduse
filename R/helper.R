@@ -65,7 +65,11 @@ defineConstraintCoefficients <- function (scenarioTable) {
 #' @return The updated scenario table
 
 #' @noRd
-addAdjSEM <- function (scenarioTable = scenarioTable, landUse = landUse, uValue = uValue) {
+addAdjSEM <- function (scenarioTable = scenarioTable,
+                       landUse = landUse,
+                       uValue = uValue,
+                       optimisticRule = optimisticRule
+                       ) {
 
   newColumnNames <- paste0("adjSem", landUse)
   scenarioTable[, newColumnNames] <- NA # Initialise empty
