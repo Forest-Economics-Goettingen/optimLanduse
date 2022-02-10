@@ -8,7 +8,6 @@ initScenario(
   coefTable,
   uValue = 1,
   optimisticRule = "expectation",
-  fixDistance = TRUE,
   fixedUValue = NA
 )
 }

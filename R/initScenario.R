@@ -55,7 +55,7 @@
 #' @importFrom stats setNames
 #'
 #' @export
-initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation", fixDistance = TRUE, fixedUValue = NA) {
+initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation", fixedUValue = NA) {
 
   #-----------------------------------------#
   #### Check the format of the coefTable ####
@@ -139,43 +139,6 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   ## Calculate indicator uncertainty adjusted ##
   #--------------------------------------------#
 
-
-  addAdjSEM <- function (scenarioTable = scenarioTable, landUse = landUse, uValue = uValue) {
-
-    newColumnNames <- paste0("adjSem", landUse)
-    scenarioTable[, newColumnNames] <- NA # Initialise empty
-
-    for(i in landUse) {
-      # Ugly. But fast and less error-prone
-      scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("adjSem", i)] <-
-        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("mean", i)] +
-        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("sem", i)] * uValue
-
-      scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("adjSem", i)] <-
-        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("mean", i)] -
-        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("sem", i)] * uValue
-
-      if(optimisticRule == "uncertaintyAdjustedExpectation") {
-        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
-          scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)] -
-          scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("sem", i)] * uValue
-
-        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
-          scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)] +
-          scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("sem", i)] * uValue
-      }
-      if(optimisticRule == "expectation") {
-        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
-          scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)]
-
-        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
-          scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)]
-      }
-    }
-
-    return(scenarioTable)
-  }
-
   scenarioTableTemp3 <- scenarioTable
 
   # add Adjusted SEM to the scenarioTable
@@ -185,15 +148,12 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
 
   if (!(fixedUValue >=0 & fixedUValue <= 10)  & !is.na(fixedUValue)) {
     fixedUValue <- NA
-    warning("The fixedUValue did not meet the requirements ant therefore set to NA. Please find the possible values for the fixedUValue in the help.")
+    warning("The fixedUValue did not meet the requirements and therefore set to NA. Please find the possible values for the fixedUValue in the help.")
   }
 
   if ((fixedUValue >=0 & fixedUValue <= 10)  & !is.na(fixedUValue)) {
     scenarioTableFix <- addAdjSEM(scenarioTable = scenarioTableTemp3, landUse = landUse, uValue = fixedUValue)
   }
-
-  # Volker ,das müsste doch so gehen oder? Die Funkiton kommt dann noch zu den helperm.
-  # Und jetzt nur noch in Z. 209 ein if, un darin die min max aus scenarioTableFix ziehen
 
 
   if(!optimisticRule %in% c("uncertaintyAdjustedExpectation", "expectation")) {cat("optimisticRule must be uncertaintyAdjustedExpectation or expectation")}
@@ -202,22 +162,28 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   #--------------------------#
   ## calculate Min Max Diff ##
   #--------------------------#
-  scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
-    apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
-          function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
-
-  scenarioTableFix[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
-    apply(scenarioTableFix[, startsWith(names(scenarioTableFix), "adjSem")], 1,
-          function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
 
 
-  if(!is.na(fixedUValue)){scenarioTable <- }
+  if (!is.na(fixedUValue)) {
+    scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
+      apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
+            function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
+  } else {
+    scenarioTableFix[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
+      apply(scenarioTableFix[, startsWith(names(scenarioTableFix), "adjSem")], 1,
+            function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
 
-  # if(is.null(fixDistance)){
-  #   scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
-  #     apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
-  #           function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
-  # }# else if (dim(fixDistance)[1] == dim(scenarioTable)[1] &&
+    scenarioTableFix[, c("minAdjSem", "maxAdjSem")] <-
+      apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
+          function(x) {c(min(x), max(x))}) %>% t()
+    scenarioTable <- scenarioTableFix
+  } # Das könnte noch eleganter sein! tbd
+
+
+
+
+  # Erster Ansatz von Kai B.:
+  # else if (dim(fixDistance)[1] == dim(scenarioTable)[1] &&
   #            length(fixDistance)==2) {
   #   scenarioTable[, c("minAdjSem", "maxAdjSem")] <- fixDistance
   #   scenarioTable$diffAdjSem <- scenarioTable$maxAdjSem - scenarioTable$minAdjSem
