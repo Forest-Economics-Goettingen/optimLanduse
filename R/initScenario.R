@@ -189,7 +189,7 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   }
 
   if ((fixedUValue >=0 & fixedUValue <= 10)  & !is.na(fixedUValue)) {
-    scenarioTableFix <- addAdjSEM(scenarioTableTemp3 = scenarioTable, landUse = landUse, uValue = fixedUValue)
+    scenarioTableFix <- addAdjSEM(scenarioTable = scenarioTableTemp3, landUse = landUse, uValue = fixedUValue)
   }
 
   # Volker ,das müsste doch so gehen oder? Die Funkiton kommt dann noch zu den helperm.
