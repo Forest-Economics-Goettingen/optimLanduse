@@ -8,7 +8,8 @@ initScenario(
   coefTable,
   uValue = 1,
   optimisticRule = "expectation",
-  fixDistance = NULL
+  fixDistance = TRUE,
+  fixedUValue = NA
 )
 }
 \arguments{

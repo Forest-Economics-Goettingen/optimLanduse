@@ -55,7 +55,7 @@
 #' @importFrom stats setNames
 #'
 #' @export
-initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation", fixDistance = NULL) {
+initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation", fixDistance = TRUE, fixedUValue = NA) {
 
   #-----------------------------------------#
   #### Check the format of the coefTable ####
@@ -139,39 +139,62 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   ## Calculate indicator uncertainty adjusted ##
   #--------------------------------------------#
 
+
+  addAdjSEM <- function (scenarioTable = scenarioTable, landUse = landUse, uValue = uValue) {
+
+    newColumnNames <- paste0("adjSem", landUse)
+    scenarioTable[, newColumnNames] <- NA # Initialise empty
+
+    for(i in landUse) {
+      # Ugly. But fast and less error-prone
+      scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("adjSem", i)] <-
+        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("mean", i)] +
+        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("sem", i)] * uValue
+
+      scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("adjSem", i)] <-
+        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("mean", i)] -
+        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("sem", i)] * uValue
+
+      if(optimisticRule == "uncertaintyAdjustedExpectation") {
+        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
+          scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)] -
+          scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("sem", i)] * uValue
+
+        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
+          scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)] +
+          scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("sem", i)] * uValue
+      }
+      if(optimisticRule == "expectation") {
+        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
+          scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)]
+
+        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
+          scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)]
+      }
+    }
+
+    return(scenarioTable)
+  }
+
   scenarioTableTemp3 <- scenarioTable
 
+  # add Adjusted SEM to the scenarioTable
 
-  newColumnNames <- paste0("adjSem", landUse)
-  scenarioTable[, newColumnNames] <- NA # Initialise empty
+  scenarioTable <- addAdjSEM(scenarioTable = scenarioTable, landUse = landUse, uValue = uValue)
 
-  for(i in landUse) {
-    # Ugly. But fast and less error-prone
-    scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("adjSem", i)] <-
-      scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("mean", i)] +
-      scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("sem", i)] * uValue
 
-    scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("adjSem", i)] <-
-      scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("mean", i)] -
-      scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "Low", paste0("sem", i)] * uValue
-
-    if(optimisticRule == "uncertaintyAdjustedExpectation") {
-      scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
-        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)] -
-        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("sem", i)] * uValue
-
-      scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
-        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)] +
-        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("sem", i)] * uValue
-    }
-    if(optimisticRule == "expectation") {
-      scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
-        scenarioTable[scenarioTable$direction == "less is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)]
-
-      scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("adjSem", i)] <-
-        scenarioTable[scenarioTable$direction == "more is better" & scenarioTable[, paste0("outcome", i)] == "High", paste0("mean", i)]
-    }
+  if (!(fixedUValue >=0 & fixedUValue <= 10)  & !is.na(fixedUValue)) {
+    fixedUValue <- NA
+    warning("The fixedUValue did not meet the requirements ant therefore set to NA. Please find the possible values for the fixedUValue in the help.")
   }
+
+  if ((fixedUValue >=0 & fixedUValue <= 10)  & !is.na(fixedUValue)) {
+    scenarioTableFix <- addAdjSEM(scenarioTableTemp3 = scenarioTable, landUse = landUse, uValue = fixedUValue)
+  }
+
+  # Volker ,das müsste doch so gehen oder? Die Funkiton kommt dann noch zu den helperm.
+  # Und jetzt nur noch in Z. 209 ein if, un darin die min max aus scenarioTableFix ziehen
+
 
   if(!optimisticRule %in% c("uncertaintyAdjustedExpectation", "expectation")) {cat("optimisticRule must be uncertaintyAdjustedExpectation or expectation")}
   if(!dim(scenarioTableTemp3)[1] == dim(scenarioTable)[1] | any(is.na(scenarioTable))) {cat("Error: Calculation of adjusted uncertainty.")}
@@ -183,12 +206,12 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
     scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
       apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
             function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
-  } else if (dim(fixDistance)[1] == dim(scenarioTable)[1] &&
-             length(fixDistance)==2) {
-    scenarioTable[, c("minAdjSem", "maxAdjSem")] <- fixDistance
-    scenarioTable$diffAdjSem <- scenarioTable$maxAdjSem - scenarioTable$minAdjSem
-  } else {stop(paste("The dimension of the 'fixDistance' (min and max) must contain: 2 columns and",
-                     dim(scenarioTable)[1], "rows."))}
+   }# else if (dim(fixDistance)[1] == dim(scenarioTable)[1] &&
+  #            length(fixDistance)==2) {
+  #   scenarioTable[, c("minAdjSem", "maxAdjSem")] <- fixDistance
+  #   scenarioTable$diffAdjSem <- scenarioTable$maxAdjSem - scenarioTable$minAdjSem
+  # } else {stop(paste("The dimension of the 'fixDistance' (min and max) must contain: 2 columns and",
+  #                    dim(scenarioTable)[1], "rows."))}
 
 
   #-------------------------------------------------------------#
