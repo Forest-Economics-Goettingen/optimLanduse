@@ -20,7 +20,7 @@
 #' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"))
 #' init <- initScenario(dat, uValue = 2,
 #'                      optimisticRule = "expectation",
-#'                      fixDistance = NULL)
+#'                      fixDistance = 3)
 #' result <- solveScenario(x = init)
 #'
 #' @references Knoke, T., Paul, C., Hildebrandt, P. et al. (2016): Compositional diversity

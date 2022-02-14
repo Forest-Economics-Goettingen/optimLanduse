@@ -55,7 +55,7 @@
 #' @importFrom stats setNames
 #'
 #' @export
-initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation", fixedUValue = NA) {
+initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation", fixDistance = 3) {
 
   #-----------------------------------------#
   #### Check the format of the coefTable ####
@@ -147,15 +147,15 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
                              uValue = uValue, optimisticRule = optimisticRule)
 
 
-  if (!(fixedUValue >=0 & fixedUValue <= 10)  & !is.na(fixedUValue)) {
-    fixedUValue <- NA
-    warning("The fixedUValue did not meet the requirements and therefore set to NA. Please find the possible values for the fixedUValue in the help.")
+  if (!(fixedDistance >=0 & fixedDistance <= 10)  & !is.na(fixedDistance)) {
+    fixedDistance <- NA
+    warning("The fixedDistance did not meet the requirements and therefore set to NA. Please find the possible values for the fixedDistance in the help.")
   }
 
-  if ((fixedUValue >=0 & fixedUValue <= 10)  & !is.na(fixedUValue)) {
+  if ((fixedDistance >=0 & fixedDistance <= 10)  & !is.na(fixedDistance)) {
     scenarioTableFix <- addAdjSEM(scenarioTable = scenarioTableTemp3,
                                   landUse = landUse,
-                                  uValue = fixedUValue,
+                                  uValue = fixedDistance,
                                   optimisticRule = optimisticRule)
   }
 
@@ -168,7 +168,7 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   #--------------------------#
 
 
-  if (is.na(fixedUValue)) {
+  if (is.na(fixedDistance)) {
     scenarioTable[, c("minAdjSem", "maxAdjSem", "diffAdjSem")] <-
       apply(scenarioTable[, startsWith(names(scenarioTable), "adjSem")], 1,
             function(x) {c(min(x), max(x), (max(x) - min(x)))}) %>% t()
