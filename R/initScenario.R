@@ -34,7 +34,7 @@
 #' these two variables reflects the uncertainty space, in other words the
 #' distance. This table can always be found (no matter if the distance is fixed
 #' or not) in result list of the \emph{initScenario} function. By default, the
-#' distance is not fixed \emph{NULL}. Fixing the distance allows you to change
+#' distance is fixed on 3 \emph{fixDistnce = 3}. Fixing the distance allows you to change
 #' the uncertainty level, without changing the uncertainty framework. For
 #' instance, you can then relate the achieved portfolio performance, with a low
 #' uncertainty level, to a wider and constant uncertainty framework within your
@@ -48,7 +48,7 @@
 #' init <- initScenario(dat,
 #'                      uValue = 2,
 #'                      optimisticRule = "expectation",
-#'                      fixDistance = NULL)
+#'                      fixDistance = 3)
 
 #' @import dplyr
 #' @import tidyr
