@@ -33,7 +33,7 @@ require(readxl)
 dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"))
 init <- initScenario(dat, uValue = 2,
                      optimisticRule = "expectation",
-                     fixDistance = NULL)
+                     fixDistance = 3)
 result <- solveScenario(x = init)
 performance <- calcPerformance(result)
 

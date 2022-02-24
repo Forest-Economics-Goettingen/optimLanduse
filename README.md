@@ -75,7 +75,7 @@ dat <- read_excel(path)
 init <- initScenario(dat,
                      uValue = 2,
                      optimisticRule = "expectation",
-                     fixDistance = NULL)
+                     fixDistance = 3)
 result <- solveScenario(x = init)
 performance <- calcPerformance(result)
 
@@ -106,7 +106,7 @@ loopDf <- data.frame(u = u, matrix(NA, nrow = length(u), ncol = 1 + length(uniqu
 names(loopDf) <- c("u", "beta", unique(dat$landUse))
 
 for(i in u) {
-  init <- initScenario(dat, uValue = i, optimisticRule = "expectation", fixDistance = NULL)
+  init <- initScenario(dat, uValue = i, optimisticRule = "expectation", fixDistance = 3)
   result <- solveScenario(x = init)
   loopDf[loopDf$u == i,] <- c(i, result$beta, as.matrix(result$landUse))
 }
@@ -115,7 +115,7 @@ for(i in u) {
 applyDf <- data.frame(u = u)
 
 applyFun <- function(x) {
-  init <- initScenario(dat, uValue = x, optimisticRule = "expectation", fixDistance = NULL)
+  init <- initScenario(dat, uValue = x, optimisticRule = "expectation", fixDistance = 3)
   result <- solveScenario(x = init)
   return(c(result$beta, as.matrix(result$landUse)))
 }
@@ -156,7 +156,7 @@ u <- seq(1, 5, 1)
 
 
 loopDf1 <- foreach(i = u, .combine = rbind, .packages = "optimLanduse") %dopar% {
-  init <- initScenario(dat, uValue = i, optimisticRule = "expectation", fixDistance = NULL)
+  init <- initScenario(dat, uValue = i, optimisticRule = "expectation", fixDistance = 3)
   result <- solveScenario(x = init)
   c(i, result$beta, as.matrix(result$landUse))
 }
@@ -180,7 +180,7 @@ u <- c(5:1) # Important: decreasing!
 
 
 applyDf <- data.frame(u = u)
-dist <- NULL
+dist <- 3
 applyFun <- function(x) {
   init <- initScenario(dat, uValue = x, optimisticRule = "expectation",
                        fixDistance = dist)
