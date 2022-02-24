@@ -186,13 +186,6 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
 
 
 
-  # Erster Ansatz von Kai B.:
-  # else if (dim(fixDistance)[1] == dim(scenarioTable)[1] &&
-  #            length(fixDistance)==2) {
-  #   scenarioTable[, c("minAdjSem", "maxAdjSem")] <- fixDistance
-  #   scenarioTable$diffAdjSem <- scenarioTable$maxAdjSem - scenarioTable$minAdjSem
-  # } else {stop(paste("The dimension of the 'fixDistance' (min and max) must contain: 2 columns and",
-  #                    dim(scenarioTable)[1], "rows."))}
 
 
   #-------------------------------------------------------------#
