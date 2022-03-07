@@ -27,8 +27,7 @@
 #' @return A formated coefficients table with land-use options and indicator values ready for initialization via \code{\link{initScenario}}.
 #' @examples
 #' require(readxl)
-#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
-#'                  col_names = FALSE)
+#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"))
 #' dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
 
 #' @import dplyr
@@ -65,11 +64,8 @@ dataPreparation <- function(dat, uncertainty = "SE", expVAL = "mean"){
     dat.final <- na.omit(dat.final)
 
     ## select landUse names ##
-    landUse <- dat[1, ]
-    landUse <- landUse[, colSums(is.na(landUse)) != nrow(landUse)]
-    colnames(landUse) <- landUse[1, ]
-    landUse <- landUse[-1, ]
-    landUse <- names(landUse)
+    landUse <- names(dat)
+    landUse <- landUse[!grepl("\\.\\.", landUse)]
 
     ## select mean values, rename columns and gather ##
     importValues <- dat.final %>% select((1:all_of(chtr.cols)), starts_with(expVAL))
