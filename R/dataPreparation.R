@@ -27,7 +27,7 @@
 #' @return A formated coefficients table with land-use options and indicator values ready for initialization via \code{\link{initScenario}}.
 #' @examples
 #' require(readxl)
-#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"))
+#' dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
 #' dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
 
 #' @import dplyr

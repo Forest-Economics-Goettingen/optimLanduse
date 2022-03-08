@@ -17,7 +17,7 @@
 #' @return A solved landUse portfolio ready for export or further data processing.
 #' @examples
 #' require(readxl)
-#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"))
+#' dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
 #' init <- initScenario(dat, uValue = 2,
 #'                      optimisticRule = "expectation",
 #'                      fixDistance = 3)

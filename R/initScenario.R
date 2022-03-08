@@ -43,7 +43,7 @@
 #' @return An initialized optimLanduse S3 object ready for optimization.
 #' @examples
 #' require(readxl)
-#' dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"))
+#' dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
 #'
 #' init <- initScenario(dat,
 #'                      uValue = 2,
