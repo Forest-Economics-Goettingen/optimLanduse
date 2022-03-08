@@ -30,7 +30,7 @@ For further information see the supplement of Gosling et al (2020), Formula S5 (
 require(ggplot2)
 require(readxl)
 
-dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"))
+dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
 init <- initScenario(dat, uValue = 2,
                      optimisticRule = "expectation",
                      fixDistance = 3)

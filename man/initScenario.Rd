@@ -56,7 +56,7 @@ The aim of separating the initialization from the optimization is to save
 }
 \examples{
 require(readxl)
-dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"))
+dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
 
 init <- initScenario(dat,
                      uValue = 2,

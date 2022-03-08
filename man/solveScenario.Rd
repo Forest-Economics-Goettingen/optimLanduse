@@ -26,7 +26,7 @@ The methodological background and the formulation of the optimization framework 
 }
 \examples{
 require(readxl)
-dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"))
+dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
 init <- initScenario(dat, uValue = 2,
                      optimisticRule = "expectation",
                      fixDistance = 3)

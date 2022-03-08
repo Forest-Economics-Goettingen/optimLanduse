@@ -4,7 +4,7 @@
 \alias{exampleData}
 \title{Attach examplary data}
 \usage{
-exampleData(fileName = "exampleGosling_2020.xlsx")
+exampleData(fileName = "exampleGosling.xlsx")
 }
 \arguments{
 \item{fileName}{Name of example file. See 'details' section for further explanation of all provided examples.}
@@ -21,13 +21,13 @@ of the data. Consider also the
 exemplary applications of the package.
 }
 \details{
-\emph{exampleGosling_2020.xlsx} is an excerpt from Gosling et al. 2020.
+\emph{exampleGosling.xlsx} is an excerpt from Gosling et al. 2020.
 }
 \examples{
 require(readxl)
 path <- exampleData()
 read_xlsx(path, col_names = FALSE)
-path <- exampleData("exampleGosling_2020.xlsx")
+path <- exampleData("exampleGosling.xlsx")
 read_xlsx(path, col_names = FALSE)
 
 }

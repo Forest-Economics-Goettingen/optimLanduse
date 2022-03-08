@@ -32,7 +32,6 @@ provides information about the expected structure. Incomplete rows with NA-value
 }
 \examples{
 require(readxl)
-dat <- read_xlsx(exampleData("exampleGosling_2020.xlsx"),
-                 col_names = FALSE)
+dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
 dat <- dataPreparation(dat, uncertainty = "SE", expVAL = "score")
 }
