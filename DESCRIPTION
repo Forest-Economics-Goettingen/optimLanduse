@@ -1,6 +1,6 @@
 Package: optimLanduse
 Title: Robust Land-Use Optimization
-Version: 0.0.4.9000
+Version: 1.0.0
 Authors@R:
     c(
     person(given = "Kai",

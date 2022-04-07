@@ -164,38 +164,6 @@ loopDf1 <- foreach(i = u, .combine = rbind, .packages = "optimLanduse") %dopar% 
 stopImplicitCluster()
 ```
 
-Batch application for distinct uncertainty values and fixed distance at the highest uncertainty level.
-
-``` r
-library(optimLanduse)
-require(readxl)
-require(dplyr)
-require(tidyr)
-
-path <- exampleData("exampleGosling.xlsx")
-dat <- read_excel(path)
-
-# Sequenz definieren
-u <- c(5:1) # Important: decreasing!
-
-
-applyDf <- data.frame(u = u)
-dist <- 3
-applyFun <- function(x) {
-  init <- initScenario(dat, uValue = x, optimisticRule = "expectation",
-                       fixDistance = dist)
-  result <- optimLanduse::solveScenario(x = init)
-  dist <<- result$distance
-  return(c(result$beta,
-           as.matrix(result$landUse)))
-}
-
-applyDf <- cbind(applyDf,
-                 t(apply(applyDf, 1, applyFun))) %>% 
-                 rename_at(vars(factor(1:(length(unique(dat$landUse))+1))),
-                           ~ c("beta",unique(dat$landUse))) 
-```
-
 <h3>
 <a name="7. Literatur">Literature</a>
 </h3>
