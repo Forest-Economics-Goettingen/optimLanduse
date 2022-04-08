@@ -16,7 +16,7 @@ error or "SD" for standard deviation.}
 \item{expVAL}{Indicates the column name of the expected value.}
 }
 \value{
-A formated coefficients table with land-use options and indicator values ready for initialization via \code{\link{initScenario}}.
+A formatted coefficients table with land-use options and indicator values ready for initialization via \code{\link{initScenario}}.
 }
 \description{
 The input data must suit to the specific expected optimLanduse format prior to
