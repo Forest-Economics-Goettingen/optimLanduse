@@ -39,13 +39,13 @@ We designed a graphical shiny application for the package to get a quick idea of
 This chapter provides brief overview over the package functions. Please consider their respective help pages for more information. The function lpSolveAPI comes from the **lpSolveAPI** package. https://cran.r-project.org/package=lpSolveAPI
 
 #### Input
-- *Coefficients table* with indicotrs expectations and uncertainties. Best would be to consider the format as given in **exampleGosling.xlsx**. See the help files of the **exampleData** and **initScenario** functions for more details.
-- *Uncertainty value*. See the help file of the **iniScenario** function for more details.
+- *Coefficients table* with indicators expectations and uncertainties. Best would be to consider the format as given in **exampleGosling.xlsx**. See the help files of the **exampleData** and **initScenario** functions for more details.
+- *Uncertainty value*. See the help file of the **initScenario** function for more details.
 - *The optimistic rule* indicates whether the optimistic outcomes of an indicator are directly reflected by their expectations or if the indicator is calculated as expectation + uncertainty when "more is better", expectation - uncertainty respectively when "less is better".
 - *Fixing the distance* allows you to change the uncertainty level, without changing the uncertainty framework. For instance, you can then relate the achieved portfolio performance, with a low uncertainty level, to a wider and constant uncertainty framework within your analysis; so the betas remain comparable with each other over the course of the uncertainty analysis.
 
 #### Output
-An **optimLanduse** object containing informations of the optimization model and solution. It contains anongst others the
+An **optimLanduse** object containing informations of the optimization model and solution. It contains among others the
 - land use allocation in the optimum,
 - the detailed table with all possible indicator combinations (the scenario table), and the
 - minimum distance **&beta;**.
