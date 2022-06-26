@@ -24,12 +24,12 @@ optimLanduse
 <a name="1. Einleitung">Introduction</a>
 </h3>
 
-**optimLanduse** provides methods for robust multi-criterial landscape optimization that explicitly account for uncertainty in the optimization of the land allocation to land-use options. High landscape diversity is assumed to increase the number and level of ecosystem services. However, the interactions between ecosystem service provision, disturbances and landscape composition are poorly understood. Knoke et al. (2016) therefore presented a novel approach to incorporate uncertainty in land allocation optimization to improve the provision of multiple ecosystem services. The optimization framework of Knoke et al. (2016) is implemented in the **optimLanduse** package, aiming to make it easily accessible for practical land-use optimization and to enable efficient batch applications.
-
+The R package **optimLanduse** provides tools for easy and systematic applications of the robust multiobjective land-cover composition optimization approach of Knoke et al. (2016). It includes tools to determine the land-cover composition that best balances the multiple functions a landscape can provide, and tools for understanding and visualizing how these compromises are reasoned. The **README.md** below guides users through the application and highlights possible use-cases on the basis of a published data set.
+Illustrating the consequences of alternative ecosystem functions on the theoretically optimal landscape composition provides easily interpretable information for landscape modeling and decision making.
 The method is already established in land-use optimization and has been applied in a couple of studies. More details about the theory, the definition of the formal optimization problem and also significant examples are listed in the <a href="#7. Literatur">literature</a> section
 
-We designed a graphical shiny application for the package to get a quick idea of the functionalities of the package, see https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse_shiny.
-
+The package opens the approach of Knoke et al. (2016) to the community of landscape and planners and provides opportunities for straightforward systematic or batch applications.
+To further enhance this, we have designed a graphical shiny application for the package to get a quick idea of the functionalities of the package, see http://134.76.17.50/optimlanduse_shiny/.
 
 
 <h3>
@@ -38,22 +38,50 @@ We designed a graphical shiny application for the package to get a quick idea of
 
 This chapter provides brief overview over the package functions. Please consider their respective help pages for more information. The function lpSolveAPI comes from the **lpSolveAPI** package. https://cran.r-project.org/package=lpSolveAPI
 
-#### Input
-- *Coefficients table* with indicators expectations and uncertainties. Best would be to consider the format as given in **exampleGosling.xlsx**. See the help files of the **exampleData** and **initScenario** functions for more details.
-- *Uncertainty value*. See the help file of the **initScenario** function for more details.
-- *The optimistic rule* indicates whether the optimistic outcomes of an indicator are directly reflected by their expectations or if the indicator is calculated as expectation + uncertainty when "more is better", expectation - uncertainty respectively when "less is better".
-- *Fixing the distance* allows you to change the uncertainty level, without changing the uncertainty framework. For instance, you can then relate the achieved portfolio performance, with a low uncertainty level, to a wider and constant uncertainty framework within your analysis; so the betas remain comparable with each other over the course of the uncertainty analysis.
+<p align="center">
+  <img width="781.6" height="452" src="./man/figures/flowchart.png">
+</p>
 
-#### Output
-An **optimLanduse** object containing informations of the optimization model and solution. It contains among others the
-- land use allocation in the optimum,
-- the detailed table with all possible indicator combinations (the scenario table), and the
-- minimum distance **&beta;**.
+#### Initialization and Input
 
+The *initScenario()* function integrates the user settings into the data and returns an *optimLanduse*-object ready for solving. The following input data are required: 
+
+- *Coefficients table*: The package is **only capable** of processing a long-oriented type of data structure. All indicators have to vertically listed with their average expectations and uncertainties for the different land-cover alternatives. The columns of the table **must contain** a predefined heading. You can take this exact format from the given example table **exampleGosling.xlsx** or follow the below excerpt of this table:
 
 <p align="center">
-  <img width="699" height="529" src="./man/figures/flowchart.png">
+  <img width="673.4" height="298.2" src="./man/figures/exampleGraphic.png">
 </p>
+
+|            See the help files of the **exampleData** and **initScenario** functions for more details. An empty template (for predefined headings) 
+|            is additionally given in the package and can be called via exampleData("exampleEmpty.xlsx").
+<br>
+
+- *uValue*: The argument for the uncertainty level. A higher uValue reflects a higher risk aversion of the decision maker. See the help file of the **initScenario** function for more details.
+
+- *optimisticRule*: Specifies whether the optimistic contributions of each indicator should be defined either directly by their average, or by their average plus their uncertainty (if more is better) or minus its uncertainty (if less is better). The former option is most frequently used in recent literature and therefore builds the default.
+
+- *fixDistance*: TBD (Need to create a uniform understandable description for readme and helper functions package). Problem is, that the definition in the paper is quite linked with the equation in the paper.
+
+#### Solver and list with results
+
+*solveScenario()* requires the initialized *optimLanduse* object and only a few optional solver-specific arguments. As the solving process has no stochastic element, the calculation times depend almost entirely on the number of digits calculated. 
+
+- *digitsPrecision*: Provides the only possibility for the user to influence the calculation time. As the solving process has no stochastic element, the calculation times depend almost entirely on the number of digits calculated.
+
+- *lowerBound* & *upperBound*: Optional bounds for the land-use options. Choosing 0 and 1 (the defaults) as boundaries for all decision variables, means that no land-cover alternative is forced into the farm portfolio and that no land-cover alternative is assigned a maximum share.
+
+The resulting *list with results* contains the information of the optimization model. It contains the:
+
+- land use allocation in the optimum,
+- the detailed table with all possible indicator combinations (the scenario table), and the
+- maximum distance **&beta;**.
+
+
+#### Post-processing
+
+*calcPerfomance()*: Attaches the portfolio performances of all scenarios and creates a frame for the visualization. The performance is defined as the distance to the maximum achievable level for each indicator and uncertainty scenario.
+
+
 
 <h3>
 <a name="6. Beispielhafte Anwendung">Exemplary application</a>
