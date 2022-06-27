@@ -15,7 +15,10 @@ optimLanduse
 <a href="#6. Beispielhafte Anwendung">Exemplary application</a>
 </li>
 <li>
-<a href="#7. Literatur">Literature</a>
+<a name="7. Suggested">Suggested citation </a>
+</li>
+<li>
+<a href="#8. Literatur">Literature</a>
 </li>
 </ul>
 
@@ -26,17 +29,19 @@ optimLanduse
 
 The R package **optimLanduse** provides tools for easy and systematic applications of the robust multiobjective land-cover composition optimization approach of Knoke et al. (2016). It includes tools to determine the land-cover composition that best balances the multiple functions a landscape can provide, and tools for understanding and visualizing how these compromises are reasoned. The **README.md** below guides users through the application and highlights possible use-cases on the basis of a published data set.
 Illustrating the consequences of alternative ecosystem functions on the theoretically optimal landscape composition provides easily interpretable information for landscape modeling and decision making.
-The method is already established in land-use optimization and has been applied in a couple of studies. More details about the theory, the definition of the formal optimization problem and also significant examples are listed in the <a href="#7. Literatur">literature</a> section
+The method is already established in land-use optimization and has been applied in a couple of studies. More details about the theory, the definition of the formal optimization problem and also significant examples are listed in the <a href="#8. Literatur">literature</a> section
 
 The package opens the approach of Knoke et al. (2016) to the community of landscape and planners and provides opportunities for straightforward systematic or batch applications.
 To further enhance this, we have designed a graphical shiny application for the package to get a quick idea of the functionalities of the package, see http://134.76.17.50/optimlanduse_shiny/.
+
+
 
 
 <h3>
 <a name="3. Input und Output">Package structure</a>
 </h3>
 
-This chapter provides brief overview over the package functions. Please consider their respective help pages for more information. The function lpSolveAPI comes from the **lpSolveAPI** package. https://cran.r-project.org/package=lpSolveAPI
+This chapter provides brief overview over the package functions. For detailed information about methodological background, functions and workflow please refer to Husmann et al. (under revision) listed in the <a href="#7. Suggested">suggested citation</a> section. Furthermore you can consider the respective help pages for more information. The function *lpSolveAPI* comes from the **lpSolveAPI** package.
 
 <p align="center">
   <img width="781.6" height="452" src="./man/figures/flowchart.png">
@@ -64,55 +69,91 @@ The *initScenario()* function integrates the user settings into the data and ret
 
 #### Solver and list with results
 
-*solveScenario()* requires the initialized *optimLanduse* object and only a few optional solver-specific arguments. As the solving process has no stochastic element, the calculation times depend almost entirely on the number of digits calculated. 
+The *solveScenario()* function requires the initialized *optimLanduse* object and only a few optional solver-specific arguments. As the solving process has no stochastic element, the calculation times depend almost entirely on the number of digits calculated. 
 
 - *digitsPrecision*: Provides the only possibility for the user to influence the calculation time. As the solving process has no stochastic element, the calculation times depend almost entirely on the number of digits calculated.
 
 - *lowerBound* & *upperBound*: Optional bounds for the land-use options. Choosing 0 and 1 (the defaults) as boundaries for all decision variables, means that no land-cover alternative is forced into the farm portfolio and that no land-cover alternative is assigned a maximum share.
 
-The resulting *list with results* contains the information of the optimization model. It contains the:
+The resulting *list with results* contains different Information of the optimization model. First the information of the *initScenario()* function are displayed again in this list. These include:
 
-- land use allocation in the optimum,
-- the detailed table with all possible indicator combinations (the scenario table), and the
-- maximum distance **&beta;**.
+- *scenarioSettings*: List of the used values for *uValue* and *optimisticRule*.
+- *scenarioTable*: Detailed table with all possible indicator combinations.
+- *coefObjective*: The coefficients of the objective function.
+- *coefConstraing*: The constraints of the objective function.
+- *distances*:  The distance of each scenario to its own theoretically best-achievable contribution. 
 
+This is followed by a summary of the results of the optimization: 
+
+- **&beta;**: The maximum distance of the worst performing scenario.
+- *landUse*: The resulting land-cover allocation in the optimum.
 
 #### Post-processing
 
-*calcPerfomance()*: Attaches the portfolio performances of all scenarios and creates a frame for the visualization. The performance is defined as the distance to the maximum achievable level for each indicator and uncertainty scenario.
-
+- *calcPerfomance()*: Attaches the portfolio performances of all scenarios and creates a frame for the visualization. The performance is defined as the distance to the maximum achievable level for each indicator and uncertainty scenario.
 
 
 <h3>
 <a name="6. Beispielhafte Anwendung">Exemplary application</a>
 </h3>
 
-Install package
+Install and load packages
 ``` r
 install.packages("optimLanduse")
+library(optimLanduse)
+library(readxl)
 ```
 
-Simple example
-``` r
-require(readxl)
-library(optimLanduse)
 
+Simple examples
+
+The following two examples show the optimization of all indicators of the example data set simultaneously; once for uValue = 0 and once for uValue = 3
+
+```{r}
+
+# Loading the example data file
 path <- exampleData("exampleGosling.xlsx")
 dat <- read_excel(path)
 
+#### uValue = 3 ####
+
+# Initializing an optimLanduse-object using initScenario()
 init <- initScenario(dat,
-                     uValue = 2,
-                     optimisticRule = "expectation",
-                     fixDistance = 3)
+                     uValue = 0,
+                     optimisticRule = "expectation", 
+                     # optimistic contribution of each indicator directly defined by their average 
+                     fixDistance = 3) 
+                     # 3 is the default
+                     
+# Solve the initialized optimLanduse object with the solveScenario() function                 
 result <- solveScenario(x = init)
-performance <- calcPerformance(result)
+
+# Typical result visualization
+result$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
+  mutate(uValue = "2",
+         landUseShare = landUseShare * 100)%>% 
+  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  geom_bar(position = "stack", stat = "identity") + 
+  theme_classic() +
+  theme(text = element_text(size = 18))+
+  scale_fill_startrek() +
+  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())  + 
+  guides(fill=guide_legend(title=""))
+
+#### uValue = 3 ####
+
+init <- initScenario(dat,
+                     uValue = 3,
+                     optimisticRule = "expectation", 
+                     fixDistance = 3) 
+                     
+result <- solveScenario(x = init)
 
 
-result$landUse
-result$scenarioTable
-result$scenarioSettings
-result$status
-result$beta
 ```
 
 Exemplary batch application for distinct uncertainty values u
@@ -193,7 +234,13 @@ stopImplicitCluster()
 ```
 
 <h3>
-<a name="7. Literatur">Literature</a>
+<a name="7. Suggested">Suggested citation </a>
+</h3>
+
+Husmann, K.; von Groß, V.; Bödeker, K.; Fuchs, J.; Paul, C.; Knoke, T. (under revision): *optimLanduse*: A Package for Multiobjective Land-cover Composition Optimization under Uncertainty. In: *Methods Ecol Evol.*
+
+<h3>
+<a name="8. Literatur">Literature</a>
 </h3>
 
 Gosling, E., Reith, E., Knoke T., Gerique, A., Paul, C. (2020): Exploring farmer perceptions of agroforestry via multi-objective optimisation: a test application in Eastern Panama. <em>Agroforestry Systems</em> **94(5)**. https://doi.org/10.1007/s10457-020-00519-0
