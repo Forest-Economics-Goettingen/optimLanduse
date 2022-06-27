@@ -109,7 +109,7 @@ Simple examples
 
 The following two examples show the optimization of all indicators of the example data set simultaneously; once for uValue = 0 and once for uValue = 3
 
-```{r}
+``` r
 
 # Loading the example data file
 path <- exampleData("exampleGosling.xlsx")
@@ -129,6 +129,10 @@ init <- initScenario(dat,
 result <- solveScenario(x = init)
 
 # Typical result visualization
+library(ggplot2)
+library(tidyverse)
+library(ggsci)
+
 result$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
   mutate(uValue = "2",
          landUseShare = landUseShare * 100)%>% 
