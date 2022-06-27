@@ -15,7 +15,7 @@
 <a href="#6. Beispielhafte Anwendung">Exemplary application</a>
 </li>
 <li>
-<a name="7. Suggested">Suggested citation </a>
+<a href="#7. Suggested">Suggested citation</a>
 </li>
 <li>
 <a href="#8. Literatur">Literature</a>
@@ -138,7 +138,7 @@ function are displayed again in this list. These include:
 
 This is followed by a summary of the results of the optimization:
 
--   **β**: The maximum distance of the worst performing scenario.
+-   *β*: The maximum distance of the worst performing scenario.
 -   *landUse*: The resulting land-cover allocation in the optimum.
 
 #### Post-processing
@@ -156,7 +156,7 @@ Install and load packages
 </h5>
 
 ``` r
-#install.packages("optimLanduse")
+install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
 library(optimLanduse)
 library(readxl)
 library(ggplot2)
@@ -190,22 +190,21 @@ init <- initScenario(dat,
 # Solve the initialized optimLanduse object with the solveScenario() function                 
 result <- solveScenario(x = init)
 
+
 # Typical result visualization
-
-
 result$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
   mutate(uValue = "2",
-         landUseShare = landUseShare * 100)%>% 
+         landUseShare = landUseShare * 100) %>% 
   ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
   theme_classic() +
-  theme(text = element_text(size = 18))+
+  theme(text = element_text(size = 14)) +
   scale_fill_startrek() +
   labs(x = "Optimal farm composition", y = "Allocated share (%)") +
   scale_y_continuous(breaks = seq(0, 100, 10), 
                      limits = c(0, 100)) +
   theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())  + 
+        axis.ticks.x=element_blank()) + 
   guides(fill=guide_legend(title=""))
 ```
 
@@ -220,6 +219,69 @@ init <- initScenario(dat,
                      fixDistance = 3) 
                      
 result <- solveScenario(x = init)
+
+result$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
+  mutate(uValue = "2",
+         landUseShare = landUseShare * 100) %>% 
+  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  geom_bar(position = "stack", stat = "identity") + 
+  theme_classic() +
+  theme(text = element_text(size = 14)) +
+  scale_fill_startrek() +
+  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) + 
+  guides(fill=guide_legend(title=""))
+```
+
+![](README_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->
+
+Both figures show the composition of the optimized farm (based on the
+example data), including all indicators. Each land-cover option is shown
+in an allocated share (%). We can now see
+
+<h5>
+Exemplary batch application for distinct uncertainty values u
+</h5>
+
+``` r
+require(readxl)
+library(optimLanduse)
+
+path <- exampleData("exampleGosling.xlsx")
+dat <- read_excel(path)
+
+# define sequence of uncertainties
+u <- seq(1, 5, 1)
+
+# prepare empty data frame for the results
+
+## alternative 1: loop, simply implemented ##
+
+loopDf <- data.frame(u = u, matrix(NA, nrow = length(u), ncol = 1 + length(unique(dat$landUse))))
+names(loopDf) <- c("u", "beta", unique(dat$landUse))
+
+for(i in u) {
+  init <- initScenario(dat, uValue = i, optimisticRule = "expectation", fixDistance = 3)
+  result <- solveScenario(x = init)
+  loopDf[loopDf$u == i,] <- c(i, result$beta, as.matrix(result$landUse))
+}
+
+# alternative 2: apply, faster
+applyDf <- data.frame(u = u)
+
+applyFun <- function(x) {
+  init <- initScenario(dat, uValue = x, optimisticRule = "expectation", fixDistance = 3)
+  result <- solveScenario(x = init)
+  return(c(result$beta, as.matrix(result$landUse)))
+}
+
+applyDf <- cbind(applyDf,
+                 t(apply(applyDf, 1, applyFun)))
+                 
+names(applyDf) <- c("u", "beta", names(result$landUse))
 ```
 
 <h3>
