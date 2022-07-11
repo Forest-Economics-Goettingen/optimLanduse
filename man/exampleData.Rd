@@ -2,7 +2,12 @@
 % Please edit documentation in R/examples.R
 \name{exampleData}
 \alias{exampleData}
-\title{Attach examplary data}
+\title{optimLanduse comes bundled with exemplary data for land-use optimization. The
+files can also be found on your computer in the package folder `./extdata`. These examples
+provide some quick applications of the package for demonstration and an example of the expected structure
+of the data. Consider also the
+\href{https://github.com/Forest-Economics-Goettingen/optimLanduse/}{GitHub project page} for
+exemplary applications of the package.}
 \usage{
 exampleData(fileName = "exampleGosling.xlsx")
 }
@@ -13,15 +18,7 @@ exampleData(fileName = "exampleGosling.xlsx")
 The path to the example file on your computer.
 }
 \description{
-optimLanduse comes bundled with exemplary data for land-use optimization. The
-files can also be found on your computer in the package folder `./extdata`. These examples
-provide some quick applications of the package for demonstration and an example of the expected structure
-of the data. Consider also the
-\href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab project page} for
-exemplary applications of the package.
-}
-\details{
-\emph{exampleGosling.xlsx} is an excerpt from Gosling et al. 2020.
+\emph{exampleGosling.xlsx} is an excerpt from Gosling et al. (2020).
 }
 \examples{
 require(readxl)

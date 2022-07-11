@@ -1,13 +1,20 @@
-#' Attach examplary data
-#'
+##--#######################--##
+#### Attach examplary data ####
+##--#######################--##
+
+# Tue Jul  5 17:18:58 2022 ------------------------------
+
+# Main developer: Volker von Groß
+
+
 #' optimLanduse comes bundled with exemplary data for land-use optimization. The
 #' files can also be found on your computer in the package folder `./extdata`. These examples
 #' provide some quick applications of the package for demonstration and an example of the expected structure
 #' of the data. Consider also the
-#' \href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab project page} for
+#' \href{https://github.com/Forest-Economics-Goettingen/optimLanduse/}{GitHub project page} for
 #' exemplary applications of the package.
 #'
-#' \emph{exampleGosling.xlsx} is an excerpt from Gosling et al. 2020.
+#' \emph{exampleGosling.xlsx} is an excerpt from Gosling et al. (2020).
 #'
 #' @param fileName Name of example file. See 'details' section for further explanation of all provided examples.
 
