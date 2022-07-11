@@ -63,6 +63,15 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
     stop ("At least one necessary variable for the optimization is not available. Are the requirements of the data structure met? Check the variable names.")
   }
 
+  ## Drop unnecessary colums ##
+  if(any(!(names(dat) %in%
+           c("indicator", "direction", "landUse", "indicatorValue",
+             "indicatorUncertainty", "indicatorGroup")))) {
+    warning("Non-necessary columns detected and neglected.")
+    coefTable <- coefTable[, names(coefTable) %in% c("indicator", "direction", "landUse", "indicatorValue",
+                            "indicatorUncertainty", "indicatorGroup")]
+  }
+
   indicatorNames <- as.character(unique(coefTable$indicator))
 
   testLandUseIndicators <- function (x) {

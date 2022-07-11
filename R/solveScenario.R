@@ -30,6 +30,10 @@
 #' @references Knoke, T., Paul, C., Hildebrandt, P. et al. (2016): Compositional diversity
 #' of rehabilitated tropical lands supports multiple ecosystem services and
 #' buffers uncertainties. \emph{Nat Commun} \strong{7}, 11877. \doi{10.1038/ncomms11877}
+#'
+#' Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., Knoke, T. (no date): optimLanduse:
+#' A Package for Multiobjective Land-cover1Composition Optimization under Uncertainty. \emph{Methods
+#' in Ecology and Management}. Under review.
 
 
 #' @import lpSolveAPI
