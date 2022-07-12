@@ -261,7 +261,7 @@ result_u3$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
 
 <h5>
 Exemplary batch application for distinct uncertainty values u
-</h6>
+</h5>
 
 ```{r, fig.height = 5, fig.width = 7, warning=FALSE}
 
@@ -331,13 +331,13 @@ applyDf %>% gather(key = "land-use option", value = "land-use share", -u, -beta)
 
 Earlier more pasture because of larger uncertainty frame (TBD)
 
-<h3>
-Sophisticated application
-</h3>
-
 <h4>
-Different indicator bundles 
+Sophisticated application
 </h4>
+
+<h5>
+Different indicator bundles 
+</h5>
 
 ```{r, fig.height = 3, fig.width = 4, warning=FALSE}
 
@@ -398,9 +398,9 @@ result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6)
 ```
 
 
-<h4>
+<h5>
 Possibility to analyze the model sensitivity
-</h4>
+</h5>
 ```{r, fig.height = 3, fig.width = 4, warning=FALSE}
 
 #### Not meeting household needs anymore ####
