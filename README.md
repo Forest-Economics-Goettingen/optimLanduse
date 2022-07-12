@@ -173,15 +173,15 @@ dat <- read_excel(path)
 head(dat)
 ```
 
-    ## # A tibble: 6 x 6
-    ##   indicatorGroup     indicator direction landUse indicatorValue indicatorUncert~
+    ## # A tibble: 6 × 6
+    ##   indicatorGroup     indicator direction landUse indicatorValue indicatorUncert…
     ##   <chr>              <chr>     <chr>     <chr>            <dbl>            <dbl>
-    ## 1 Long-term income   Long-ter~ more is ~ Crops             6.34            0.396
-    ## 2 Labour demand      Labour d~ less is ~ Crops             8.31            0.371
-    ## 3 Meeting household~ Meeting ~ more is ~ Crops             9.62            0.223
-    ## 4 Financial stabili~ Financia~ more is ~ Crops             5.69            0.450
-    ## 5 Liquidity          Liquidity more is ~ Crops             7.45            0.334
-    ## 6 Investment costs   Investme~ less is ~ Crops             7.34            0.369
+    ## 1 Long-term income   Long-ter… more is … Crops             6.34            0.396
+    ## 2 Labour demand      Labour d… less is … Crops             8.31            0.371
+    ## 3 Meeting household… Meeting … more is … Crops             9.62            0.223
+    ## 4 Financial stabili… Financia… more is … Crops             5.69            0.450
+    ## 5 Liquidity          Liquidity more is … Crops             7.45            0.334
+    ## 6 Investment costs   Investme… less is … Crops             7.34            0.369
 
 ``` r
 # Initializing an optimLanduse-object using initScenario()
