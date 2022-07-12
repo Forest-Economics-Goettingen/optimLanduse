@@ -201,10 +201,18 @@ init_u0 <- initScenario(dat,
                      # optimistic contribution of each indicator directly defined by their average 
                      fixDistance = 3) 
                      # 3 is the default
-                  
+init_u0$scenarioSettings
+names(init_u0$scenarioTable)
+init_u0$coefObjective
+colnames(init_u0$coefConstraint)
+head(init_u0$distance)
+
 # Solve the initialized optimLanduse object with the solveScenario() function                 
 result_u0 <- solveScenario(x = init_u0)
 
+result_u0$status
+result_u0$beta
+result_u0$landUse
 
 # Typical result visualization
 result_u0$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
@@ -327,6 +335,130 @@ Earlier more pasture because of larger uncertainty frame (TBD)
 Sophisticated application
 </h4>
 
+<h4>
+Different indicator bundles 
+</h4>
+
+```{r, fig.height = 3, fig.width = 4, warning=FALSE}
+
+#### Socio-economic bundle ####
+
+dat_socioeconomic <- dat[dat$indicator != "Protecting soil resources" & dat$indicator !="Protecting water supply",]
+
+init_socioeconomic <- initScenario(dat_socioeconomic,
+                     uValue = 2,
+                     optimisticRule = "expectation", 
+                     fixDistance = NA) 
+
+result_socioeconomic <- solveScenario(x = init_socioeconomic)
+
+result_socioeconomic$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
+  mutate(uValue = "3",
+         landUseShare = landUseShare * 100) %>% 
+  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  geom_bar(position = "stack", stat = "identity") + 
+  theme_classic() +
+  theme(text = element_text(size = 14)) +
+  scale_fill_startrek() +
+  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) + 
+  guides(fill=guide_legend(title=""))
+
+  
+#### Farmer priority bundle ####
+
+dat_farmer <- dat[dat$indicator %in% c("Protecting soil resources" , "Protecting water supply", "Meeting household needs"),]
+
+init_farmer<- initScenario(dat_farmer,
+                     uValue = 2,
+                     optimisticRule = "expectation", 
+                     fixDistance = NA) 
+
+result_farmer <- solveScenario(x = init_farmer)
+
+result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
+  mutate(uValue = "3",
+         landUseShare = landUseShare * 100) %>% 
+  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  geom_bar(position = "stack", stat = "identity") + 
+  theme_classic() +
+  theme(text = element_text(size = 14)) +
+  scale_fill_startrek() +
+  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) + 
+  guides(fill=guide_legend(title=""))
+
+
+```
+
+
+<h4>
+Possibility to analyze the model sensitivity
+</h4>
+```{r, fig.height = 3, fig.width = 4, warning=FALSE}
+
+#### Not meeting household needs anymore ####
+
+dat_farmer <- dat[dat$indicator %in% c("Protecting soil resources" , "Protecting water supply"),]
+  
+
+init_farmer<- initScenario(dat_farmer,
+                     uValue = 2,
+                     optimisticRule = "expectation", 
+                     fixDistance = NA) 
+
+result_farmer <- solveScenario(x = init_farmer)
+
+result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
+  mutate(uValue = "3",
+         landUseShare = landUseShare * 100) %>% 
+  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  geom_bar(position = "stack", stat = "identity") + 
+  theme_classic() +
+  theme(text = element_text(size = 14)) +
+  scale_fill_startrek() +
+  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) + 
+  guides(fill=guide_legend(title=""))
+
+#### Only meeting household needs ####
+
+dat_farmer <- dat[dat$indicator %in% c("Meeting household needs"),]
+  
+init_farmer<- initScenario(dat_farmer,
+                     uValue = 2,
+                     optimisticRule = "expectation", 
+                     fixDistance = NA) 
+
+result_farmer <- solveScenario(x = init_farmer)
+
+result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
+  mutate(uValue = "3",
+         landUseShare = landUseShare * 100) %>% 
+  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  geom_bar(position = "stack", stat = "identity") + 
+  theme_classic() +
+  theme(text = element_text(size = 14)) +
+  scale_fill_startrek() +
+  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) + 
+  guides(fill=guide_legend(title=""))
+
+
+
+```
 
 <h3>
 <a name="7. Suggested">Suggested citation </a>
