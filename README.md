@@ -383,7 +383,7 @@ result_u3$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
 
 <h5>
 Exemplary batch application for distinct uncertainty values u
-</h6>
+</h5>
 
 ``` r
 # define sequence of uncertainties
@@ -460,9 +460,12 @@ Earlier more pasture because of larger uncertainty frame (TBD)
 <h4>
 Sophisticated application
 </h4>
-<h4>
+
+Test
+
+<h5>
 Different indicator bundles
-</h4>
+</h5>
 
 ``` r
 #### Socio-economic bundle ####
@@ -524,9 +527,9 @@ result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6)
 
 ![](README_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
 
-<h4>
+<h5>
 Possibility to analyze the model sensitivity
-</h4>
+</h5>
 
 ``` r
 #### Not meeting household needs anymore ####
