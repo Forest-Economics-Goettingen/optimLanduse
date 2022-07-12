@@ -331,9 +331,9 @@ applyDf %>% gather(key = "land-use option", value = "land-use share", -u, -beta)
 
 Earlier more pasture because of larger uncertainty frame (TBD)
 
-<h4>
+<h3>
 Sophisticated application
-</h4>
+</h3>
 
 <h4>
 Different indicator bundles 
