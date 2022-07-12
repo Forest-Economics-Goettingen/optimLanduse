@@ -2,15 +2,16 @@
 #### Transform the input table in an optimLanduse object ####
 ##--#####################################################--##
 
-# Fri Feb  5 10:40:10 2021 ------------------------------
+# Tue Jul  5 17:18:58 2022 ------------------------------
 
+# Main developer: Kai Husmann
 
 #' Initialize the robust optimization
 #'
 #' The function initializes an \emph{optimLanduse} S3 object on the
 #' basis of a coefficients table. Please note that the coefficients table must follow
-#' the \emph{optimLanduse} format. The expected format is explained in the example on
-#'  \href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab}.
+#' the expected \emph{optimLanduse} format. The expected format is explained in the example on the
+#' \href{https://github.com/Forest-Economics-Goettingen/optimLanduse/}{GitHub project page}.
 #'
 #'  The aim of separating the initialization from the optimization is to save
 #'  computation time in batch analysis. The separated function calls allow the
@@ -18,9 +19,11 @@
 #'  optimizations from one initialized object. This could save time in scenario or
 #'  sensitivity analysis.
 #'
+#'  A detailed description of the input parameters can be found in Husmann et al. (n.d.).
+#'
 #' @param coefTable Coefficient table in the expected \emph{optimLanduse} format.
-#' @param uValue \emph{u} Value. The uncertainty (standard deviation or standard error) is
-#' multiplied with the u value. The value therefore enables scenario analyses with differing
+#' @param uValue \emph{u} Value. The uncertainty value delivered in the coefTable is
+#' multiplied with this u value. The value therefore enables scenario analyses with differing
 #' uncertainties in relation to indicator values. Higher u values can be interpreted as a higher
 #' risk aversion of the decision maker.
 #' @param optimisticRule Either \emph{expectation} or \emph{uncertaintyAdjustedExpectation}.
@@ -28,19 +31,14 @@
 #' reflected by their expectations or if the indicator is calculated as expectation +
 #' uncertainty when "more is better", expectation - uncertainty respectively when "less is better".
 #' An optimization based on \emph{expectation} considers only downside risks.
-#' @param fixDistance A two-column table or matrix. The table must
-#' contain the best and the worst performing landuse-type of every uncertainty
-#' scenario, which is influenced by the \emph{uValue}. The difference between
-#' these two variables reflects the uncertainty space, in other words the
-#' distance. This table can always be found (no matter if the distance is fixed
-#' or not) in result list of the \emph{initScenario} function. By default, the
-#' distance is fixed on 3 \emph{fixDistnce = 3}. Fixing the distance allows you to change
-#' the uncertainty level, without changing the uncertainty framework. For
-#' instance, you can then relate the achieved portfolio performance, with a low
-#' uncertainty level, to a wider and constant uncertainty framework within your
-#' analysis; so the \emph{betas} remain comparable with each other over the
-#' course of the uncertainty analysis.
+#' @param fixDistance This optional numeric value allows to define distinct uncertainty levels for the
+#' calculation of the uncertainty space and the averaged distances of a certain land-cover composition
+#' (see Equation 9 in Husmann et al. (n. d.)). Passing NA disables fixDistance. In this case,
+#' the untertainty space is defined by uValue.
 #' @return An initialized optimLanduse S3 object ready for optimization.
+#' @references Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., Knoke, T. (no date): optimLanduse:
+#' A Package for Multiobjective Land-cover1Composition Optimization under Uncertainty. \emph{Methods
+#' in Ecology and Management}. Under review.
 #' @examples
 #' require(readxl)
 #' dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
@@ -63,6 +61,15 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
 
   if (!all(c("indicator", "direction", "landUse", "indicatorValue", "indicatorUncertainty") %in% names(coefTable))) {
     stop ("At least one necessary variable for the optimization is not available. Are the requirements of the data structure met? Check the variable names.")
+  }
+
+  ## Drop unnecessary colums ##
+  if(any(!(names(dat) %in%
+           c("indicator", "direction", "landUse", "indicatorValue",
+             "indicatorUncertainty", "indicatorGroup")))) {
+    warning("Non-necessary columns detected and neglected.")
+    coefTable <- coefTable[, names(coefTable) %in% c("indicator", "direction", "landUse", "indicatorValue",
+                            "indicatorUncertainty", "indicatorGroup")]
   }
 
   indicatorNames <- as.character(unique(coefTable$indicator))

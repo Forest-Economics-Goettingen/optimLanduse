@@ -51,7 +51,7 @@ This chapter provides brief overview over the package functions. For detailed in
 
 The *initScenario()* function integrates the user settings into the data and returns an *optimLanduse*-object ready for solving. The following input data are required: 
 
-- *Coefficients table*: The package is **only capable** of processing a long-oriented type of data structure. All indicators have to vertically listed with their average expectations and uncertainties for the different land-cover alternatives. The columns of the table **must contain** a predefined heading. You can take this exact format from the given example table **exampleGosling.xlsx** or follow the below excerpt of this table:
+- *Coefficients table*: The package is **only capable** of processing a long-oriented type of data structure. All combinations of land cover (landUse) alternatives and indicators have to be listed vertically. Each row must contain the average expectation, the uncertainty, and the direction of the respective land-cover and indicator combination. The columns of the table **must follow** the expected heading displayed below. You also find this format in the built-in example tables **exampleGosling.xlsx** or **exampleEmpty.xlsx**. All further columns will be dropped if passed.
 
 <p align="center">
   <img width="673.4" height="298.2" src="./man/figures/exampleGraphic.png">
@@ -65,15 +65,15 @@ The *initScenario()* function integrates the user settings into the data and ret
 
 - *optimisticRule*: Specifies whether the optimistic contributions of each indicator should be defined either directly by their average, or by their average plus their uncertainty (if more is better) or minus its uncertainty (if less is better). The former option is most frequently used in recent literature and therefore builds the default.
 
-- *fixDistance*: TBD (Need to create a uniform understandable description for readme and helper functions package). Problem is, that the definition in the paper is quite linked with the equation in the paper.
+- *fixDistance*: This optional numeric value allows to define distinct uncertainty levels for the calculation of the uncertainty space and the averaged distances of a certain land-cover composition (see Equation 9 in Husmann et al. (n. d.)). Passing NA disables fixDistance. In this case, the untertainty space is defined by uValue.
 
 #### Solver and list with results
 
-The *solveScenario()* function requires the initialized *optimLanduse* object and only a few optional solver-specific arguments. As the solving process has no stochastic element, the calculation times depend almost entirely on the number of digits calculated. 
+The *solveScenario()* function requires the initialized *optimLanduse* object and only a few optional solver-specific arguments.
 
-- *digitsPrecision*: Provides the only possibility for the user to influence the calculation time. As the solving process has no stochastic element, the calculation times depend almost entirely on the number of digits calculated.
+- *digitsPrecision*: Provides the only possibility for the user to influence the calculation time. As the solving process has no stochastic element, the calculation times depend entirely on the number of digits calculated.
 
-- *lowerBound* & *upperBound*: Optional bounds for the land-use options. Choosing 0 and 1 (the defaults) as boundaries for all decision variables, means that no land-cover alternative is forced into the farm portfolio and that no land-cover alternative is assigned a maximum share.
+- *lowerBound* & *upperBound*: Optional bounds for the land-use options. The lower bound must be 0 or a vector with lower bounds in the dimension of the land-use options. The upper bound, respectivlely, 1 or a vector with upper bounds in the dimension of the land-use options. Choosing 0 and 1 (the defaults) as boundaries for all decision variables, means that no land-cover alternative is forced into the portfolio and that no land-cover alternative is assigned a maximum.
 
 The resulting *list with results* contains different Information of the optimization model. First the information of the *initScenario()* function are displayed again in this list. These include:
 
@@ -81,16 +81,16 @@ The resulting *list with results* contains different Information of the optimiza
 - *scenarioTable*: Detailed table with all possible indicator combinations.
 - *coefObjective*: The coefficients of the objective function.
 - *coefConstraing*: The constraints of the objective function.
-- *distances*:  The distance of each scenario to its own theoretically best-achievable contribution. 
+- *distances*:  The distance of each scenario to its own theoretically best-achievable contribution. See equation 3 in Husmann et al. (n.d.)
 
 This is followed by a summary of the results of the optimization: 
 
-- **&beta;**: The maximum distance of the worst performing scenario.
+- **&beta;**: The maximum distance of the worst performing scenario (equation 1 in Husmann et al. (n.d.)).
 - *landUse*: The resulting land-cover allocation in the optimum.
 
 #### Post-processing
 
-- *calcPerfomance()*: Attaches the portfolio performances of all scenarios and creates a frame for the visualization. The performance is defined as the distance to the maximum achievable level for each indicator and uncertainty scenario.
+- *calcPerfomance()*: Attaches the portfolio performances of all scenarios and creates a frame for the visualization. The performance is defined as the distance to the maximum achievable level for each indicator and uncertainty scenario. It enables a straightforward interpretation of the degree of fulfillment of the indicators in the optimum.
 
 
 <h3>
