@@ -105,35 +105,60 @@ This is followed by a summary of the results of the optimization:
 <a name="6. Beispielhafte Anwendung">Exemplary application</a>
 </h3>
 
-<h5>
-Install and load packages
-</h5>
+<h4>
+Technical workflow with simple example code
+</h4>
 
-```{r, results='hide', message=FALSE}
+```{r, results='hide', message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4}
 install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
+
 library(optimLanduse)
 library(readxl)
 library(ggplot2)
 library(tidyverse)
 library(ggsci)
-```
-
-<h5>
-Simple examples
-</h5>
-
-The following two examples show the optimization of all indicators of the example data set simultaneously; once for uValue = 0 and once for uValue = 3
-
-```{r, fig.height = 3, fig.width = 4}
 
 # Loading the example data file
 path <- exampleData("exampleGosling.xlsx")
 dat <- read_excel(path)
 
-#### uValue = 3 ####
-
 # Initializing an optimLanduse-object using initScenario()
 init <- initScenario(dat,
+                     uValue = 3,
+                     optimisticRule = "expectation", 
+                     # optimistic contribution of each indicator directly defined by their average 
+                     fixDistance = 3) 
+                     # 3 is the default
+
+# Solve the initialized optimLanduse object with the solveScenario() function                     
+result <- solveScenario(x = init)
+
+result$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
+  mutate(uValue = "3",
+         landUseShare = landUseShare * 100) %>% 
+  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  geom_bar(position = "stack", stat = "identity") + 
+  theme_classic() +
+  theme(text = element_text(size = 14)) +
+  scale_fill_startrek() +
+  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) + 
+  guides(fill=guide_legend(title=""))
+```
+
+<h4>
+Calculations for different uncertainty levels
+</h4>
+
+```{r, fig.height = 3, fig.width = 4}
+
+#### uValue == 0 ####
+
+# Initializing an optimLanduse-object using initScenario()
+init_u0 <- initScenario(dat,
                      uValue = 0,
                      optimisticRule = "expectation", 
                      # optimistic contribution of each indicator directly defined by their average 
@@ -141,12 +166,12 @@ init <- initScenario(dat,
                      # 3 is the default
                      
 # Solve the initialized optimLanduse object with the solveScenario() function                 
-result <- solveScenario(x = init)
+result_u0 <- solveScenario(x = init_u0)
 
 
 # Typical result visualization
-result$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
-  mutate(uValue = "2",
+result_u0$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
+  mutate(uValue = "0",
          landUseShare = landUseShare * 100) %>% 
   ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
@@ -160,17 +185,47 @@ result$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
         axis.ticks.x=element_blank()) + 
   guides(fill=guide_legend(title=""))
 
-#### uValue = 3 ####
 
-init <- initScenario(dat,
+# Performance calculations
+performance_u0 <- calcPerformance(result_u0)
+
+performance_u0$scenarioTable$performance <- performance_u0$scenarioTable$performance * 100 
+
+ggplot(performance_u0$scenarioTable,
+       aes(x = indicator,
+           y = performance,
+           color = indicator)) +
+  geom_point() +
+  geom_hline(yintercept =
+               min(performance_u0$scenarioTable$performance),
+             linetype = "dashed", color = "red") +
+  guides(color=guide_legend(title="",
+                            nrow = 5)) +
+  theme_classic() + 
+  theme(text = element_text(size = 18),
+        legend.position="bottom") +
+  theme(axis.title.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  scale_x_discrete(labels = seq(1, 10)) +
+  labs(y = "Min-max normalized indicator value (%)") + 
+  scale_y_continuous(breaks = seq(0, 101, 10), 
+                     limits = c(0, 101))+
+  geom_hline(aes(yintercept=100), size =1) + 
+  annotate(geom = "Text", x = 6, y = 100, label = "Maximum achievable indicator level",
+           vjust = -1)
+
+#### uValue == 3 ####
+
+init_u3 <- initScenario(dat,
                      uValue = 3,
                      optimisticRule = "expectation", 
                      fixDistance = 3) 
-                     
-result <- solveScenario(x = init)
 
-result$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
-  mutate(uValue = "2",
+                
+result_u3 <- solveScenario(x = init_u3)
+
+result_u3$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
+  mutate(uValue = "3",
          landUseShare = landUseShare * 100) %>% 
   ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
@@ -183,25 +238,46 @@ result$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) + 
   guides(fill=guide_legend(title=""))
-```
 
-Both figures show the composition of the optimized farm (based on the example data), including all indicators. Each land-cover option is shown in an allocated share (%). We can now see 
+
+# Performance calculations
+performance_u3 <- calcPerformance(result_u3)
+
+performance_u3$scenarioTable$performance <- performance_u3$scenarioTable$performance * 100 
+
+ggplot(performance_u3$scenarioTable,
+       aes(x = indicator,
+           y = performance,
+           color = indicator)) +
+  geom_point() +
+  geom_hline(yintercept =
+               min(performance_u3$scenarioTable$performance),
+             linetype = "dashed", color = "red") +
+  guides(color=guide_legend(title="",
+                            nrow = 5)) +
+  theme_classic() + 
+  theme(text = element_text(size = 18),
+        legend.position="bottom") +
+  theme(axis.title.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  scale_x_discrete(labels = seq(1, 10)) +
+  labs(y = "Min-max normalized indicator value (%)") + 
+  scale_y_continuous(breaks = seq(0, 101, 10), 
+                     limits = c(0, 101))+
+  geom_hline(aes(yintercept=100), size =1) + 
+  annotate(geom = "Text", x = 6, y = 100, label = "Maximum achievable indicator level",
+           vjust = -1)
+
+```
 
 <h5>
 Exemplary batch application for distinct uncertainty values u
-</h5>
+</h6>
 
-
-
-```{r, fig.height = 3, fig.width = 4}
-require(readxl)
-library(optimLanduse)
-
-path <- exampleData("exampleGosling.xlsx")
-dat <- read_excel(path)
+```{r, fig.height = 5, fig.width = 7, warning=FALSE}
 
 # define sequence of uncertainties
-u <- seq(1, 5, 1)
+u <- seq(0, 3, .5)
 
 # prepare empty data frame for the results
 
@@ -216,6 +292,22 @@ for(i in u) {
   loopDf[loopDf$u == i,] <- c(i, result$beta, as.matrix(result$landUse))
 }
 
+loopDf[, 3:8] <- loopDf[,3:8] * 100
+
+loopDf %>% gather(key = "land-use option", value = "land-use share", -u) %>%
+  ggplot(aes(y = `land-use share`, x = u, fill = `land-use option`)) + 
+  geom_area(alpha = .8, color = "white") + theme_minimal()+
+  labs(x = "Uncertainty level", y = "Allocated share (%)") + 
+  guides(fill=guide_legend(title="")) + 
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100.01)) +
+  scale_x_continuous(breaks = seq(0, 3, 0.5),
+                     limits = c(0, 3)) + 
+  scale_fill_startrek() +
+  theme_classic()+
+  theme(text = element_text(size = 18),
+        legend.position = "bottom")
+
 # alternative 2: apply, faster
 applyDf <- data.frame(u = u)
 
@@ -229,6 +321,23 @@ applyDf <- cbind(applyDf,
                  t(apply(applyDf, 1, applyFun)))
                  
 names(applyDf) <- c("u", "beta", names(result$landUse))
+
+applyDf[, 3:8] <- applyDf[,3:8] * 100
+
+applyDf %>% gather(key = "land-use option", value = "land-use share", -u) %>%
+  ggplot(aes(y = `land-use share`, x = u, fill = `land-use option`)) + 
+  geom_area(alpha = .8, color = "white") + theme_minimal()+
+  labs(x = "Uncertainty level", y = "Allocated share (%)") + 
+  guides(fill=guide_legend(title="")) + 
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100.01)) +
+  scale_x_continuous(breaks = seq(0, 3, 0.5),
+                     limits = c(0, 3)) + 
+  scale_fill_startrek() +
+  theme_classic()+
+  theme(text = element_text(size = 18),
+        legend.position = "bottom")
+
 ```
 
 
