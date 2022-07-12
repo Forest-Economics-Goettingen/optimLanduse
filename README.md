@@ -157,7 +157,9 @@ Technical workflow with simple example code
 
 ``` r
 install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
+```
 
+``` r
 library(optimLanduse)
 library(readxl)
 library(ggplot2)
@@ -168,12 +170,26 @@ library(ggsci)
 path <- exampleData("exampleGosling.xlsx")
 dat <- read_excel(path)
 
+head(dat)
+```
+
+    ## # A tibble: 6 x 6
+    ##   indicatorGroup     indicator direction landUse indicatorValue indicatorUncert~
+    ##   <chr>              <chr>     <chr>     <chr>            <dbl>            <dbl>
+    ## 1 Long-term income   Long-ter~ more is ~ Crops             6.34            0.396
+    ## 2 Labour demand      Labour d~ less is ~ Crops             8.31            0.371
+    ## 3 Meeting household~ Meeting ~ more is ~ Crops             9.62            0.223
+    ## 4 Financial stabili~ Financia~ more is ~ Crops             5.69            0.450
+    ## 5 Liquidity          Liquidity more is ~ Crops             7.45            0.334
+    ## 6 Investment costs   Investme~ less is ~ Crops             7.34            0.369
+
+``` r
 # Initializing an optimLanduse-object using initScenario()
 init <- initScenario(dat,
-                     uValue = 3,
+                     uValue = 2,
                      optimisticRule = "expectation", 
                      # optimistic contribution of each indicator directly defined by their average 
-                     fixDistance = 3) 
+                     fixDistance = NA) 
                      # 3 is the default
 
 # Solve the initialized optimLanduse object with the solveScenario() function                     
@@ -195,10 +211,43 @@ result$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+``` r
+# Performance calculations
+performance <- calcPerformance(result)
+
+performance$scenarioTable$performance <- performance$scenarioTable$performance * 100 
+
+ggplot(performance$scenarioTable,
+       aes(x = indicator,
+           y = performance,
+           color = indicator)) +
+  geom_point() +
+  geom_hline(yintercept =
+               min(performance$scenarioTable$performance),
+             linetype = "dashed", color = "red") +
+  guides(color=guide_legend(title="",
+                            nrow = 10)) +
+  theme_classic() + 
+  theme(text = element_text(size = 18),
+        legend.position="right") +
+  theme(
+        axis.ticks.x=element_blank())+
+  scale_x_discrete(labels = seq(1, 10)) +
+  labs(y = "Min-max normalized indicator value (%)",
+       x = "Indicators") + 
+  scale_y_continuous(breaks = seq(0, 101, 10), 
+                     limits = c(0, 101))+
+  geom_hline(aes(yintercept=100), size =1) + 
+  annotate(geom = "Text", x = 6, y = 100, label = "Maximum achievable indicator level",
+           vjust = -1)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 <h4>
-Calculations for different uncertainty levels
+Calculations for different uncertainty levels and fixDistance
 </h4>
 
 ``` r
@@ -211,7 +260,7 @@ init_u0 <- initScenario(dat,
                      # optimistic contribution of each indicator directly defined by their average 
                      fixDistance = 3) 
                      # 3 is the default
-                     
+                  
 # Solve the initialized optimLanduse object with the solveScenario() function                 
 result_u0 <- solveScenario(x = init_u0)
 
@@ -233,41 +282,7 @@ result_u0$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
-
-``` r
-# Performance calculations
-performance_u0 <- calcPerformance(result_u0)
-
-performance_u0$scenarioTable$performance <- performance_u0$scenarioTable$performance * 100 
-
-ggplot(performance_u0$scenarioTable,
-       aes(x = indicator,
-           y = performance,
-           color = indicator)) +
-  geom_point() +
-  geom_hline(yintercept =
-               min(performance_u0$scenarioTable$performance),
-             linetype = "dashed", color = "red") +
-  guides(color=guide_legend(title="",
-                            nrow = 5)) +
-  theme_classic() + 
-  theme(text = element_text(size = 18),
-        legend.position="bottom") +
-  theme(axis.title.x=element_blank(),
-        axis.ticks.x=element_blank())+
-  scale_x_discrete(labels = seq(1, 10)) +
-  labs(y = "Min-max normalized indicator value (%)") + 
-  scale_y_continuous(breaks = seq(0, 101, 10), 
-                     limits = c(0, 101))+
-  geom_hline(aes(yintercept=100), size =1) + 
-  annotate(geom = "Text", x = 6, y = 100, label = "Maximum achievable indicator level",
-           vjust = -1)
-```
-
-    ## Warning: Removed 16 rows containing missing values (geom_point).
-
-![](README_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
 #### uValue == 3 ####
@@ -296,39 +311,7 @@ result_u3$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-2-3.png)<!-- -->
-
-``` r
-# Performance calculations
-performance_u3 <- calcPerformance(result_u3)
-
-performance_u3$scenarioTable$performance <- performance_u3$scenarioTable$performance * 100 
-
-ggplot(performance_u3$scenarioTable,
-       aes(x = indicator,
-           y = performance,
-           color = indicator)) +
-  geom_point() +
-  geom_hline(yintercept =
-               min(performance_u0$scenarioTable$performance),
-             linetype = "dashed", color = "red") +
-  guides(color=guide_legend(title="",
-                            nrow = 5)) +
-  theme_classic() + 
-  theme(text = element_text(size = 18),
-        legend.position="bottom") +
-  theme(axis.title.x=element_blank(),
-        axis.ticks.x=element_blank())+
-  scale_x_discrete(labels = seq(1, 10)) +
-  labs(y = "Min-max normalized indicator value (%)") + 
-  scale_y_continuous(breaks = seq(0, 101, 10), 
-                     limits = c(0, 101))+
-  geom_hline(aes(yintercept=100), size =1) + 
-  annotate(geom = "Text", x = 6, y = 100, label = "Maximum achievable indicator level",
-           vjust = -1)
-```
-
-![](README_files/figure-gfm/unnamed-chunk-2-4.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
 
 <h5>
 Exemplary batch application for distinct uncertainty values u
@@ -353,7 +336,7 @@ for(i in u) {
 
 loopDf[, 3:8] <- loopDf[,3:8] * 100
 
-loopDf %>% gather(key = "land-use option", value = "land-use share", -u) %>%
+loopDf %>% gather(key = "land-use option", value = "land-use share", -u, -beta) %>%
   ggplot(aes(y = `land-use share`, x = u, fill = `land-use option`)) + 
   geom_area(alpha = .8, color = "white") + theme_minimal()+
   labs(x = "Uncertainty level", y = "Allocated share (%)") + 
@@ -368,7 +351,7 @@ loopDf %>% gather(key = "land-use option", value = "land-use share", -u) %>%
         legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 # alternative 2: apply, faster
@@ -387,7 +370,7 @@ names(applyDf) <- c("u", "beta", names(result$landUse))
 
 applyDf[, 3:8] <- applyDf[,3:8] * 100
 
-applyDf %>% gather(key = "land-use option", value = "land-use share", -u) %>%
+applyDf %>% gather(key = "land-use option", value = "land-use share", -u, -beta) %>%
   ggplot(aes(y = `land-use share`, x = u, fill = `land-use option`)) + 
   geom_area(alpha = .8, color = "white") + theme_minimal()+
   labs(x = "Uncertainty level", y = "Allocated share (%)") + 
@@ -402,8 +385,13 @@ applyDf %>% gather(key = "land-use option", value = "land-use share", -u) %>%
         legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
 
+Earlier more pasture because of larger uncertainty frame (TBD)
+
+<h4>
+Sophisticated application
+</h4>
 <h3>
 <a name="7. Suggested">Suggested citation </a>
 </h3>
