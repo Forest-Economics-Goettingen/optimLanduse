@@ -6,21 +6,21 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-optimLanduse
------------
+## optimLanduse
 
 <h3>
 <a name="menu"></a>
 </h3>
+
 <ul>
 <li>
 <a href="#1. Einleitung">Introduction</a>
 </li>
 <li>
-<a href="#3. Input und Output">Package structure</a>
+<a href="#3. Input und Output">Detailed description of the in- and output and the package elements</a>
 </li>
 <li>
-<a href="#6. Beispielhafte Anwendung">Exemplary application</a>
+<a href="#6. Beispielhafte Anwendung">Use-case</a>
 </li>
 <li>
 <a href="#7. Suggested">Suggested citation</a>
@@ -30,26 +30,19 @@ optimLanduse
 </li>
 </ul>
 
-
 <h3>
 <a name="1. Einleitung">Introduction</a>
 </h3>
 
-The R package **optimLanduse** provides tools for easy and systematic applications of the robust multiobjective land-cover composition optimization approach of Knoke et al. (2016). It includes tools to determine the land-cover composition that best balances the multiple functions a landscape can provide, and tools for understanding and visualizing how these compromises are reasoned. The **README.md** below guides users through the application and highlights possible use-cases on the basis of a published data set.
-Illustrating the consequences of alternative ecosystem functions on the theoretically optimal landscape composition provides easily interpretable information for landscape modeling and decision making.
-The method is already established in land-use optimization and has been applied in a couple of studies. More details about the theory, the definition of the formal optimization problem and also significant examples are listed in the <a href="#8. Literatur">literature</a> section
+The R package **optimLanduse** provides tools for easy and systematic applications of the robust multiobjective land-cover composition optimization approach of Knoke et al. (2016). It includes tools to determine the land-cover composition that best balances the multiple functions and services a landscape can provide, and tools for understanding and visualizing how these compromises are reasoned. The **README.md** below guides users through the application and highlights possible use-cases on the basis of a published data set. Illustrating the consequences of alternative ecosystem functions on the theoretically optimal landscape composition provides easily interpretable information for landscape modeling and decision making. The method is already established in land-use optimization and has been applied in a couple of studies. More details about the theory, the definition of the formal optimization problem and also significant examples are listed in the <a href="#8. Literatur">literature</a> section
 
-The package opens the approach of Knoke et al. (2016) to the community of landscape and planners and provides opportunities for straightforward systematic or batch applications.
-To further enhance this, we have designed a graphical shiny application for the package to get a quick idea of the functionalities of the package, see http://134.76.17.50/optimlanduse_shiny/.
-
-
-
+The package opens the approach of Knoke et al. (2016) to the community of landscape and planners and provides opportunities for straightforward systematic or batch applications. To further enhance this, we have designed a graphical shiny application for the package to get a quick idea of the functionalities of the package, see <http://134.76.17.50/optimlanduse_shiny/>.
 
 <h3>
 <a name="3. Input und Output">Package structure</a>
 </h3>
 
-This chapter provides brief overview over the package functions. For detailed information about methodological background, functions and workflow please refer to Husmann et al. (under revision) listed in the <a href="#7. Suggested">suggested citation</a> section. Furthermore you can consider the respective help pages for more information. The function *lpSolveAPI* comes from the **lpSolveAPI** package.
+This chapter provides brief overview over the package functions. For detailed information about methodological background, functions and workflow please refer to Husmann et al. (n.d.) listed in the <a href="#7. Suggested">suggested citation</a> section. Furthermore you can consider the respective help pages for more information. The function *lpSolveAPI* comes from the **lpSolveAPI** package.
 
 <p align="center">
   <img width="781.6" height="452" src="./man/figures/flowchart.png">
@@ -57,61 +50,61 @@ This chapter provides brief overview over the package functions. For detailed in
 
 #### Initialization and Input
 
-The *initScenario()* function integrates the user settings into the data and returns an *optimLanduse*-object ready for solving. The following input data are required: 
+The *initScenario()* function combines the user settings with the data into an *optimLanduse*-object ready for solving. The following input data are required:
 
-- *Coefficients table*: The package is **only capable** of processing a long-oriented type of data structure. All indicators have to vertically listed with their average expectations and uncertainties for the different land-cover alternatives. The columns of the table **must contain** a predefined heading. You can take this exact format from the given example table **exampleGosling.xlsx** or follow the below excerpt of this table:
+-   *Coefficients table*: The package is **only capable** of processing a long-oriented type of data structure. All combinations of land cover (landUse) alternatives and indicators have to be listed vertically. Each row must contain the average expectation, the uncertainty, and the direction of the respective land-cover and indicator combination. The column names of the table **must follow** the expected nomenclature displayed below. You also find this format in the built-in example tables **exampleGosling.xlsx** or **exampleEmpty.xlsx**. All further columns will be dropped if passed.
 
 <p align="center">
   <img width="673.4" height="298.2" src="./man/figures/exampleGraphic.png">
 </p>
 
-|            See the help files of the **exampleData** and **initScenario** functions for more details. An empty template (for predefined headings) 
-|            is additionally given in the package and can be called via exampleData("exampleEmpty.xlsx").
-<br>
+\| See the help files of the **exampleData** and **initScenario** functions for more details. An empty template (incl. predefined headings) \| can be accessed via the exampleData("exampleEmpty.xlsx") function. <br>
 
-- *uValue*: The argument for the uncertainty level. A higher uValue reflects a higher risk aversion of the decision maker. See the help file of the **initScenario** function for more details.
+-   *uValue*: The argument for the uncertainty level. A higher uValue reflects a higher risk aversion of the decision maker. See the help file of the **initScenario** function for more details.
 
-- *optimisticRule*: Specifies whether the optimistic contributions of each indicator should be defined either directly by their average, or by their average plus their uncertainty (if more is better) or minus its uncertainty (if less is better). The former option is most frequently used in recent literature and therefore builds the default.
+-   *optimisticRule*: Specifies whether the optimistic contributions of each indicator should be defined either directly by their average, or by their average plus their uncertainty (if more is better) or minus its uncertainty (if less is better). The former option is most frequently used in recent literature and therefore builds the default.
 
-- *fixDistance*: TBD (Need to create a uniform understandable description for readme and helper functions package). Problem is, that the definition in the paper is quite linked with the equation in the paper.
+-   *fixDistance*: Optional numeric value that defines distinct uncertainty levels for the calculation of the uncertainty space and the averaged distances of a certain land-cover composition (see Equation 9 in Husmann et al. (n. d.)). Passing NA disables fixDistance. The untertainty space is then defined by the uValue.
 
 #### Solver and list with results
 
-The *solveScenario()* function requires the initialized *optimLanduse* object and only a few optional solver-specific arguments. As the solving process has no stochastic element, the calculation times depend almost entirely on the number of digits calculated. 
+The *solveScenario()* function requires the initialized *optimLanduse* object and only a few optional solver-specific arguments. As the solving process has no stochastic element, the calculation times depend almost entirely on the number of digits calculated.
 
-- *digitsPrecision*: Provides the only possibility for the user to influence the calculation time. As the solving process has no stochastic element, the calculation times depend almost entirely on the number of digits calculated.
+-   *digitsPrecision*: Provides the only possibility for the user to influence the calculation time. As the solving process has no stochastic element, the calculation times depend almost entirely on the number of digits calculated.
 
-- *lowerBound* & *upperBound*: Optional bounds for the land-use options. Choosing 0 and 1 (the defaults) as boundaries for all decision variables, means that no land-cover alternative is forced into the farm portfolio and that no land-cover alternative is assigned a maximum share.
+-   *lowerBound* & *upperBound*: Optional bounds for the land-use options. The lower bound must be 0 or a vector with lower bounds in the dimension of the land-use options. The upper bound, respectivlely, 1 or a vector with upper bounds in the dimension of the land-use options. Choosing 0 and 1 (the defaults) as boundaries for all decision variables, means that no land-cover alternative is forced into the portfolio and that no land-cover alternative is assigned a maximum.
 
 The resulting *list with results* contains different Information of the optimization model. First the information of the *initScenario()* function are displayed again in this list. These include:
 
-- *scenarioSettings*: List of the used values for *uValue* and *optimisticRule*.
-- *scenarioTable*: Detailed table with all possible indicator combinations.
-- *coefObjective*: The coefficients of the objective function.
-- *coefConstraing*: The constraints of the objective function.
-- *distances*:  The distance of each scenario to its own theoretically best-achievable contribution. 
+-   *scenarioSettings*: Data frame with *uValue* and *optimisticRule* used.
+-   *scenarioTable*: Data frame with one row for each combination of worst-case and best-case outcomes of all indicators (thus the number of scenarios $N_S$ in Husmann et al (n.d.)). The columns contain certain relevant calculation steps of the optimization program. *adjSem\** are the uncertainty adjusted indicators ($R_{liu}$ in Husmann et al. (n.d.)). *minAdjSem* are the minimal uncertainty adjusted indicators $min(R_{liu})$ and $max(R_{liu})$ the maximal uncertainty adjusted indicators. diffAdjSem are the range between these uncertainty adjusted indicators $\delta_{\text{min,max}_{iu}}$.
+-   *coefObjective*: The optimization program is translated into a linear program with $N_L$ (number of land-use options) coefficients for the inner solution. The inner solution is solved using *lpSolveAPI*. *coefObjective* is the data frame that contains these coefficients.
+-   *coefConstraing*: A data frame with the respective constraints for the inner solution solved by *lpsolveAPI*.
+-   *distances*: The distance of each scenario to its own theoretically best-achievable contribution (reference). See equation 3 in Husmann et al. (n.d.).
 
-This is followed by a summary of the results of the optimization: 
+This is followed by a summary of the results of the optimization:
 
-- *&beta;*: The maximum distance of the worst performing scenario.
-- *landUse*: The resulting land-cover allocation in the optimum.
+-   *β*: The maximum distance of the worst performing scenario (equation 1 in Husmann et al. (n.d.)).
+-   *landUse*: The resulting land-cover composition in the optimum.
 
 #### Post-processing
 
-- *calcPerfomance()*: Attaches the portfolio performances of all scenarios and creates a frame for the visualization. The performance is defined as the distance to the maximum achievable level for each indicator and uncertainty scenario.
-
+-   *calcPerfomance()*: Attaches the portfolio performances of all indicators and scenarios as data frame. The data can be used for straightforward visualization of the performance. The performance is defined as the distance to the maximum achievable level for each indicator and uncertainty scenario.
 
 <h3>
 <a name="6. Beispielhafte Anwendung">Exemplary application</a>
 </h3>
 
-<h4>
-Technical workflow with simple example code
-</h4>
+
+#### Technical workflow with simple use-case
 
 ```{r, results='hide',message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4}
 install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
 ```
+
+### Installing *optimLanduse*, loading required packages and importing the data
+
+The data is taken from the openly available *Supplemental material 1* of Gosling et al. (2020). It is firmly integrated into the package and can be accessed via *exampleData("exampleGosling.xlsx")*. The data is already prepared in the expected *optimLanduse* format. Gosling et al. ...
 
 ```{r, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4}
 library(optimLanduse)
@@ -124,7 +117,7 @@ library(ggsci)
 path <- exampleData("exampleGosling.xlsx")
 dat <- read_excel(path)
 
-head(dat)
+dat
 
 # Initializing an optimLanduse-object using initScenario()
 init <- initScenario(dat,
@@ -182,8 +175,6 @@ ggplot(performance$scenarioTable,
   geom_hline(aes(yintercept=100), size =1) + 
   annotate(geom = "Text", x = 6, y = 100, label = "Maximum achievable indicator level",
            vjust = -1)
-
-
 ```
 
 <h4>
@@ -399,10 +390,10 @@ result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6)
 
 ```
 
-
 <h5>
 Possibility to analyze the model sensitivity
 </h5>
+
 ```{r, fig.height = 3, fig.width = 4, warning=FALSE}
 
 #### Not meeting household needs anymore ####
@@ -472,11 +463,10 @@ Husmann, K.; von Groß, V.; Bödeker, K.; Fuchs, J.; Paul, C.; Knoke, T. (under 
 <a name="8. Literatur">Literature</a>
 </h3>
 
-Gosling, E., Reith, E., Knoke T., Gerique, A., Paul, C. (2020): Exploring farmer perceptions of agroforestry via multi-objective optimisation: a test application in Eastern Panama. <em>Agroforestry Systems</em> **94(5)**. https://doi.org/10.1007/s10457-020-00519-0
+Gosling, E., Reith, E., Knoke T., Gerique, A., Paul, C. (2020): Exploring farmer perceptions of agroforestry via multi-objective optimisation: a test application in Eastern Panama. <em>Agroforestry Systems</em> **94(5)**. <https://doi.org/10.1007/s10457-020-00519-0>
 
-Knoke, T., Paul, C., Hildebrandt, P. et al. (2016): Compositional diversity of rehabilitated tropical lands supports multiple ecosystem services and buffers uncertainties. <em>Nat Commun</EM> **7**, 11877. https://doi.org/10.1038/ncomms11877
+Knoke, T., Paul, C., Hildebrandt, P. et al. (2016): Compositional diversity of rehabilitated tropical lands supports multiple ecosystem services and buffers uncertainties. <em>Nat Commun</EM> **7**, 11877. <https://doi.org/10.1038/ncomms11877>
 
-Paul, C., Weber, M., Knoke, T. (2017): Agroforestry versus farm mosaic systems – Comparing land-use efficiency, economic returns and risks under climate change effects. <em>Sci. Total Environ.</em> **587-588**. https://doi.org/10.1016/j.scitotenv.2017.02.037.
+Paul, C., Weber, M., Knoke, T. (2017): Agroforestry versus farm mosaic systems – Comparing land-use efficiency, economic returns and risks under climate change effects. <em>Sci. Total Environ.</em> **587-588**. <https://doi.org/10.1016/j.scitotenv.2017.02.037>.
 
-Knoke, T., Paul, C., et al. (2020). Accounting for multiple ecosystem services in a simulation of land‐use decisions: Does it reduce tropical deforestation?. <em>Global change biology</em> **26(4)**. https://doi.org/10.1111/gcb.15003
-
+Knoke, T., Paul, C., et al. (2020). Accounting for multiple ecosystem services in a simulation of land‐use decisions: Does it reduce tropical deforestation?. <em>Global change biology</em> **26(4)**. <https://doi.org/10.1111/gcb.15003>

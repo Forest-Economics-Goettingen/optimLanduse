@@ -9,10 +9,11 @@
 <a href="#1. Einleitung">Introduction</a>
 </li>
 <li>
-<a href="#3. Input und Output">Package structure</a>
+<a href="#3. Input und Output">Detailed description of the in- and
+output and the package elements</a>
 </li>
 <li>
-<a href="#6. Beispielhafte Anwendung">Exemplary application</a>
+<a href="#6. Beispielhafte Anwendung">Use-case</a>
 </li>
 <li>
 <a href="#7. Suggested">Suggested citation</a>
@@ -29,16 +30,16 @@ The R package **optimLanduse** provides tools for easy and systematic
 applications of the robust multiobjective land-cover composition
 optimization approach of Knoke et al. (2016). It includes tools to
 determine the land-cover composition that best balances the multiple
-functions a landscape can provide, and tools for understanding and
-visualizing how these compromises are reasoned. The **README.md** below
-guides users through the application and highlights possible use-cases
-on the basis of a published data set. Illustrating the consequences of
-alternative ecosystem functions on the theoretically optimal landscape
-composition provides easily interpretable information for landscape
-modeling and decision making. The method is already established in
-land-use optimization and has been applied in a couple of studies. More
-details about the theory, the definition of the formal optimization
-problem and also significant examples are listed in the
+functions and services a landscape can provide, and tools for
+understanding and visualizing how these compromises are reasoned. The
+**README.md** below guides users through the application and highlights
+possible use-cases on the basis of a published data set. Illustrating
+the consequences of alternative ecosystem functions on the theoretically
+optimal landscape composition provides easily interpretable information
+for landscape modeling and decision making. The method is already
+established in land-use optimization and has been applied in a couple of
+studies. More details about the theory, the definition of the formal
+optimization problem and also significant examples are listed in the
 <a href="#8. Literatur">literature</a> section
 
 The package opens the approach of Knoke et al. (2016) to the community
@@ -54,7 +55,7 @@ idea of the functionalities of the package, see
 
 This chapter provides brief overview over the package functions. For
 detailed information about methodological background, functions and
-workflow please refer to Husmann et al. (under revision) listed in the
+workflow please refer to Husmann et al. (n.d.) listed in the
 <a href="#7. Suggested">suggested citation</a> section. Furthermore you
 can consider the respective help pages for more information. The
 function *lpSolveAPI* comes from the **lpSolveAPI** package.
@@ -65,29 +66,29 @@ function *lpSolveAPI* comes from the **lpSolveAPI** package.
 
 #### Initialization and Input
 
-The *initScenario()* function integrates the user settings into the data
-and returns an *optimLanduse*-object ready for solving. The following
-input data are required:
+The *initScenario()* function combines the user settings with the data
+into an *optimLanduse*-object ready for solving. The following input
+data are required:
 
 -   *Coefficients table*: The package is **only capable** of processing
-    a long-oriented type of data structure. All indicators have to
-    vertically listed with their average expectations and uncertainties
-    for the different land-cover alternatives. The columns of the table
-    **must contain** a predefined heading. You can take this exact
-    format from the given example table **exampleGosling.xlsx** or
-    follow the below excerpt of this table:
+    a long-oriented type of data structure. All combinations of land
+    cover (landUse) alternatives and indicators have to be listed
+    vertically. Each row must contain the average expectation, the
+    uncertainty, and the direction of the respective land-cover and
+    indicator combination. The column names of the table **must follow**
+    the expected nomenclature displayed below. You also find this format
+    in the built-in example tables **exampleGosling.xlsx** or
+    **exampleEmpty.xlsx**. All further columns will be dropped if
+    passed.
 
 <p align="center">
 <img width="673.4" height="298.2" src="./man/figures/exampleGraphic.png">
 </p>
 
-           See the help files of the **exampleData** and
-**initScenario** functions for more details. An empty template (for
-predefined headings)  
-           is additionally given in the package and can be called via
-exampleData(“exampleEmpty.xlsx”).
-
-<br>
+\| See the help files of the **exampleData** and **initScenario**
+functions for more details. An empty template (incl. predefined
+headings) \| can be accessed via the exampleData(“exampleEmpty.xlsx”)
+function. <br>
 
 -   *uValue*: The argument for the uncertainty level. A higher uValue
     reflects a higher risk aversion of the decision maker. See the help
@@ -100,10 +101,11 @@ exampleData(“exampleEmpty.xlsx”).
     frequently used in recent literature and therefore builds the
     default.
 
--   *fixDistance*: TBD (Need to create a uniform understandable
-    description for readme and helper functions package). Problem is,
-    that the definition in the paper is quite linked with the equation
-    in the paper.
+-   *fixDistance*: Optional numeric value that defines distinct
+    uncertainty levels for the calculation of the uncertainty space and
+    the averaged distances of a certain land-cover composition (see
+    Equation 9 in Husmann et al. (n. d.)). Passing NA disables
+    fixDistance. The untertainty space is then defined by the uValue.
 
 #### Solver and list with results
 
@@ -118,46 +120,78 @@ entirely on the number of digits calculated.
     the number of digits calculated.
 
 -   *lowerBound* & *upperBound*: Optional bounds for the land-use
-    options. Choosing 0 and 1 (the defaults) as boundaries for all
-    decision variables, means that no land-cover alternative is forced
-    into the farm portfolio and that no land-cover alternative is
-    assigned a maximum share.
+    options. The lower bound must be 0 or a vector with lower bounds in
+    the dimension of the land-use options. The upper bound,
+    respectivlely, 1 or a vector with upper bounds in the dimension of
+    the land-use options. Choosing 0 and 1 (the defaults) as boundaries
+    for all decision variables, means that no land-cover alternative is
+    forced into the portfolio and that no land-cover alternative is
+    assigned a maximum.
 
 The resulting *list with results* contains different Information of the
 optimization model. First the information of the *initScenario()*
 function are displayed again in this list. These include:
 
--   *scenarioSettings*: List of the used values for *uValue* and
-    *optimisticRule*.
--   *scenarioTable*: Detailed table with all possible indicator
-    combinations.
--   *coefObjective*: The coefficients of the objective function.
--   *coefConstraing*: The constraints of the objective function.
+-   *scenarioSettings*: Data frame with *uValue* and *optimisticRule*
+    used.
+-   *scenarioTable*: Data frame with one row for each combination of
+    worst-case and best-case outcomes of all indicators (thus the number
+    of scenarios
+    ![N_S](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N_S "N_S")
+    in Husmann et al (n.d.)). The columns contain certain relevant
+    calculation steps of the optimization program. *adjSem\** are the
+    uncertainty adjusted indicators
+    (![R\_{liu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;R_%7Bliu%7D "R_{liu}")
+    in Husmann et al. (n.d.)). *minAdjSem* are the minimal uncertainty
+    adjusted indicators
+    ![min(R\_{liu})](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;min%28R_%7Bliu%7D%29 "min(R_{liu})")
+    and
+    ![max(R\_{liu})](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;max%28R_%7Bliu%7D%29 "max(R_{liu})")
+    the maximal uncertainty adjusted indicators. diffAdjSem are the
+    range between these uncertainty adjusted indicators
+    ![\\delta\_{\\text{min,max}\_{iu}}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cdelta_%7B%5Ctext%7Bmin%2Cmax%7D_%7Biu%7D%7D "\delta_{\text{min,max}_{iu}}").
+-   *coefObjective*: The optimization program is translated into a
+    linear program with
+    ![N_L](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N_L "N_L")
+    (number of land-use options) coefficients for the inner solution.
+    The inner solution is solved using *lpSolveAPI*. *coefObjective* is
+    the data frame that contains these coefficients.
+-   *coefConstraing*: A data frame with the respective constraints for
+    the inner solution solved by *lpsolveAPI*.
 -   *distances*: The distance of each scenario to its own theoretically
-    best-achievable contribution.
+    best-achievable contribution (reference). See equation 3 in Husmann
+    et al. (n.d.).
 
 This is followed by a summary of the results of the optimization:
 
--   *β*: The maximum distance of the worst performing scenario.
--   *landUse*: The resulting land-cover allocation in the optimum.
+-   *β*: The maximum distance of the worst performing scenario (equation
+    1 in Husmann et al. (n.d.)).
+-   *landUse*: The resulting land-cover composition in the optimum.
 
 #### Post-processing
 
 -   *calcPerfomance()*: Attaches the portfolio performances of all
-    scenarios and creates a frame for the visualization. The performance
-    is defined as the distance to the maximum achievable level for each
+    indicators and scenarios as data frame. The data can be used for
+    straightforward visualization of the performance. The performance is
+    defined as the distance to the maximum achievable level for each
     indicator and uncertainty scenario.
 
 <h3>
 <a name="6. Beispielhafte Anwendung">Exemplary application</a>
 </h3>
-<h4>
-Technical workflow with simple example code
-</h4>
+
+#### Technical workflow with simple use-case
 
 ``` r
 install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
 ```
+
+### Installing *optimLanduse*, loading required packages and importing the data
+
+The data is taken from the openly available *Supplemental material 1* of
+Gosling et al. (2020). It is firmly integrated into the package and can
+be accessed via *exampleData(“exampleGosling.xlsx”)*. The data is
+already prepared in the expected *optimLanduse* format. Gosling et al. …
 
 ``` r
 library(optimLanduse)
@@ -170,18 +204,23 @@ library(ggsci)
 path <- exampleData("exampleGosling.xlsx")
 dat <- read_excel(path)
 
-head(dat)
+dat
 ```
 
-    ## # A tibble: 6 × 6
-    ##   indicatorGroup     indicator direction landUse indicatorValue indicatorUncert…
-    ##   <chr>              <chr>     <chr>     <chr>            <dbl>            <dbl>
-    ## 1 Long-term income   Long-ter… more is … Crops             6.34            0.396
-    ## 2 Labour demand      Labour d… less is … Crops             8.31            0.371
-    ## 3 Meeting household… Meeting … more is … Crops             9.62            0.223
-    ## 4 Financial stabili… Financia… more is … Crops             5.69            0.450
-    ## 5 Liquidity          Liquidity more is … Crops             7.45            0.334
-    ## 6 Investment costs   Investme… less is … Crops             7.34            0.369
+    ## # A tibble: 60 × 6
+    ##    indicatorGroup    indicator direction landUse indicatorValue indicatorUncert…
+    ##    <chr>             <chr>     <chr>     <chr>            <dbl>            <dbl>
+    ##  1 Long-term income  Long-ter… more is … Crops             6.34            0.396
+    ##  2 Labour demand     Labour d… less is … Crops             8.31            0.371
+    ##  3 Meeting househol… Meeting … more is … Crops             9.62            0.223
+    ##  4 Financial stabil… Financia… more is … Crops             5.69            0.450
+    ##  5 Liquidity         Liquidity more is … Crops             7.45            0.334
+    ##  6 Investment costs  Investme… less is … Crops             7.34            0.369
+    ##  7 Management compl… Manageme… less is … Crops             8.06            0.404
+    ##  8 Protecting water… Protecti… more is … Crops             4.03            0.427
+    ##  9 Protecting soil … Protecti… more is … Crops             5.47            0.462
+    ## 10 General preferen… General … more is … Crops            15               3.44 
+    ## # … with 50 more rows
 
 ``` r
 # Initializing an optimLanduse-object using initScenario()
