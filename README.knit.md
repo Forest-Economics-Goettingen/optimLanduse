@@ -2,9 +2,7 @@
 output: github_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 ## optimLanduse
 
@@ -104,12 +102,14 @@ Enriching agricultural farms with forest plantations has potential to enhance th
 
 ### Installing *optimLanduse*, loading required packages and importing the data
 
-```{r, results='hide',message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4}
+
+```r
 # If not already installed
 install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
 ```
 
-```{r, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4}
+
+```r
 library(optimLanduse)
 library(readxl)
 library(ggplot2)
@@ -123,7 +123,8 @@ dat <- read_excel(path)
 
 *dat* is in the required format. Refer to the help of the initScenatio function or to the <a href="#3. Input und Output">detailed description of the functions' in- and outputs</a> chapter for more details.
 
-```{r, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4}
+
+```r
 # Initializing an optimLanduse-object
 init <- initScenario(dat,
                      uValue = 2,
@@ -135,7 +136,8 @@ init <- initScenario(dat,
 
 In consistence with Gosling et al., we chose the expectations of the indicator as optimistic outcomes (optimisticRule = "expectation") and the same uncertainty for the calculation of the averaged distances and the uncertainty space (fixDistance = NA, see equations 4 and 9 in Husmann et al. (n.d.) for more details).
 
-```{r, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4}
+
+```r
 # Solve the initialized optimLanduse object using the solveScenario() function                     
 result <- solveScenario(x = init)
 
@@ -156,9 +158,12 @@ result$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>%
   guides(fill=guide_legend(title = ""))
 ```
 
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
 The here optimized farm composition corresponds to figure 3 ($f_u=2$) in Gosling et al (2020).
 
-```{r, results='hide', message=FALSE, warning=FALSE, fig.height = 5, fig.width = 10}
+
+```r
 # Performance calculations
 performance <- calcPerformance(result)
 
@@ -189,12 +194,14 @@ ggplot(performance$scenarioTable,
            vjust = -1)
 ```
 
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
 <h4>
 Calculations for different uncertainty levels and fixDistance
 </h4>
 
-```{r, fig.height = 3, fig.width = 4}
 
+```r
 #### uValue == 0 ####
 
 # Initializing an optimLanduse-object using initScenario()
@@ -205,18 +212,94 @@ init_u0 <- initScenario(dat,
                      fixDistance = 3) 
                      # 3 is the default
 init_u0$scenarioSettings
-names(init_u0$scenarioTable)
-init_u0$coefObjective
-colnames(init_u0$coefConstraint)
-head(init_u0$distance)
+```
 
+```
+##   uValue optimisticRule
+## 1      0    expectation
+```
+
+```r
+names(init_u0$scenarioTable)
+```
+
+```
+##  [1] "indicator"             "outcomeCrops"          "outcomePasture"       
+##  [4] "outcomeAlley Cropping" "outcomeSilvopasture"   "outcomePlantation"    
+##  [7] "outcomeForest"         "direction"             "meanCrops"            
+## [10] "meanPasture"           "meanAlley Cropping"    "meanSilvopasture"     
+## [13] "meanPlantation"        "meanForest"            "semCrops"             
+## [16] "semPasture"            "semAlley Cropping"     "semSilvopasture"      
+## [19] "semPlantation"         "semForest"             "adjSemCrops"          
+## [22] "adjSemPasture"         "adjSemAlley Cropping"  "adjSemSilvopasture"   
+## [25] "adjSemPlantation"      "adjSemForest"          "minAdjSem"            
+## [28] "maxAdjSem"             "diffAdjSem"
+```
+
+```r
+init_u0$coefObjective
+```
+
+```
+##          adjSemCrops        adjSemPasture adjSemAlley Cropping 
+##             30692.49             39575.50             32183.89 
+##   adjSemSilvopasture     adjSemPlantation         adjSemForest 
+##             46381.16             32946.34             41772.16
+```
+
+```r
+colnames(init_u0$coefConstraint)
+```
+
+```
+## [1] "adjSemCrops_modified"          "adjSemPasture_modified"       
+## [3] "adjSemAlley Cropping_modified" "adjSemSilvopasture_modified"  
+## [5] "adjSemPlantation_modified"     "adjSemForest_modified"
+```
+
+```r
+head(init_u0$distance)
+```
+
+```
+##   minAdjSem maxAdjSem
+## 1  5.656250   7.84375
+## 2  4.337517   7.84375
+## 3  5.423330   7.84375
+## 4  4.337517   7.84375
+## 5  5.394631   7.84375
+## 6  4.337517   7.84375
+```
+
+```r
 # Solve the initialized optimLanduse object with the solveScenario() function                 
 result_u0 <- solveScenario(x = init_u0)
 
 result_u0$status
-result_u0$beta
-result_u0$landUse
+```
 
+```
+## [1] "optimized"
+```
+
+```r
+result_u0$beta
+```
+
+```
+## [1] 0.5396
+```
+
+```r
+result_u0$landUse
+```
+
+```
+##       Crops Pasture Alley Cropping Silvopasture Plantation    Forest
+## 1 0.1292587       0              0    0.4590822          0 0.4116591
+```
+
+```r
 # Typical result visualization
 result_u0$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
   mutate(uValue = "0",
@@ -232,8 +315,11 @@ result_u0$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) + 
   guides(fill=guide_legend(title=""))
+```
 
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
+```r
 #### uValue == 3 ####
 
 init_u3 <- initScenario(dat,
@@ -258,9 +344,9 @@ result_u3$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) + 
   guides(fill=guide_legend(title=""))
-
-
 ```
+
+![](README_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
 
 <h3>
 <a name="6. Erweiterte Anwendung">Sophisticated application</a>
@@ -270,8 +356,8 @@ result_u3$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
 Exemplary batch application for distinct uncertainty values u
 </h5>
 
-```{r, fig.height = 5, fig.width = 7, warning=FALSE}
 
+```r
 # define sequence of uncertainties
 u <- seq(0, 3, .5)
 
@@ -303,7 +389,11 @@ loopDf %>% gather(key = "land-use option", value = "land-use share", -u, -beta) 
   theme_classic()+
   theme(text = element_text(size = 18),
         legend.position = "bottom")
+```
 
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+```r
 # alternative 2: apply, faster
 applyDf <- data.frame(u = u)
 
@@ -333,8 +423,9 @@ applyDf %>% gather(key = "land-use option", value = "land-use share", -u, -beta)
   theme_classic()+
   theme(text = element_text(size = 18),
         legend.position = "bottom")
-
 ```
+
+![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
 Earlier more pasture because of larger uncertainty frame (TBD)
 
@@ -348,8 +439,8 @@ Test
 Different indicator bundles 
 </h5>
 
-```{r, fig.height = 3, fig.width = 4, warning=FALSE}
 
+```r
 #### Socio-economic bundle ####
 
 dat_socioeconomic <- dat[dat$indicator != "Protecting soil resources" & dat$indicator !="Protecting water supply",]
@@ -375,8 +466,11 @@ result_socioeconomic$landUse %>% gather(key = landUseOption, value = landUseShar
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) + 
   guides(fill=guide_legend(title=""))
+```
 
-  
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+```r
 #### Farmer priority bundle ####
 
 dat_farmer <- dat[dat$indicator %in% c("Protecting soil resources" , "Protecting water supply", "Meeting household needs"),]
@@ -402,16 +496,16 @@ result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6)
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) + 
   guides(fill=guide_legend(title=""))
-
-
 ```
+
+![](README_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
 
 <h5>
 Possibility to analyze the model sensitivity
 </h5>
 
-```{r, fig.height = 3, fig.width = 4, warning=FALSE}
 
+```r
 #### Not meeting household needs anymore ####
 
 dat_farmer <- dat[dat$indicator %in% c("Protecting soil resources" , "Protecting water supply"),]
@@ -438,7 +532,11 @@ result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6)
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) + 
   guides(fill=guide_legend(title=""))
+```
 
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+```r
 #### Only meeting household needs ####
 
 dat_farmer <- dat[dat$indicator %in% c("Meeting household needs"),]
@@ -465,10 +563,9 @@ result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6)
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) + 
   guides(fill=guide_legend(title=""))
-
-
-
 ```
+
+![](README_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
 
 <h3>
 <a name="7. Suggested">Suggested citation </a>

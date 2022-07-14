@@ -9,11 +9,14 @@
 <a href="#1. Einleitung">Introduction</a>
 </li>
 <li>
-<a href="#3. Input und Output">Detailed description of the in- and
-output and the package elements</a>
+<a href="#3. Input und Output">Detailed description of the functions’
+in- and outputs</a>
 </li>
 <li>
-<a href="#6. Beispielhafte Anwendung">Use-case</a>
+<a href="#5. Beispielhafte Anwendung">Use-case</a>
+</li>
+<li>
+<a href="#6. Erweiterte Anwendung">Sophisticated application</a>
 </li>
 <li>
 <a href="#7. Suggested">Suggested citation</a>
@@ -90,9 +93,11 @@ functions for more details. An empty template (incl. predefined
 headings) \| can be accessed via the exampleData(“exampleEmpty.xlsx”)
 function. <br>
 
--   *uValue*: The argument for the uncertainty level. A higher uValue
-    reflects a higher risk aversion of the decision maker. See the help
-    file of the **initScenario** function for more details.
+-   *uValue*: The argument for the uncertainty level
+    (![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u"),
+    equation 4 in Husmann et al. (n.d.)). A higher uValue reflects a
+    higher risk aversion of the decision maker. See the help file of the
+    **initScenario** function for more details.
 
 -   *optimisticRule*: Specifies whether the optimistic contributions of
     each indicator should be defined either directly by their average,
@@ -177,21 +182,37 @@ This is followed by a summary of the results of the optimization:
     indicator and uncertainty scenario.
 
 <h3>
-<a name="6. Beispielhafte Anwendung">Exemplary application</a>
+<a name="5. Beispielhafte Anwendung">Use-case</a>
 </h3>
 
-#### Technical workflow with simple use-case
+We here present the basic workflow on a literature example. Aim of this
+chapter is to introduce the functionality of the packages’ functions and
+to explain the relevant in- and output on the example of a use-case in
+Eastern Panama. The data of this study is openly accessible in the
+*Supplemental material 1* of Gosling et al. (2020) and also firmly
+integrated into the optimLanduse package. It can be accessed via
+*exampleData(“exampleGosling.xlsx”)*. The data integrated in the package
+comes already in the expected *optimLanduse* format, such that it can be
+used without any data processing.
 
-``` r
-install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
-```
+Enriching agricultural farms with forest plantations has potential to
+enhance the ecosystem functioning of farms in Panama. Gosling et
+al. therefore used the optimization model presented here to understand
+smallholder farmers’ perceptions and values of agroforestry systems.
+They identified 10 relevant indicators for a predefined set of land use
+alternatives, which represent the farmers’ goals. A subsequent survey of
+farmers provided the empirical basis in the form of indicators’
+expectations (arithmetic mean) and uncertainties (standard deviation)
+for each land-cover alternative. Descriptions of the land-cover
+alternatives and indicators can be found in tables 1 and 2 in Gosling et
+al. (2020).
 
 ### Installing *optimLanduse*, loading required packages and importing the data
 
-The data is taken from the openly available *Supplemental material 1* of
-Gosling et al. (2020). It is firmly integrated into the package and can
-be accessed via *exampleData(“exampleGosling.xlsx”)*. The data is
-already prepared in the expected *optimLanduse* format. Gosling et al. …
+``` r
+# If not already installed
+install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
+```
 
 ``` r
 library(optimLanduse)
@@ -200,41 +221,37 @@ library(ggplot2)
 library(tidyverse)
 library(ggsci)
 
-# Loading the example data file
+# Loading the example data
 path <- exampleData("exampleGosling.xlsx")
 dat <- read_excel(path)
-
-dat
 ```
 
-    ## # A tibble: 60 × 6
-    ##    indicatorGroup    indicator direction landUse indicatorValue indicatorUncert…
-    ##    <chr>             <chr>     <chr>     <chr>            <dbl>            <dbl>
-    ##  1 Long-term income  Long-ter… more is … Crops             6.34            0.396
-    ##  2 Labour demand     Labour d… less is … Crops             8.31            0.371
-    ##  3 Meeting househol… Meeting … more is … Crops             9.62            0.223
-    ##  4 Financial stabil… Financia… more is … Crops             5.69            0.450
-    ##  5 Liquidity         Liquidity more is … Crops             7.45            0.334
-    ##  6 Investment costs  Investme… less is … Crops             7.34            0.369
-    ##  7 Management compl… Manageme… less is … Crops             8.06            0.404
-    ##  8 Protecting water… Protecti… more is … Crops             4.03            0.427
-    ##  9 Protecting soil … Protecti… more is … Crops             5.47            0.462
-    ## 10 General preferen… General … more is … Crops            15               3.44 
-    ## # … with 50 more rows
+*dat* is in the required format. Refer to the help of the initScenatio
+function or to the <a href="#3. Input und Output">detailed description
+of the functions’ in- and outputs</a> chapter for more details.
 
 ``` r
-# Initializing an optimLanduse-object using initScenario()
+# Initializing an optimLanduse-object
 init <- initScenario(dat,
                      uValue = 2,
                      optimisticRule = "expectation", 
                      # optimistic contribution of each indicator directly defined by their average 
                      fixDistance = NA) 
                      # 3 is the default
+```
 
-# Solve the initialized optimLanduse object with the solveScenario() function                     
+In consistence with Gosling et al., we chose the expectations of the
+indicator as optimistic outcomes (optimisticRule = “expectation”) and
+the same uncertainty for the calculation of the averaged distances and
+the uncertainty space (fixDistance = NA, see equations 4 and 9 in
+Husmann et al. (n.d.) for more details).
+
+``` r
+# Solve the initialized optimLanduse object using the solveScenario() function                     
 result <- solveScenario(x = init)
 
-result$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
+# Visualize the farm composition
+result$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
   mutate(uValue = "3",
          landUseShare = landUseShare * 100) %>% 
   ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
@@ -245,12 +262,16 @@ result$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
   labs(x = "Optimal farm composition", y = "Allocated share (%)") +
   scale_y_continuous(breaks = seq(0, 100, 10), 
                      limits = c(0, 100)) +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) + 
-  guides(fill=guide_legend(title=""))
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) + 
+  guides(fill=guide_legend(title = ""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+The here optimized farm composition corresponds to figure 3
+(![f_u=2](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u%3D2 "f_u=2"))
+in Gosling et al (2020).
 
 ``` r
 # Performance calculations
@@ -266,24 +287,24 @@ ggplot(performance$scenarioTable,
   geom_hline(yintercept =
                min(performance$scenarioTable$performance),
              linetype = "dashed", color = "red") +
-  guides(color=guide_legend(title="",
+  guides(color = guide_legend(title = "",
                             nrow = 10)) +
   theme_classic() + 
   theme(text = element_text(size = 18),
         legend.position="right") +
   theme(
-        axis.ticks.x=element_blank())+
+        axis.ticks.x = element_blank()) +
   scale_x_discrete(labels = seq(1, 10)) +
   labs(y = "Min-max normalized indicator value (%)",
        x = "Indicators") + 
   scale_y_continuous(breaks = seq(0, 101, 10), 
-                     limits = c(0, 101))+
-  geom_hline(aes(yintercept=100), size =1) + 
+                     limits = c(0, 101)) +
+  geom_hline(aes(yintercept=100), size = 1) + 
   annotate(geom = "Text", x = 6, y = 100, label = "Maximum achievable indicator level",
            vjust = -1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 <h4>
 Calculations for different uncertainty levels and fixDistance
@@ -389,7 +410,7 @@ result_u0$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 #### uValue == 3 ####
@@ -418,8 +439,11 @@ result_u3$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
 
+<h3>
+<a name="6. Erweiterte Anwendung">Sophisticated application</a>
+</h3>
 <h5>
 Exemplary batch application for distinct uncertainty values u
 </h5>
@@ -458,7 +482,7 @@ loopDf %>% gather(key = "land-use option", value = "land-use share", -u, -beta) 
         legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
 # alternative 2: apply, faster
@@ -492,7 +516,7 @@ applyDf %>% gather(key = "land-use option", value = "land-use share", -u, -beta)
         legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
 Earlier more pasture because of larger uncertainty frame (TBD)
 
@@ -534,7 +558,7 @@ result_socioeconomic$landUse %>% gather(key = landUseOption, value = landUseShar
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ``` r
 #### Farmer priority bundle ####
@@ -564,7 +588,7 @@ result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6)
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
 
 <h5>
 Possibility to analyze the model sensitivity
@@ -599,7 +623,7 @@ result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6)
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 #### Only meeting household needs ####
@@ -613,6 +637,7 @@ init_farmer<- initScenario(dat_farmer,
 
 result_farmer <- solveScenario(x = init_farmer)
 
+# VVG: Diese Abb ist die einzige, die e nicht im Paper gibt. Sie ist im Zuge dieser  LOO Analyse entstanden.
 result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
   mutate(uValue = "3",
          landUseShare = landUseShare * 100) %>% 
@@ -629,25 +654,29 @@ result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6)
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
 
 <h3>
 <a name="7. Suggested">Suggested citation </a>
 </h3>
 
-Husmann, K.; von Groß, V.; Bödeker, K.; Fuchs, J.; Paul, C.; Knoke, T.
-(under revision): *optimLanduse*: A Package for Multiobjective
-Land-cover Composition Optimization under Uncertainty. In: *Methods Ecol
-Evol.*
+Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse:
+Robust Land-Use Optimization. R package version 1.0.0.
+<https://CRAN.R-project.org/package=optimLanduse>.
 
 <h3>
 <a name="8. Literatur">Literature</a>
 </h3>
 
-Gosling, E., Reith, E., Knoke T., Gerique, A., Paul, C. (2020):
-Exploring farmer perceptions of agroforestry via multi-objective
-optimisation: a test application in Eastern Panama. <em>Agroforestry
-Systems</em> **94(5)**. <https://doi.org/10.1007/s10457-020-00519-0>
+Gosling, E., Reith, E., Knoke T., Paul, C. (2020): A goal programming
+approach to evaluate agroforestry systems in Eastern Panama<em>Journal
+of Environmental Management</em> **261**.
+<https://doi.org/10.1016/j.jenvman.2020.110248>
+
+Husmann, K.; von Groß, V.; Bödeker, K.; Fuchs, J.; Paul, C.; Knoke, T.
+(no date): *optimLanduse*: A Package for Multiobjective Land-cover
+Composition Optimization under Uncertainty. In: *Methods Ecol Evol.*
+Under revision.
 
 Knoke, T., Paul, C., Hildebrandt, P. et al. (2016): Compositional
 diversity of rehabilitated tropical lands supports multiple ecosystem
