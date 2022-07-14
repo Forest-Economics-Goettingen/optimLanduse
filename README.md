@@ -73,14 +73,14 @@ The *initScenario()* function combines the user settings with the data
 into an *optimLanduse*-object ready for solving. The following input
 data are required:
 
--   *Coefficients table*: The package is **only capable** of processing
-    a long-oriented type of data structure. All combinations of land
-    cover (landUse) alternatives and indicators have to be listed
-    vertically. Each row must contain the average expectation, the
-    uncertainty, and the direction of the respective land-cover and
-    indicator combination. The column names of the table **must follow**
-    the expected nomenclature displayed below. You also find this format
-    in the built-in example tables **exampleGosling.xlsx** or
+-   *Coefficients table*: The package is only capable of processing a
+    long-oriented type of data structure. All combinations of land cover
+    (landUse) alternatives and indicators have to be listed vertically.
+    Each row must contain the average expectation, the uncertainty, and
+    the direction of the respective land-cover and indicator
+    combination. The column names of the table must follow the expected
+    nomenclature displayed below. You also find this format in the
+    built-in example tables **exampleGosling.xlsx** or
     **exampleEmpty.xlsx**. All further columns will be dropped if
     passed.
 
@@ -188,9 +188,9 @@ This is followed by a summary of the results of the optimization:
 We here present the basic workflow on a literature example. Aim of this
 chapter is to introduce the functionality of the packages’ functions and
 to explain the relevant in- and output on the example of a use-case in
-Eastern Panama. The data of this study is openly accessible in the
-*Supplemental material 1* of Gosling et al. (2020) and also firmly
-integrated into the optimLanduse package. It can be accessed via
+Eastern Panama. The data of this study is accessible in the *Appendix A*
+of Gosling et al. (2020) and is also firmly integrated into the
+optimLanduse package. It can be accessed via
 *exampleData(“exampleGosling.xlsx”)*. The data integrated in the package
 comes already in the expected *optimLanduse* format, such that it can be
 used without any data processing.
