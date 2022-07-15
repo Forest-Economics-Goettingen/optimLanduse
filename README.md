@@ -112,7 +112,7 @@ function. <br>
     Equation 9 in Husmann et al. (n. d.)). Passing NA disables
     fixDistance. The uncertainty space is then defined by the uValue.
 
-#### Solver and list with results
+#### Solver and List with results
 
 The *solveScenario()* function requires the initialized *optimLanduse*
 object and only a few optional solver-specific arguments. As the solving
@@ -173,7 +173,7 @@ This is followed by a summary of the results of the optimization:
     1 in Husmann et al. (n.d.)).
 -   *landUse*: The resulting land-cover composition in the optimum.
 
-#### Post-processing
+#### Post-Processing
 
 -   *calcPerfomance()*: Attaches the portfolio performances of all
     indicators and scenarios as data frame. The data can be used for
@@ -207,11 +207,11 @@ for each land-cover alternative. Descriptions of the land-cover
 alternatives and indicators can be found in tables 1 and 2 in Gosling et
 al. (2020).
 
-### Installing *optimLanduse*, loading required packages and importing the data
+### Installing *optimLanduse*, Loading Required Packages and Importing the Data
 
 ``` r
 # If not already installed
-install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
+# install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
 ```
 
 ``` r
@@ -231,6 +231,8 @@ dat <- read_excel(path)
 function or to the <a href="#3. Input und Output">detailed description
 of the functions’ in- and outputs</a> chapter for more details.
 
+### Initializing an *optimLanduse* Object
+
 ``` r
 # Initializing an optimLanduse-object
 init <- initScenario(dat,
@@ -247,13 +249,15 @@ the same uncertainty for the calculation of the averaged distances and
 the uncertainty space (fixDistance = NA, see equations 4 and 9 in
 Husmann et al. (n.d.) for more details).
 
+### Solving the Initialized *optimLanduse* Object
+
 ``` r
 # Solve the initialized optimLanduse object using the solveScenario() function                     
 result <- solveScenario(x = init)
 
 # Visualize the farm composition
 result$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
-  mutate(uValue = "3",
+  mutate(uValue = "2",
          landUseShare = landUseShare * 100) %>% 
   ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
@@ -278,11 +282,13 @@ practically only covers silvopasture and forest. The averaged observed
 farm portfolio in 2018 was, however, mainly composed of pasture and
 cropland and only small share of forest (ca. 15 %).
 
+### Calculating the Portfolio Performances of the Optimized *optimLanduse* Object
+
 ``` r
 # Performance calculations
 performance <- calcPerformance(result)
 
-performance$scenarioTable$performance <- performance$scenarioTable$performance * 100 
+performance$scenarioTable$performance <- performance$scenarioTable$performance * 100
 
 ggplot(performance$scenarioTable,
        aes(x = indicator,
@@ -314,13 +320,322 @@ Looking at the performances of this multi-criterial farm reveals, which
 indicators restrict the result. Here, the indicators 1 (financial
 stability), 3 (investment costs) and 8 (meeting household needs) are
 very close to each other. It can be followed that the portfolio is
-apparently restricted by these 3 indicators.
+apparently restricted by these 3 indicators. In the worst-performing
+scenarios, these 3 indicators are commonly the worst performing
+indicators. Or in other words, the guaranteed performance
+![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
+is defined by one the these indicators, and all of them are very close
+to
+![1-\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1-%5Cbeta "1-\beta").
+It can be interpreted that these 3 indicators are be worthwhile to
+consider in order to find strategy that developes the land-cover
+composition in a desired way. According to Gosling et al. (2020), this
+results was expectable, since the need for short-term liquidity mainly
+drives decisions of the farms of smallholder farms. Intermediate-term
+economic success is not relevant until consumption of the houselhold is
+secured. While the performances of indicator 1 differ relatively strong
+among the scenarios, these of indicators 3 and 8 are similar in each
+scenario. It thus may be interesting to investigate the reasons for this
+particular worst-performing scenario of indicator 1.
 
-perform commonly worst. Indicator 1
+``` r
+performance$beta
+```
 
-<h4>
-Calculations for different uncertainty levels and fixDistance
-</h4>
+    ## [1] 0.6132
+
+``` r
+lowestPerformance <- performance$scenarioTable[order(performance$scenarioTable$performance,
+                                decreasing = FALSE),]
+head(lowestPerformance[,c(1 : 8, 31)], n = 9)
+```
+
+    ##               indicator outcomeCrops outcomePasture outcomeAlley Cropping
+    ## 9   Financial stability         High           High                  High
+    ## 11  Financial stability         High            Low                  High
+    ## 13  Financial stability         High           High                   Low
+    ## 15  Financial stability         High            Low                   Low
+    ## 153    Investment costs         High           High                  High
+    ## 154    Investment costs          Low           High                  High
+    ## 157    Investment costs         High           High                   Low
+    ## 158    Investment costs          Low           High                   Low
+    ## 185    Investment costs         High           High                  High
+    ##     outcomeSilvopasture outcomePlantation outcomeForest      direction
+    ## 9                   Low              High          High more is better
+    ## 11                  Low              High          High more is better
+    ## 13                  Low              High          High more is better
+    ## 15                  Low              High          High more is better
+    ## 153                 Low               Low          High less is better
+    ## 154                 Low               Low          High less is better
+    ## 157                 Low               Low          High less is better
+    ## 158                 Low               Low          High less is better
+    ## 185                 Low               Low           Low less is better
+    ##     performance
+    ## 9      38.68000
+    ## 11     38.68000
+    ## 13     38.68000
+    ## 15     38.68000
+    ## 153    38.68000
+    ## 154    38.68000
+    ## 157    38.68000
+    ## 158    38.68000
+    ## 185    38.68223
+
+Further elaborating the packages’ results indeed reveals that indicator
+1 (financial stability) restricts the optimum and that the worst
+performing scenarios of indicator 3 (investment costs) are equal to the
+worst performing scenarios of indicator 1.
+![1-\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1-%5Cbeta "1-\beta")
+results to this worst performances. All the worst perfoming scenarios
+have in common, that the outcome of silvipasture is pessimistic (Low)
+and thge outcome of forest is optimistic (High). This relationship thus
+might be of interest when developing strategies or policies for a
+desired landscape development.
+
+<h3>
+<a name="6. Erweiterte Anwendung">Sophisticated application</a>
+</h3>
+
+### Batch Analysis: Solving Multiple Uncertainty Values
+
+``` r
+applyDf <- data.frame(u = seq(0, 3, .5))
+
+applyFun <- function(x) {
+  init <- initScenario(dat, uValue = x, optimisticRule = "expectation", fixDistance = NA)
+  result <- solveScenario(x = init)
+  return(c(result$beta, as.matrix(result$landUse)))
+}
+
+applyDf <- cbind(applyDf,
+                 t(apply(applyDf, 1, applyFun)))
+                 
+names(applyDf) <- c("u", "beta", names(result$landUse))
+
+applyDf[, c(3 : 8)] <- applyDf[, c(3 : 8)] * 100
+
+applyDf %>% gather(key = "land-use option", value = "land-use share", -u, -beta) %>%
+  ggplot(aes(y = `land-use share`, x = u, fill = `land-use option`)) + 
+  geom_area(alpha = .8, color = "white") + theme_minimal()+
+  labs(x = "Uncertainty level", y = "Allocated share (%)") + 
+  guides(fill=guide_legend(title="")) + 
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100.01)) +
+  scale_x_continuous(breaks = seq(0, 3, 0.5),
+                     limits = c(0, 3)) + 
+  scale_fill_startrek() +
+  theme(text = element_text(size = 18),
+        legend.position = "bottom")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+Solving the porfolio under increasing assumptions for the untertainty
+levels (uValue, respectively
+![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u")
+in equation 4 (Husmann et al, n.d.) gives sensitivity of the land-cover
+compositions towards increasing aversity of risk of the farmer. The
+higher the uncertainty level, the higher the deviation of the indicator
+consequences on the land-cover options. Here, the composition of
+land.use alternatives is quite stable. Only the small proportion of
+crops (ca 10 %) is interchanged with small proportions of pasture and
+plantation. Forest and Silvopasture are practically not affected by the
+uncertainty level. The plot corresponds to figure 3 in Gosling et
+al. (2020).
+
+### Leave-Indicators-Out-Analysis to Investigate the Indicators’ Sensitivity
+
+The sensitivity of the portfolio towards indicators or groups of
+indicators can be straightforwardly analysed by either leaving
+indicators of interest out and interpreting the response of the
+portfolio or, alternatively, by adding indicators of interest. Typical
+way to conduct sensitivity analyses is thus to compare distinct and
+independent optimization results.
+
+``` r
+dat_socioeconomic <- dat[dat$indicator != "Protecting soil resources" & dat$indicator !="Protecting water supply",]
+
+init_socioeconomic <- initScenario(dat_socioeconomic,
+                     uValue = 2,
+                     optimisticRule = "expectation", 
+                     fixDistance = NA) 
+
+result_socioeconomic <- solveScenario(x = init_socioeconomic)
+
+result_socioeconomic$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
+  mutate(uValue = "3",
+         landUseShare = landUseShare * 100) %>% 
+  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  geom_bar(position = "stack", stat = "identity") + 
+  theme_classic() +
+  theme(text = element_text(size = 14)) +
+  scale_fill_startrek() +
+  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) + 
+  guides(fill=guide_legend(title=""))
+```
+
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+First leave-indicator-out example considers socio-economic indicators
+only (see also figure 5 of Gosling et al. (2020)). Expectedly, it
+corresponds to the above shown multi-objective portfolio, as all
+indicators relevant for the solution of the multi-objective portfolio
+are captured also in the socio-economic group.
+
+``` r
+performance_socioeconomic <- calcPerformance(result_socioeconomic)
+
+performance_socioeconomic$scenarioTable$performance <-
+  performance_socioeconomic$scenarioTable$performance * 100
+
+performance_socioeconomic$beta
+```
+
+    ## [1] 0.6132
+
+``` r
+lowestPerformance_socioeconomic <- performance_socioeconomic$scenarioTable[
+  order(performance_socioeconomic$scenarioTable$performance,
+        decreasing = FALSE),]
+
+head(lowestPerformance_socioeconomic[,c(1 : 8, 31)], n = 9)
+```
+
+    ##               indicator outcomeCrops outcomePasture outcomeAlley Cropping
+    ## 9   Financial stability         High           High                  High
+    ## 11  Financial stability         High            Low                  High
+    ## 13  Financial stability         High           High                   Low
+    ## 15  Financial stability         High            Low                   Low
+    ## 153    Investment costs         High           High                  High
+    ## 154    Investment costs          Low           High                  High
+    ## 157    Investment costs         High           High                   Low
+    ## 158    Investment costs          Low           High                   Low
+    ## 185    Investment costs         High           High                  High
+    ##     outcomeSilvopasture outcomePlantation outcomeForest      direction
+    ## 9                   Low              High          High more is better
+    ## 11                  Low              High          High more is better
+    ## 13                  Low              High          High more is better
+    ## 15                  Low              High          High more is better
+    ## 153                 Low               Low          High less is better
+    ## 154                 Low               Low          High less is better
+    ## 157                 Low               Low          High less is better
+    ## 158                 Low               Low          High less is better
+    ## 185                 Low               Low           Low less is better
+    ##     performance
+    ## 9      38.68000
+    ## 11     38.68000
+    ## 13     38.68000
+    ## 15     38.68000
+    ## 153    38.68000
+    ## 154    38.68000
+    ## 157    38.68000
+    ## 158    38.68000
+    ## 185    38.68223
+
+A look at the relevant preformances reveals this finding. The result is
+still limited by financial stability and investment costs. Accordingly,
+also this socio-economic portfolio still does not percetly reflect the
+actual observable land-cover composition, so that among these considered
+indicators further indcators appear to be relevant for the farmers.
+
+``` r
+dat_ecologic <- dat[dat$indicator %in% c("Protecting soil resources",
+                                         "Protecting water supply"),]
+
+init_ecologic <- initScenario(dat_ecologic,
+                     uValue = 2,
+                     optimisticRule = "expectation", 
+                     fixDistance = NA) 
+
+result_ecologic <- solveScenario(x = init_ecologic)
+
+result_ecologic$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
+  mutate(uValue = "3",
+         landUseShare = landUseShare * 100) %>% 
+  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  geom_bar(position = "stack", stat = "identity") + 
+  theme_classic() +
+  theme(text = element_text(size = 14)) +
+  scale_fill_startrek() +
+  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100)) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) + 
+  guides(fill=guide_legend(title=""))
+```
+
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+The ecological indicator group, as the second example for
+leave-indicators-out analysis, leads to a portfolio covering forests
+only (see also figure 5 of Gosling et al. (2020)). It can be followed
+that all contributions of all other land-cover alternatives in all
+scenarios (even the optimistic outcomes) to ecological indicators are
+lower then the contribution of forest. This portfolio differs even more
+from the actually observed portfolio. Also the ecological indicators are
+apparently not sufficient to approximate the farmers’ actual inceptions.
+
+### Short Term Economic Success
+
+``` r
+dat_short <- dat[dat$indicator %in% c("Labour demand" , "Meeting household needs",
+                                      "Liquidity", "Investment costs",
+                                      "Management complexity"),]
+
+init_short<- initScenario(dat_short,
+                     uValue = 2,
+                     optimisticRule = "expectation", 
+                     fixDistance = NA) 
+
+result_short <- solveScenario(x = init_short)
+
+result_short$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
+  mutate(uValue = "3",
+         landUseShare = landUseShare * 100) %>% 
+  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  geom_bar(position = "stack", stat = "identity") + 
+  theme_classic() +
+  theme(text = element_text(size = 14)) +
+  scale_fill_startrek() +
+  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  scale_y_continuous(breaks = seq(0, 100, 10), 
+                     limits = c(0, 100)) +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) + 
+  guides(fill = guide_legend(title = ""))
+```
+
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+The third example considers the prospective relevant indicators of the
+farmers. It corresponds also to figure 5 of Gosling et al. (2020). And
+indeed this portfolio best reflects the oberved portfolio. It can be
+followed that these indicators best reflect the farmers’ goals. The
+difference between this portfolio and the societally desired
+multi-objective portfolio
+
+“From a policy perspective, results highlight key requirements that
+agroforestry must fulfil to be more attractive to farmers in the study
+area. We contend that silvopasture (as defined in our study) may not
+align with these key requirements. If farmers prioritise liquidity and
+meeting household needs over long-term profit and economic stability,
+then pasture (with scattered trees) and not silvopasture (with 200 trees
+per hectare) would be the rational land-use choice for a risk-averse de­
+cision-maker. This demonstrates the need to select and promote agro­
+forestry systems that provide early and frequent income flows, as well
+as ongoing opportunities to harvest food crops.” … umformulieren und
+kürzen.
+
+TBD: Abb passt nicht! Da muss ein Fehler sein!
+
+### The use of fixDistance
+
+Till now, the …
 
 ``` r
 #### uValue == 0 ####
@@ -422,7 +737,7 @@ result_u0$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
 #### uValue == 3 ####
@@ -451,222 +766,7 @@ result_u3$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>%
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
-
-<h3>
-<a name="6. Erweiterte Anwendung">Sophisticated application</a>
-</h3>
-<h5>
-Exemplary batch application for distinct uncertainty values u
-</h5>
-
-``` r
-# define sequence of uncertainties
-u <- seq(0, 3, .5)
-
-# prepare empty data frame for the results
-
-## alternative 1: loop, simply implemented ##
-
-loopDf <- data.frame(u = u, matrix(NA, nrow = length(u), ncol = 1 + length(unique(dat$landUse))))
-names(loopDf) <- c("u", "beta", unique(dat$landUse))
-
-for(i in u) {
-  init <- initScenario(dat, uValue = i, optimisticRule = "expectation", fixDistance = 3)
-  result <- solveScenario(x = init)
-  loopDf[loopDf$u == i,] <- c(i, result$beta, as.matrix(result$landUse))
-}
-
-loopDf[, 3:8] <- loopDf[,3:8] * 100
-
-loopDf %>% gather(key = "land-use option", value = "land-use share", -u, -beta) %>%
-  ggplot(aes(y = `land-use share`, x = u, fill = `land-use option`)) + 
-  geom_area(alpha = .8, color = "white") + theme_minimal()+
-  labs(x = "Uncertainty level", y = "Allocated share (%)") + 
-  guides(fill=guide_legend(title="")) + 
-  scale_y_continuous(breaks = seq(0, 100, 10), 
-                     limits = c(0, 100.01)) +
-  scale_x_continuous(breaks = seq(0, 3, 0.5),
-                     limits = c(0, 3)) + 
-  scale_fill_startrek() +
-  theme_classic()+
-  theme(text = element_text(size = 18),
-        legend.position = "bottom")
-```
-
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
-
-``` r
-# alternative 2: apply, faster
-applyDf <- data.frame(u = u)
-
-applyFun <- function(x) {
-  init <- initScenario(dat, uValue = x, optimisticRule = "expectation", fixDistance = 3)
-  result <- solveScenario(x = init)
-  return(c(result$beta, as.matrix(result$landUse)))
-}
-
-applyDf <- cbind(applyDf,
-                 t(apply(applyDf, 1, applyFun)))
-                 
-names(applyDf) <- c("u", "beta", names(result$landUse))
-
-applyDf[, 3:8] <- applyDf[,3:8] * 100
-
-applyDf %>% gather(key = "land-use option", value = "land-use share", -u, -beta) %>%
-  ggplot(aes(y = `land-use share`, x = u, fill = `land-use option`)) + 
-  geom_area(alpha = .8, color = "white") + theme_minimal()+
-  labs(x = "Uncertainty level", y = "Allocated share (%)") + 
-  guides(fill=guide_legend(title="")) + 
-  scale_y_continuous(breaks = seq(0, 100, 10), 
-                     limits = c(0, 100.01)) +
-  scale_x_continuous(breaks = seq(0, 3, 0.5),
-                     limits = c(0, 3)) + 
-  scale_fill_startrek() +
-  theme_classic()+
-  theme(text = element_text(size = 18),
-        legend.position = "bottom")
-```
-
-![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
-
-Earlier more pasture because of larger uncertainty frame (TBD)
-
-<h4>
-Sophisticated application
-</h4>
-
-Test
-
-<h5>
-Different indicator bundles
-</h5>
-
-``` r
-#### Socio-economic bundle ####
-
-dat_socioeconomic <- dat[dat$indicator != "Protecting soil resources" & dat$indicator !="Protecting water supply",]
-
-init_socioeconomic <- initScenario(dat_socioeconomic,
-                     uValue = 2,
-                     optimisticRule = "expectation", 
-                     fixDistance = NA) 
-
-result_socioeconomic <- solveScenario(x = init_socioeconomic)
-
-result_socioeconomic$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
-  mutate(uValue = "3",
-         landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
-  geom_bar(position = "stack", stat = "identity") + 
-  theme_classic() +
-  theme(text = element_text(size = 14)) +
-  scale_fill_startrek() +
-  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
-  scale_y_continuous(breaks = seq(0, 100, 10), 
-                     limits = c(0, 100)) +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) + 
-  guides(fill=guide_legend(title=""))
-```
-
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
-
-``` r
-#### Farmer priority bundle ####
-
-dat_farmer <- dat[dat$indicator %in% c("Protecting soil resources" , "Protecting water supply", "Meeting household needs"),]
-
-init_farmer<- initScenario(dat_farmer,
-                     uValue = 2,
-                     optimisticRule = "expectation", 
-                     fixDistance = NA) 
-
-result_farmer <- solveScenario(x = init_farmer)
-
-result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
-  mutate(uValue = "3",
-         landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
-  geom_bar(position = "stack", stat = "identity") + 
-  theme_classic() +
-  theme(text = element_text(size = 14)) +
-  scale_fill_startrek() +
-  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
-  scale_y_continuous(breaks = seq(0, 100, 10), 
-                     limits = c(0, 100)) +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) + 
-  guides(fill=guide_legend(title=""))
-```
-
-![](README_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
-
-<h5>
-Possibility to analyze the model sensitivity
-</h5>
-
-``` r
-#### Not meeting household needs anymore ####
-
-dat_farmer <- dat[dat$indicator %in% c("Protecting soil resources" , "Protecting water supply"),]
-  
-
-init_farmer<- initScenario(dat_farmer,
-                     uValue = 2,
-                     optimisticRule = "expectation", 
-                     fixDistance = NA) 
-
-result_farmer <- solveScenario(x = init_farmer)
-
-result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
-  mutate(uValue = "3",
-         landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
-  geom_bar(position = "stack", stat = "identity") + 
-  theme_classic() +
-  theme(text = element_text(size = 14)) +
-  scale_fill_startrek() +
-  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
-  scale_y_continuous(breaks = seq(0, 100, 10), 
-                     limits = c(0, 100)) +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) + 
-  guides(fill=guide_legend(title=""))
-```
-
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
-
-``` r
-#### Only meeting household needs ####
-
-dat_farmer <- dat[dat$indicator %in% c("Meeting household needs"),]
-  
-init_farmer<- initScenario(dat_farmer,
-                     uValue = 2,
-                     optimisticRule = "expectation", 
-                     fixDistance = NA) 
-
-result_farmer <- solveScenario(x = init_farmer)
-
-# VVG: Diese Abb ist die einzige, die e nicht im Paper gibt. Sie ist im Zuge dieser  LOO Analyse entstanden.
-result_farmer$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
-  mutate(uValue = "3",
-         landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
-  geom_bar(position = "stack", stat = "identity") + 
-  theme_classic() +
-  theme(text = element_text(size = 14)) +
-  scale_fill_startrek() +
-  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
-  scale_y_continuous(breaks = seq(0, 100, 10), 
-                     limits = c(0, 100)) +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) + 
-  guides(fill=guide_legend(title=""))
-```
-
-![](README_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-2.png)<!-- -->
 
 <h3>
 <a name="7. Suggested">Suggested citation </a>
