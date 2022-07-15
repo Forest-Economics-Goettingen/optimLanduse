@@ -67,7 +67,7 @@ The *initScenario()* function combines the user settings with the data into an *
 
 -   *optimisticRule*: Specifies whether the optimistic contributions of each indicator should be defined either directly by their average, or by their average plus their uncertainty (if more is better) or minus its uncertainty (if less is better). The former option is most frequently used in recent literature and therefore builds the default.
 
--   *fixDistance*: Optional numeric value that defines distinct uncertainty levels for the calculation of the uncertainty space and the averaged distances of a certain land-cover composition (see Equation 9 in Husmann et al. (n. d.)). Passing NA disables fixDistance. The untertainty space is then defined by the uValue.
+-   *fixDistance*: Optional numeric value that defines distinct uncertainty levels for the calculation of the uncertainty space and the averaged distances of a certain land-cover composition (see Equation 9 in Husmann et al. (n. d.)). Passing NA disables fixDistance. The uncertainty space is then defined by the uValue.
 
 #### Solver and list with results
 
@@ -75,7 +75,7 @@ The *solveScenario()* function requires the initialized *optimLanduse* object an
 
 -   *digitsPrecision*: Provides the only possibility for the user to influence the calculation time. As the solving process has no stochastic element, the calculation times depend almost entirely on the number of digits calculated.
 
--   *lowerBound* & *upperBound*: Optional bounds for the land-use options. The lower bound must be 0 or a vector with lower bounds in the dimension of the land-use options. The upper bound, respectivlely, 1 or a vector with upper bounds in the dimension of the land-use options. Choosing 0 and 1 (the defaults) as boundaries for all decision variables, means that no land-cover alternative is forced into the portfolio and that no land-cover alternative is assigned a maximum.
+-   *lowerBound* & *upperBound*: Optional bounds for the land-use options. The lower bound must be 0 or a vector with lower bounds in the dimension of the land-use options. The upper bound, respectively, 1 or a vector with upper bounds in the dimension of the land-use options. Choosing 0 and 1 (the defaults) as boundaries for all decision variables, means that no land-cover alternative is forced into the portfolio and that no land-cover alternative is assigned a maximum.
 
 The resulting *list with results* contains different Information of the optimization model. First the information of the *initScenario()* function are displayed again in this list. These include:
 
@@ -95,7 +95,7 @@ This is followed by a summary of the results of the optimization:
 -   *calcPerfomance()*: Attaches the portfolio performances of all indicators and scenarios as data frame. The data can be used for straightforward visualization of the performance. The performance is defined as the distance to the maximum achievable level for each indicator and uncertainty scenario.
 
 <h3>
-<a name="5. Beispielhafte Anwendung">Use-case</a>
+<a name="5. Beispielhafte Anwendung">Example application</a>
 </h3>
 
 We here present the basic workflow on a literature example. Aim of this chapter is to introduce the functionality of the packages' functions and to explain the relevant in- and output on the example of a use-case in Eastern Panama. The data of this study is accessible in the *Appendix A* of Gosling et al. (2020) and is also firmly integrated into the optimLanduse package. It can be accessed via *exampleData("exampleGosling.xlsx")*. The data integrated in the package comes already in the expected *optimLanduse* format, such that it can be used without any data processing.
@@ -110,6 +110,7 @@ install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
 ```
 
 ```{r, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4}
+# Note: Not all of the following packages are automatically installed. Maybe it requires a manual installation here.
 library(optimLanduse)
 library(readxl)
 library(ggplot2)
@@ -121,7 +122,7 @@ path <- exampleData("exampleGosling.xlsx")
 dat <- read_excel(path)
 ```
 
-*dat* is in the required format. Refer to the help of the initScenatio function or to the <a href="#3. Input und Output">detailed description of the functions' in- and outputs</a> chapter for more details.
+*dat* is in the required format. Refer to the help of the initScenario function or to the <a href="#3. Input und Output">detailed description of the functions' in- and outputs</a> chapter for more details.
 
 ```{r, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4}
 # Initializing an optimLanduse-object
@@ -176,8 +177,7 @@ ggplot(performance$scenarioTable,
                             nrow = 10)) +
   theme_classic() + 
   theme(text = element_text(size = 18),
-        legend.position="right") +
-  theme(
+        legend.position="right",
         axis.ticks.x = element_blank()) +
   scale_x_discrete(labels = seq(1, 10)) +
   labs(y = "Min-max normalized indicator value (%)",
