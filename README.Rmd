@@ -156,7 +156,7 @@ result$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>%
   guides(fill=guide_legend(title = ""))
 ```
 
-The here optimized farm composition corresponds to figure 3 ($f_u=2$) in Gosling et al (2020).
+The here optimized farm composition corresponds to figure 3 ($f_u=2$) in Gosling et al (2020). It can be seen that the farm composition that best fulfills all 10 indicators (i.e. the multi-criterial portfolio) practically only covers silvopasture and forest. The averaged observed farm portfolio in 2018 was, however, mainly composed of pasture and cropland and only small share of forest (ca. 15 %). 
 
 ```{r, results='hide', message=FALSE, warning=FALSE, fig.height = 5, fig.width = 10}
 # Performance calculations
@@ -188,6 +188,10 @@ ggplot(performance$scenarioTable,
   annotate(geom = "Text", x = 6, y = 100, label = "Maximum achievable indicator level",
            vjust = -1)
 ```
+
+Looking at the performances of this multi-criterial farm reveals, which indicators restrict the result. Here, the indicators 1 (financial stability), 3 (investment costs) and 8 (meeting household needs) are very close to each other. It can be followed that the portfolio is apparently restricted by these 3 indicators.
+
+perform commonly worst. Indicator 1
 
 <h4>
 Calculations for different uncertainty levels and fixDistance
