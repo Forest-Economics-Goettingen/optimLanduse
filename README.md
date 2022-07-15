@@ -110,7 +110,7 @@ function. <br>
     uncertainty levels for the calculation of the uncertainty space and
     the averaged distances of a certain land-cover composition (see
     Equation 9 in Husmann et al. (n. d.)). Passing NA disables
-    fixDistance. The untertainty space is then defined by the uValue.
+    fixDistance. The uncertainty space is then defined by the uValue.
 
 #### Solver and list with results
 
@@ -127,7 +127,7 @@ entirely on the number of digits calculated.
 -   *lowerBound* & *upperBound*: Optional bounds for the land-use
     options. The lower bound must be 0 or a vector with lower bounds in
     the dimension of the land-use options. The upper bound,
-    respectivlely, 1 or a vector with upper bounds in the dimension of
+    respectively, 1 or a vector with upper bounds in the dimension of
     the land-use options. Choosing 0 and 1 (the defaults) as boundaries
     for all decision variables, means that no land-cover alternative is
     forced into the portfolio and that no land-cover alternative is
@@ -182,7 +182,7 @@ This is followed by a summary of the results of the optimization:
     indicator and uncertainty scenario.
 
 <h3>
-<a name="5. Beispielhafte Anwendung">Use-case</a>
+<a name="5. Beispielhafte Anwendung">Example application</a>
 </h3>
 
 We here present the basic workflow on a literature example. Aim of this
@@ -215,6 +215,7 @@ install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
 ```
 
 ``` r
+# Note: Not all of the following packages are automatically installed. Maybe it requires a manual installation here.
 library(optimLanduse)
 library(readxl)
 library(ggplot2)
@@ -226,7 +227,7 @@ path <- exampleData("exampleGosling.xlsx")
 dat <- read_excel(path)
 ```
 
-*dat* is in the required format. Refer to the help of the initScenatio
+*dat* is in the required format. Refer to the help of the initScenario
 function or to the <a href="#3. Input und Output">detailed description
 of the functions’ in- and outputs</a> chapter for more details.
 
@@ -271,7 +272,11 @@ result$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>%
 
 The here optimized farm composition corresponds to figure 3
 (![f_u=2](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u%3D2 "f_u=2"))
-in Gosling et al (2020).
+in Gosling et al (2020). It can be seen that the farm composition that
+best fulfills all 10 indicators (i.e. the multi-criterial portfolio)
+practically only covers silvopasture and forest. The averaged observed
+farm portfolio in 2018 was, however, mainly composed of pasture and
+cropland and only small share of forest (ca. 15 %).
 
 ``` r
 # Performance calculations
@@ -291,8 +296,7 @@ ggplot(performance$scenarioTable,
                             nrow = 10)) +
   theme_classic() + 
   theme(text = element_text(size = 18),
-        legend.position="right") +
-  theme(
+        legend.position="right",
         axis.ticks.x = element_blank()) +
   scale_x_discrete(labels = seq(1, 10)) +
   labs(y = "Min-max normalized indicator value (%)",
@@ -305,6 +309,14 @@ ggplot(performance$scenarioTable,
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+Looking at the performances of this multi-criterial farm reveals, which
+indicators restrict the result. Here, the indicators 1 (financial
+stability), 3 (investment costs) and 8 (meeting household needs) are
+very close to each other. It can be followed that the portfolio is
+apparently restricted by these 3 indicators.
+
+perform commonly worst. Indicator 1
 
 <h4>
 Calculations for different uncertainty levels and fixDistance
