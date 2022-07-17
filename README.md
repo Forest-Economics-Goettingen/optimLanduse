@@ -257,17 +257,17 @@ result <- solveScenario(x = init)
 
 # Visualize the farm composition
 result$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
-  mutate(uValue = "2",
+  mutate(portfolio = "Optimal farm composition",
          landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  ggplot(aes(y = landUseShare, x = portfolio, fill = landUseOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
   theme_classic() +
   theme(text = element_text(size = 14)) +
   scale_fill_startrek() +
-  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  labs(y = "Allocated share (%)") +
   scale_y_continuous(breaks = seq(0, 100, 10), 
                      limits = c(0, 100)) +
-  theme(axis.text.x = element_blank(),
+  theme(axis.title.x = element_blank(),
         axis.ticks.x = element_blank()) + 
   guides(fill=guide_legend(title = ""))
 ```
@@ -464,17 +464,17 @@ init_socioeconomic <- initScenario(dat_socioeconomic,
 result_socioeconomic <- solveScenario(x = init_socioeconomic)
 
 result_socioeconomic$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
-  mutate(uValue = "2",
+  mutate(portfolio = "Socio-economic",
          landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  ggplot(aes(y = landUseShare, x = portfolio, fill = landUseOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
   theme_classic() +
   theme(text = element_text(size = 14)) +
   scale_fill_startrek() +
-  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  labs(y = "Allocated share (%)") +
   scale_y_continuous(breaks = seq(0, 100, 10), 
                      limits = c(0, 100)) +
-  theme(axis.text.x=element_blank(),
+  theme(axis.title.x=element_blank(),
         axis.ticks.x=element_blank()) + 
   guides(fill=guide_legend(title=""))
 ```
@@ -555,17 +555,17 @@ init_ecologic <- initScenario(dat_ecologic,
 result_ecologic <- solveScenario(x = init_ecologic)
 
 result_ecologic$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
-  mutate(uValue = "2",
+  mutate(portfolio = "Ecologic",
          landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  ggplot(aes(y = landUseShare, x = portfolio, fill = landUseOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
   theme_classic() +
   theme(text = element_text(size = 14)) +
   scale_fill_startrek() +
-  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  labs(y = "Allocated share (%)") +
   scale_y_continuous(breaks = seq(0, 100, 10), 
                      limits = c(0, 100)) +
-  theme(axis.text.x=element_blank(),
+  theme(axis.title.x=element_blank(),
         axis.ticks.x=element_blank()) + 
   guides(fill=guide_legend(title=""))
 ```
@@ -596,17 +596,17 @@ init_short<- initScenario(dat_short,
 result_short <- solveScenario(x = init_short)
 
 result_short$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
-  mutate(uValue = "2",
+  mutate(portfolio = "Immediate",
          landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+  ggplot(aes(y = landUseShare, x = portfolio, fill = landUseOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
   theme_classic() +
   theme(text = element_text(size = 14)) +
   scale_fill_startrek() +
-  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+  labs(y = "Allocated share (%)") +
   scale_y_continuous(breaks = seq(0, 100, 10), 
                      limits = c(0, 100)) +
-  theme(axis.text.x = element_blank(),
+  theme(axis.title.x = element_blank(),
         axis.ticks.x = element_blank()) + 
   guides(fill = guide_legend(title = ""))
 ```
@@ -617,11 +617,11 @@ The third example considers the prospective relevant indicators of the
 farmers only. Corresponding to figure 5 of Gosling et al. (2020), this
 scenario only consists of indicators that approximate the immediate
 economic success. And indeed this portfolio best reflects the portfolio
-observed in Eastern Panama. Followingly, these indicators best reflect
-the farmers’ goals and perceptions in this area. The difference between
-this portfolio and the societally desired multi-objective portfolio
-highlight the requirements a land-cover alternative must fulfill to meet
-the farmers needs and goals. The silvopasture as defined in Gosling et
+observed in Eastern Panama. Following, these indicators best reflect the
+farmers’ goals and perceptions in this area. The difference between this
+portfolio and the societally desired multi-objective portfolio highlight
+the requirements a land-cover alternative must fulfill to meet the
+farmers needs and goals. The silvopasture as defined in Gosling et
 al. (2020) may not serve the requirements of the farmers sufficiently.
 Since farmers rate liquidity and meeting household needs higher then
 long-term profit and economic stability, pasture outperforms
