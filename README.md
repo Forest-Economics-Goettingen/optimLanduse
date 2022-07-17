@@ -40,28 +40,28 @@ possible use-cases on the basis of a published data set. Illustrating
 the consequences of alternative ecosystem functions on the theoretically
 optimal landscape composition provides easily interpretable information
 for landscape modeling and decision making. The method is already
-established in land-use optimization and has been applied in a couple of
-studies. More details about the theory, the definition of the formal
+established in land-cover optimization and has been applied in a couple
+of studies. More details about the theory, the definition of the formal
 optimization problem and also significant examples are listed in the
 <a href="#8. Literatur">literature</a> section
 
 The package opens the approach of Knoke et al. (2016) to the community
-of landscape and planners and provides opportunities for straightforward
+of landscape planners and provides opportunities for straightforward
 systematic or batch applications. To further enhance this, we have
-designed a graphical shiny application for the package to get a quick
-idea of the functionalities of the package, see
+designed a graphical shiny dashboard for the package to get a quick idea
+of the functionalities of the package, see
 <http://134.76.17.50/optimlanduse_shiny/>.
 
 <h3>
 <a name="3. Input und Output">Package structure</a>
 </h3>
 
-This chapter provides brief overview over the package functions. For
-detailed information about methodological background, functions and
+This chapter provides a brief overview over the package functions. For
+detailed information about methodological background, functions, and
 workflow please refer to Husmann et al. (n.d.) listed in the
 <a href="#7. Suggested">suggested citation</a> section. Furthermore you
 can consider the respective help pages for more information. The
-function *lpSolveAPI* comes from the **lpSolveAPI** package.
+function *lpSolveAPI()* comes from the **lpSolveAPI** package.
 
 <p align="center">
 <img width="781.6" height="452" src="./man/figures/flowchart.png">
@@ -73,8 +73,8 @@ The *initScenario()* function combines the user settings with the data
 into an *optimLanduse*-object ready for solving. The following input
 data are required:
 
--   *Coefficients table*: The package is only capable of processing a
-    long-oriented type of data structure. All combinations of land cover
+-   *coefTable*: The package is only capable of processing a
+    long-oriented type of data structure. All combinations of land-cover
     (landUse) alternatives and indicators have to be listed vertically.
     Each row must contain the average expectation, the uncertainty, and
     the direction of the respective land-cover and indicator
@@ -88,16 +88,16 @@ data are required:
 <img width="673.4" height="298.2" src="./man/figures/exampleGraphic.png">
 </p>
 
-\| See the help files of the **exampleData** and **initScenario**
+\| See the help files of the *exampleData()* and *initScenario()*
 functions for more details. An empty template (incl. predefined
-headings) \| can be accessed via the exampleData(“exampleEmpty.xlsx”)
+headings) \| can be accessed via the *exampleData(“exampleEmpty.xlsx”)*
 function. <br>
 
 -   *uValue*: The argument for the uncertainty level
     (![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u"),
     equation 4 in Husmann et al. (n.d.)). A higher uValue reflects a
     higher risk aversion of the decision maker. See the help file of the
-    **initScenario** function for more details.
+    *initScenario* function for more details.
 
 -   *optimisticRule*: Specifies whether the optimistic contributions of
     each indicator should be defined either directly by their average,
@@ -114,24 +114,24 @@ function. <br>
 
 #### Solver and List with results
 
-The *solveScenario()* function requires the initialized *optimLanduse*
-object and only a few optional solver-specific arguments. As the solving
-process has no stochastic element, the calculation times depend almost
-entirely on the number of digits calculated.
+The *solveScenario()* function requires the initialized
+*optimLanduse*-object and only a few optional solver-specific arguments.
+As the solving process has no stochastic element, the calculation times
+depend almost entirely on the number of digits calculated.
 
 -   *digitsPrecision*: Provides the only possibility for the user to
     influence the calculation time. As the solving process has no
     stochastic element, the calculation times depend almost entirely on
     the number of digits calculated.
 
--   *lowerBound* & *upperBound*: Optional bounds for the land-use
+-   *lowerBound* & *upperBound*: Optional bounds for the land-cover
     options. The lower bound must be 0 or a vector with lower bounds in
-    the dimension of the land-use options. The upper bound,
+    the dimension of the land-cover options. The upper bound,
     respectively, 1 or a vector with upper bounds in the dimension of
-    the land-use options. Choosing 0 and 1 (the defaults) as boundaries
-    for all decision variables, means that no land-cover alternative is
-    forced into the portfolio and that no land-cover alternative is
-    assigned a maximum.
+    the land-cover options. Choosing 0 and 1 (the defaults) as
+    boundaries for all decision variables, means that no land-cover
+    alternative is forced into the portfolio and that no land-cover
+    alternative is assigned a maximum.
 
 The resulting *list with results* contains different Information of the
 optimization model. First the information of the *initScenario()*
@@ -153,12 +153,12 @@ function are displayed again in this list. These include:
     and
     ![max(R\_{liu})](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;max%28R_%7Bliu%7D%29 "max(R_{liu})")
     the maximal uncertainty adjusted indicators. diffAdjSem are the
-    range between these uncertainty adjusted indicators
+    range between these uncertainties adjusted indicators
     ![\\delta\_{\\text{min,max}\_{iu}}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cdelta_%7B%5Ctext%7Bmin%2Cmax%7D_%7Biu%7D%7D "\delta_{\text{min,max}_{iu}}").
 -   *coefObjective*: The optimization program is translated into a
     linear program with
     ![N_L](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N_L "N_L")
-    (number of land-use options) coefficients for the inner solution.
+    (number of land-cover options) coefficients for the inner solution.
     The inner solution is solved using *lpSolveAPI*. *coefObjective* is
     the data frame that contains these coefficients.
 -   *coefConstraing*: A data frame with the respective constraints for
@@ -197,15 +197,15 @@ used without any data processing.
 
 Enriching agricultural farms with forest plantations has potential to
 enhance the ecosystem functioning of farms in Panama. Gosling et
-al. therefore used the optimization model presented here to understand
-smallholder farmers’ perceptions and values of agroforestry systems.
-They identified 10 relevant indicators for a predefined set of land use
-alternatives, which represent the farmers’ goals. A subsequent survey of
-farmers provided the empirical basis in the form of indicators’
-expectations (arithmetic mean) and uncertainties (standard error of the
-mean) for each land-cover alternative. Descriptions of the land-cover
-alternatives and indicators can be found in tables 1 and 2 in Gosling et
-al. (2020).
+al. (2020) therefore used the optimization model presented here to
+understand smallholder farmers’ perceptions and values of agroforestry
+systems. They identified 10 relevant indicators for a predefined set of
+land-cover alternatives, which represent the farmers’ goals. A
+subsequent survey of farmers provided the empirical basis in the form of
+indicators’ expectations (arithmetic mean) and uncertainties (standard
+error of the mean) for each land-cover alternative. Descriptions of the
+land-cover alternatives and indicators can be found in tables 1 and 2 in
+Gosling et al. (2020).
 
 ### Installing *optimLanduse*, Loading Required Packages and Importing the Data
 
@@ -215,7 +215,8 @@ al. (2020).
 ```
 
 ``` r
-# Note: Not all of the following packages are automatically installed. Maybe it requires a manual installation here.
+# Note: Not all of the following packages are automatically installed. 
+# Manual installation could be required.
 library(optimLanduse)
 library(readxl)
 library(ggplot2)
@@ -227,15 +228,16 @@ path <- exampleData("exampleGosling.xlsx")
 dat <- read_excel(path)
 ```
 
-*dat* is in the required format. Refer to the help of the initScenario
-function or to the <a href="#3. Input und Output">detailed description
-of the functions’ in- and outputs</a> chapter for more details.
+*dat* is in the required format. Refer to the help of the
+*initScenario()* function or to the
+<a href="#3. Input und Output">detailed description of the functions’
+in- and outputs</a> chapter for more details.
 
 ### Initializing an *optimLanduse* Object
 
 ``` r
 # Initializing an optimLanduse-object
-init <- initScenario(dat,
+init <- initScenario(coefTable = dat,
                      uValue = 2,
                      optimisticRule = "expectation", 
                      # optimistic contribution of each indicator directly defined by their average 
@@ -244,9 +246,9 @@ init <- initScenario(dat,
 ```
 
 In consistence with Gosling et al., we chose the expectations of the
-indicator as optimistic outcomes (optimisticRule = “expectation”) and
+indicator as optimistic outcomes *(optimisticRule = “expectation”)* and
 the same uncertainty for the calculation of the averaged distances and
-the uncertainty space (fixDistance = NA, see equations 4 and 9 in
+the uncertainty space (*fixDistance = NA*, see equations 4 and 9 in
 Husmann et al. (n.d.) for more details).
 
 ### Solving the Initialized *optimLanduse* Object
@@ -256,10 +258,10 @@ Husmann et al. (n.d.) for more details).
 result <- solveScenario(x = init)
 
 # Visualize the farm composition
-result$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
+result$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1 : 6) %>% 
   mutate(portfolio = "Optimal farm composition",
-         landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = portfolio, fill = landUseOption)) + 
+         landCoverShare = landCoverShare * 100) %>% 
+  ggplot(aes(y = landCoverShare, x = portfolio, fill = landCoverOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
   theme_classic() +
   theme(text = element_text(size = 14)) +
@@ -280,7 +282,7 @@ in Gosling et al (2020). It can be seen that the farm composition that
 best fulfills all 10 indicators (i.e. the multi-criterial portfolio)
 practically only covers silvopasture and forest. The averaged observed
 farm portfolio in 2018 was, however, mainly composed of pasture and
-cropland and only small share of forest (ca. 15 %).
+cropland and only small share of forest (circa 15 %).
 
 ### Calculating the Portfolio Performances of the Optimized *optimLanduse* Object
 
@@ -322,21 +324,21 @@ stability), 3 (investment costs) and 8 (meeting household needs) are
 very close to each other. It can be followed that the portfolio is
 apparently restricted by these 3 indicators. In the worst-performing
 scenarios, these 3 indicators are commonly the worst performing
-indicators. Or in other words, the guaranteed performance
-![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
-is defined by one the these indicators, and all of them are very close
-to
-![1-\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1-%5Cbeta "1-\beta").
-It can be interpreted that these 3 indicators are be worthwhile to
-consider in order to find strategy that developes the land-cover
-composition in a desired way. According to Gosling et al. (2020), this
-results was expectable, since the need for short-term liquidity mainly
-drives decisions of the farms of smallholder farms. Intermediate-term
-economic success is not relevant until consumption of the houselhold is
-secured. While the performances of indicator 1 differ relatively strong
-among the scenarios, these of indicators 3 and 8 are similar in each
-scenario. It thus may be interesting to investigate the reasons for this
-particular worst-performing scenario of indicator 1.
+indicators with the maximum distance of
+![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta").
+Or in other words, the guaranteed performance
+![1-\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1-%5Cbeta "1-\beta")
+(lowestPerformance) is defined by one the these indicators. It can be
+interpreted that these 3 indicators are be worthwhile to consider in
+order to find strategy that developes the land-cover composition in a
+desired way. According to Gosling et al. (2020), this results were
+expectable, since the need for short-term liquidity mainly drives
+decisions of the farms of smallholder farmer. Intermediate-term economic
+success is not relevant until consumption of the household is secured.
+While the performances of indicator 1 differ relatively strong among the
+scenarios, the indicators 3 and 8 are similar in each scenario. It thus
+may be interesting to investigate the reasons for this particular
+worst-performing scenario of indicator 1.
 
 ``` r
 performance$beta
@@ -386,9 +388,9 @@ Further elaborating the packages’ results indeed reveals that indicator
 performing scenarios of indicator 3 (investment costs) are equal to the
 worst performing scenarios of indicator 1.
 ![1-\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1-%5Cbeta "1-\beta")
-results to this worst performances. All the worst perfoming scenarios
-have in common, that the outcome of silvipasture is pessimistic (Low)
-and thge outcome of forest is optimistic (High). This relationship thus
+results to this worst performances. All the worst performing scenarios
+have in common, that the outcome of silvopasture is pessimistic (Low)
+and the outcome of forest is optimistic (High). This relationship thus
 might be of interest when developing strategies or policies for a
 desired landscape development.
 
@@ -414,8 +416,8 @@ names(applyDf) <- c("u", "beta", names(result$landUse))
 
 applyDf[, c(3 : 8)] <- applyDf[, c(3 : 8)] * 100
 
-applyDf %>% gather(key = "land-use option", value = "land-use share", -u, -beta) %>%
-  ggplot(aes(y = `land-use share`, x = u, fill = `land-use option`)) + 
+applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -beta) %>%
+  ggplot(aes(y = `land-cover share`, x = u, fill = `land-cover option`)) + 
   geom_area(alpha = .8, color = "white") + theme_minimal()+
   labs(x = "Uncertainty level", y = "Allocated share (%)") + 
   guides(fill=guide_legend(title="")) + 
@@ -434,13 +436,13 @@ Solving the porfolio under increasing assumptions for the untertainty
 levels (uValue, respectively
 ![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u")
 in equation 4 (Husmann et al, n.d.) gives sensitivity of the land-cover
-compositions towards increasing aversity of risk of the farmer. The
+compositions towards increasing aversion of risk of the farmer. The
 higher the uncertainty level, the higher the standard error of the mean
-(Gosling et al- use the s.e.m.; any other uncertainty measure will also
+(Gosling et al. use the s.e.m.; any other uncertainty measure will also
 be possible) of the indicator consequences on the land-cover options.
-Here, the composition of land.use alternatives is quite stable. Only the
-small proportion of crops (ca 10 %) is interchanged with small
-proportions of pasture and plantation. Forest and Silvopasture are
+Here, the composition of land-cover alternatives is quite stable. Only
+the small proportion of crops (circa 10 %) is interchanged with small
+proportions of pasture and plantation. Forest and silvopasture are
 practically not affected by the uncertainty level. The plot corresponds
 to figure 3 in Gosling et al. (2020).
 
@@ -463,10 +465,10 @@ init_socioeconomic <- initScenario(dat_socioeconomic,
 
 result_socioeconomic <- solveScenario(x = init_socioeconomic)
 
-result_socioeconomic$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
+result_socioeconomic$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1 : 6) %>% 
   mutate(portfolio = "Socio-economic",
-         landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = portfolio, fill = landUseOption)) + 
+         landCoverShare = landCoverShare * 100) %>% 
+  ggplot(aes(y = landCoverShare, x = portfolio, fill = landCoverOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
   theme_classic() +
   theme(text = element_text(size = 14)) +
@@ -483,9 +485,9 @@ result_socioeconomic$landUse %>% gather(key = landUseOption, value = landUseShar
 
 First leave-indicator-out example considers socio-economic indicators
 only (see also figure 5 of Gosling et al. (2020)). Expectedly, it
-corresponds to the above shown multi-objective portfolio, as all
-indicators relevant for the solution of the multi-objective portfolio
-are captured also in the socio-economic group.
+corresponds to the above shown multiobjective portfolio, as all
+indicators relevant for the solution of the multiobjective portfolio are
+captured also in the socio-economic group.
 
 ``` r
 performance_socioeconomic <- calcPerformance(result_socioeconomic)
@@ -537,11 +539,11 @@ head(lowestPerformance_socioeconomic[,c(1 : 8, 31)], n = 9)
     ## 158    38.68000
     ## 185    38.68223
 
-A look at the relevant preformances reveals this finding. The result is
+A look at the relevant performances reveals this finding. The result is
 still limited by financial stability and investment costs. Accordingly,
-also this socio-economic portfolio still does not percetly reflect the
+also this socio-economic portfolio still does not perfectly reflects the
 actual observable land-cover composition, so that among these considered
-indicators further indcators appear to be relevant for the farmers.
+indicators further indicators appear to be relevant for the farmers.
 
 ``` r
 dat_ecologic <- dat[dat$indicator %in% c("Protecting soil resources",
@@ -554,10 +556,10 @@ init_ecologic <- initScenario(dat_ecologic,
 
 result_ecologic <- solveScenario(x = init_ecologic)
 
-result_ecologic$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
+result_ecologic$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1 : 6) %>% 
   mutate(portfolio = "Ecologic",
-         landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = portfolio, fill = landUseOption)) + 
+         landCoverShare = landCoverShare * 100) %>% 
+  ggplot(aes(y = landCoverShare, x = portfolio, fill = landCoverOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
   theme_classic() +
   theme(text = element_text(size = 14)) +
@@ -579,7 +581,7 @@ followed that all contributions of all other land-cover alternatives in
 all scenarios (even the optimistic outcomes) to the ecological
 indicators are lower then the contribution of forest. This portfolio
 differs even more from the actually observed portfolio then the above
-shown multi-objective portfolio. Also the ecological indicators are
+shown multiobjective portfolio. Also the ecological indicators are
 apparently not sufficient to approximate the farmers’ actual inceptions.
 
 ### Immediate Economic Success
@@ -595,10 +597,10 @@ init_short<- initScenario(dat_short,
 
 result_short <- solveScenario(x = init_short)
 
-result_short$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
+result_short$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1 : 6) %>% 
   mutate(portfolio = "Immediate",
-         landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = portfolio, fill = landUseOption)) + 
+         landCoverShare = landCoverShare * 100) %>% 
+  ggplot(aes(y = landCoverShare, x = portfolio, fill = landCoverOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
   theme_classic() +
   theme(text = element_text(size = 14)) +
@@ -619,7 +621,7 @@ scenario only consists of indicators that approximate the immediate
 economic success. And indeed this portfolio best reflects the portfolio
 observed in Eastern Panama. Following, these indicators best reflect the
 farmers’ goals and perceptions in this area. The difference between this
-portfolio and the societally desired multi-objective portfolio highlight
+portfolio and the societal desired multiobjective portfolio highlight
 the requirements a land-cover alternative must fulfill to meet the
 farmers needs and goals. The silvopasture as defined in Gosling et
 al. (2020) may not serve the requirements of the farmers sufficiently.
@@ -627,7 +629,7 @@ Since farmers rate liquidity and meeting household needs higher then
 long-term profit and economic stability, pasture outperforms
 silvopasture in the realistic scenario. Policies or development plans
 may consider these indicators as key elements when promoting a landscape
-development towards multi-functional landscapes.
+development towards multifunctional landscapes.
 
 ### The use of fixDistance
 
@@ -717,10 +719,10 @@ result_u0$landUse
 
 ``` r
 # Typical result visualization
-result_u0$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
+result_u0$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1:6) %>% 
   mutate(uValue = "0",
-         landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+         landCoverShare = landCoverShare * 100) %>% 
+  ggplot(aes(y = landCoverShare, x = uValue, fill = landCoverOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
   theme_classic() +
   theme(text = element_text(size = 14)) +
@@ -746,10 +748,10 @@ init_u3 <- initScenario(dat,
                 
 result_u3 <- solveScenario(x = init_u3)
 
-result_u3$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
+result_u3$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1:6) %>% 
   mutate(uValue = "2",
-         landUseShare = landUseShare * 100) %>% 
-  ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
+         landCoverShare = landCoverShare * 100) %>% 
+  ggplot(aes(y = landCoverShare, x = uValue, fill = landCoverOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
   theme_classic() +
   theme(text = element_text(size = 14)) +
