@@ -202,8 +202,8 @@ smallholder farmers’ perceptions and values of agroforestry systems.
 They identified 10 relevant indicators for a predefined set of land use
 alternatives, which represent the farmers’ goals. A subsequent survey of
 farmers provided the empirical basis in the form of indicators’
-expectations (arithmetic mean) and uncertainties (standard deviation)
-for each land-cover alternative. Descriptions of the land-cover
+expectations (arithmetic mean) and uncertainties (standard error of the
+mean) for each land-cover alternative. Descriptions of the land-cover
 alternatives and indicators can be found in tables 1 and 2 in Gosling et
 al. (2020).
 
@@ -435,13 +435,14 @@ levels (uValue, respectively
 ![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u")
 in equation 4 (Husmann et al, n.d.) gives sensitivity of the land-cover
 compositions towards increasing aversity of risk of the farmer. The
-higher the uncertainty level, the higher the deviation of the indicator
-consequences on the land-cover options. Here, the composition of
-land.use alternatives is quite stable. Only the small proportion of
-crops (ca 10 %) is interchanged with small proportions of pasture and
-plantation. Forest and Silvopasture are practically not affected by the
-uncertainty level. The plot corresponds to figure 3 in Gosling et
-al. (2020).
+higher the uncertainty level, the higher the standard error of the mean
+(Gosling et al- use the s.e.m.; any other uncertainty measure will also
+be possible) of the indicator consequences on the land-cover options.
+Here, the composition of land.use alternatives is quite stable. Only the
+small proportion of crops (ca 10 %) is interchanged with small
+proportions of pasture and plantation. Forest and Silvopasture are
+practically not affected by the uncertainty level. The plot corresponds
+to figure 3 in Gosling et al. (2020).
 
 ### Leave-Indicators-Out-Analysis to Investigate the Indicators’ Sensitivity
 
@@ -463,7 +464,7 @@ init_socioeconomic <- initScenario(dat_socioeconomic,
 result_socioeconomic <- solveScenario(x = init_socioeconomic)
 
 result_socioeconomic$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
-  mutate(uValue = "3",
+  mutate(uValue = "2",
          landUseShare = landUseShare * 100) %>% 
   ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
@@ -554,7 +555,7 @@ init_ecologic <- initScenario(dat_ecologic,
 result_ecologic <- solveScenario(x = init_ecologic)
 
 result_ecologic$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
-  mutate(uValue = "3",
+  mutate(uValue = "2",
          landUseShare = landUseShare * 100) %>% 
   ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
@@ -573,19 +574,19 @@ result_ecologic$landUse %>% gather(key = landUseOption, value = landUseShare, 1 
 
 The ecological indicator group, as the second example for
 leave-indicators-out analysis, leads to a portfolio covering forests
-only (see also figure 5 of Gosling et al. (2020)). It can be followed
-that all contributions of all other land-cover alternatives in all
-scenarios (even the optimistic outcomes) to ecological indicators are
-lower then the contribution of forest. This portfolio differs even more
-from the actually observed portfolio. Also the ecological indicators are
+only (corresponds to figure 5 of Gosling et al. (2020)). It can be
+followed that all contributions of all other land-cover alternatives in
+all scenarios (even the optimistic outcomes) to the ecological
+indicators are lower then the contribution of forest. This portfolio
+differs even more from the actually observed portfolio then the above
+shown multi-objective portfolio. Also the ecological indicators are
 apparently not sufficient to approximate the farmers’ actual inceptions.
 
-### Short Term Economic Success
+### Immediate Economic Success
 
 ``` r
-dat_short <- dat[dat$indicator %in% c("Labour demand" , "Meeting household needs",
-                                      "Liquidity", "Investment costs",
-                                      "Management complexity"),]
+dat_short <- dat[dat$indicator %in% c("Meeting household needs",
+                                      "Liquidity"),]
 
 init_short<- initScenario(dat_short,
                      uValue = 2,
@@ -595,7 +596,7 @@ init_short<- initScenario(dat_short,
 result_short <- solveScenario(x = init_short)
 
 result_short$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6) %>% 
-  mutate(uValue = "3",
+  mutate(uValue = "2",
          landUseShare = landUseShare * 100) %>% 
   ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
@@ -613,25 +614,20 @@ result_short$landUse %>% gather(key = landUseOption, value = landUseShare, 1 : 6
 ![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 The third example considers the prospective relevant indicators of the
-farmers. It corresponds also to figure 5 of Gosling et al. (2020). And
-indeed this portfolio best reflects the oberved portfolio. It can be
-followed that these indicators best reflect the farmers’ goals. The
-difference between this portfolio and the societally desired
-multi-objective portfolio
-
-“From a policy perspective, results highlight key requirements that
-agroforestry must fulfil to be more attractive to farmers in the study
-area. We contend that silvopasture (as defined in our study) may not
-align with these key requirements. If farmers prioritise liquidity and
-meeting household needs over long-term profit and economic stability,
-then pasture (with scattered trees) and not silvopasture (with 200 trees
-per hectare) would be the rational land-use choice for a risk-averse de­
-cision-maker. This demonstrates the need to select and promote agro­
-forestry systems that provide early and frequent income flows, as well
-as ongoing opportunities to harvest food crops.” … umformulieren und
-kürzen.
-
-TBD: Abb passt nicht! Da muss ein Fehler sein!
+farmers only. Corresponding to figure 5 of Gosling et al. (2020), this
+scenario only consists of indicators that approximate the immediate
+economic success. And indeed this portfolio best reflects the portfolio
+observed in Eastern Panama. Followingly, these indicators best reflect
+the farmers’ goals and perceptions in this area. The difference between
+this portfolio and the societally desired multi-objective portfolio
+highlight the requirements a land-cover alternative must fulfill to meet
+the farmers needs and goals. The silvopasture as defined in Gosling et
+al. (2020) may not serve the requirements of the farmers sufficiently.
+Since farmers rate liquidity and meeting household needs higher then
+long-term profit and economic stability, pasture outperforms
+silvopasture in the realistic scenario. Policies or development plans
+may consider these indicators as key elements when promoting a landscape
+development towards multi-functional landscapes.
 
 ### The use of fixDistance
 
@@ -751,7 +747,7 @@ init_u3 <- initScenario(dat,
 result_u3 <- solveScenario(x = init_u3)
 
 result_u3$landUse %>% gather(key = landUseOption, value = landUseShare, 1:6) %>% 
-  mutate(uValue = "3",
+  mutate(uValue = "2",
          landUseShare = landUseShare * 100) %>% 
   ggplot(aes(y = landUseShare, x = uValue, fill = landUseOption)) + 
   geom_bar(position = "stack", stat = "identity") + 
