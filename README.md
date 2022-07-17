@@ -649,135 +649,44 @@ in the denominator and in the counter of equation 3 (Husmann et al.,
 n.d.) to not normalize the distance to {0, 1} any more.
 
 ``` r
-#### uValue == 0 ####
+#### uValue 3 ####
+path <- exampleData("exampleGosling.xlsx")
+dat <- read_excel(path)
 
-# Initializing an optimLanduse-object using initScenario()
-init_u0 <- initScenario(dat,
-                     uValue = 0,
-                     optimisticRule = "expectation", 
-                     # optimistic contribution of each indicator directly defined by their average 
-                     fixDistance = 3) 
-                     # 3 is the default
-init_u0$scenarioSettings
-```
+applyDf <- data.frame(u = seq(0, 3, .5))
 
-    ##   uValue optimisticRule
-    ## 1      0    expectation
+applyFun <- function(x) {
+  init <- initScenario(dat, uValue = x, optimisticRule = "expectation", fixDistance = 3)
+  result <- solveScenario(x = init)
+  return(c(result$beta, as.matrix(result$landUse)))
+}
 
-``` r
-names(init_u0$scenarioTable)
-```
+applyDf <- cbind(applyDf,
+                 t(apply(applyDf, 1, applyFun)))
+                 
+names(applyDf) <- c("u", "beta", names(result$landUse))
 
-    ##  [1] "indicator"             "outcomeCrops"          "outcomePasture"       
-    ##  [4] "outcomeAlley Cropping" "outcomeSilvopasture"   "outcomePlantation"    
-    ##  [7] "outcomeForest"         "direction"             "meanCrops"            
-    ## [10] "meanPasture"           "meanAlley Cropping"    "meanSilvopasture"     
-    ## [13] "meanPlantation"        "meanForest"            "semCrops"             
-    ## [16] "semPasture"            "semAlley Cropping"     "semSilvopasture"      
-    ## [19] "semPlantation"         "semForest"             "adjSemCrops"          
-    ## [22] "adjSemPasture"         "adjSemAlley Cropping"  "adjSemSilvopasture"   
-    ## [25] "adjSemPlantation"      "adjSemForest"          "minAdjSem"            
-    ## [28] "maxAdjSem"             "diffAdjSem"
+applyDf[, c(3 : 8)] <- applyDf[, c(3 : 8)] * 100
 
-``` r
-init_u0$coefObjective
-```
-
-    ##          adjSemCrops        adjSemPasture adjSemAlley Cropping 
-    ##             30692.49             39575.50             32183.89 
-    ##   adjSemSilvopasture     adjSemPlantation         adjSemForest 
-    ##             46381.16             32946.34             41772.16
-
-``` r
-colnames(init_u0$coefConstraint)
-```
-
-    ## [1] "adjSemCrops_modified"          "adjSemPasture_modified"       
-    ## [3] "adjSemAlley Cropping_modified" "adjSemSilvopasture_modified"  
-    ## [5] "adjSemPlantation_modified"     "adjSemForest_modified"
-
-``` r
-head(init_u0$distance)
-```
-
-    ##   minAdjSem maxAdjSem
-    ## 1  5.656250   7.84375
-    ## 2  4.337517   7.84375
-    ## 3  5.423330   7.84375
-    ## 4  4.337517   7.84375
-    ## 5  5.394631   7.84375
-    ## 6  4.337517   7.84375
-
-``` r
-# Solve the initialized optimLanduse object with the solveScenario() function                 
-result_u0 <- solveScenario(x = init_u0)
-
-result_u0$status
-```
-
-    ## [1] "optimized"
-
-``` r
-result_u0$beta
-```
-
-    ## [1] 0.5396
-
-``` r
-result_u0$landUse
-```
-
-    ##       Crops Pasture Alley Cropping Silvopasture Plantation    Forest
-    ## 1 0.1292587       0              0    0.4590822          0 0.4116591
-
-``` r
-# Typical result visualization
-result_u0$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1:6) %>% 
-  mutate(uValue = "0",
-         landCoverShare = landCoverShare * 100) %>% 
-  ggplot(aes(y = landCoverShare, x = uValue, fill = landCoverOption)) + 
-  geom_bar(position = "stack", stat = "identity") + 
-  theme_classic() +
-  theme(text = element_text(size = 14)) +
-  scale_fill_startrek() +
-  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
+applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -beta) %>%
+  ggplot(aes(y = `land-cover share`, x = u, fill = `land-cover option`)) + 
+  geom_area(alpha = .8, color = "white") + theme_minimal()+
+  labs(x = "Uncertainty level", y = "Allocated share (%)") + 
+  guides(fill=guide_legend(title="")) + 
   scale_y_continuous(breaks = seq(0, 100, 10), 
-                     limits = c(0, 100)) +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) + 
-  guides(fill=guide_legend(title=""))
-```
-
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
-
-``` r
-#### uValue == 3 ####
-
-init_u3 <- initScenario(dat,
-                     uValue = 3,
-                     optimisticRule = "expectation", 
-                     fixDistance = 3) 
-
-                
-result_u3 <- solveScenario(x = init_u3)
-
-result_u3$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1:6) %>% 
-  mutate(uValue = "2",
-         landCoverShare = landCoverShare * 100) %>% 
-  ggplot(aes(y = landCoverShare, x = uValue, fill = landCoverOption)) + 
-  geom_bar(position = "stack", stat = "identity") + 
-  theme_classic() +
-  theme(text = element_text(size = 14)) +
+                     limits = c(0, 100.01)) +
+  scale_x_continuous(breaks = seq(0, 3, 0.5),
+                     limits = c(0, 3)) + 
   scale_fill_startrek() +
-  labs(x = "Optimal farm composition", y = "Allocated share (%)") +
-  scale_y_continuous(breaks = seq(0, 100, 10), 
-                     limits = c(0, 100)) +
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank()) + 
-  guides(fill=guide_legend(title=""))
+  theme(text = element_text(size = 18),
+        legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- --> It can be
+see that the land-cover allocation transition under raising uncertainty
+differs of the here presented multi-functional scenario differs slightly
+from the multi-functional scanrio shown above. The here broadened state
+space leads an earlier increase of pasture.
 
 <h3>
 <a name="7. Suggested">Suggested citation </a>
