@@ -215,8 +215,6 @@ Gosling et al. (2020).
 ```
 
 ``` r
-# Note: Not all of the following packages are automatically installed. 
-# Manual installation could be required.
 library(optimLanduse)
 library(readxl)
 library(ggplot2)
@@ -279,7 +277,7 @@ result$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1 : 6) 
 The here optimized farm composition corresponds to figure 3
 (![f_u=2](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u%3D2 "f_u=2"))
 in Gosling et al (2020). It can be seen that the farm composition that
-best fulfills all 10 indicators (i.e. the multi-criterial portfolio)
+best fulfills all 10 indicators (i.e. the multi-functional portfolio)
 practically only covers silvopasture and forest. The averaged observed
 farm portfolio in 2018 was, however, mainly composed of pasture and
 cropland and only small share of forest (circa 15 %).
@@ -318,7 +316,7 @@ ggplot(performance$scenarioTable,
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-Looking at the performances of this multi-criterial farm reveals, which
+Looking at the performances of this multi-functional farm reveals, which
 indicators restrict the result. Here, the indicators 1 (financial
 stability), 3 (investment costs) and 8 (meeting household needs) are
 very close to each other. It can be followed that the portfolio is
@@ -435,13 +433,13 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
 Solving the porfolio under increasing assumptions for the untertainty
 levels (uValue, respectively
 ![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u")
-in equation 4 (Husmann et al, n.d.) gives sensitivity of the land-cover
+in equation 4 (Husmann et al, n.d.)) gives sensitivity of the land-cover
 compositions towards increasing aversion of risk of the farmer. The
 higher the uncertainty level, the higher the standard error of the mean
-(Gosling et al. use the s.e.m.; any other uncertainty measure will also
-be possible) of the indicator consequences on the land-cover options.
-Here, the composition of land-cover alternatives is quite stable. Only
-the small proportion of crops (circa 10 %) is interchanged with small
+(Gosling et al. use the s.e.m.; any other uncertainty measure is also
+possible) of the indicator consequences on the land-cover options. Here,
+the composition of land-cover alternatives is quite stable. Only the
+small proportion of crops (circa 10 %) is interchanged with small
 proportions of pasture and plantation. Forest and silvopasture are
 practically not affected by the uncertainty level. The plot corresponds
 to figure 3 in Gosling et al. (2020).
@@ -452,8 +450,8 @@ The sensitivity of the portfolio towards indicators or groups of
 indicators can be straightforwardly analysed by either leaving
 indicators of interest out and interpreting the response of the
 portfolio or, alternatively, by adding indicators of interest. Typical
-way to conduct sensitivity analyses is thus to compare distinct and
-independent optimization results.
+way to conduct sensitivity analyses is thus to compare distinctly and
+independently optimization results.
 
 ``` r
 dat_socioeconomic <- dat[dat$indicator != "Protecting soil resources" & dat$indicator !="Protecting water supply",]
@@ -485,9 +483,9 @@ result_socioeconomic$landUse %>% gather(key = landCoverOption, value = landCover
 
 First leave-indicator-out example considers socio-economic indicators
 only (see also figure 5 of Gosling et al. (2020)). Expectedly, it
-corresponds to the above shown multiobjective portfolio, as all
-indicators relevant for the solution of the multiobjective portfolio are
-captured also in the socio-economic group.
+corresponds to the above shown multio-functional portfolio, as all
+indicators relevant for the solution of the multi-functional portfolio
+are captured also in the socio-economic group.
 
 ``` r
 performance_socioeconomic <- calcPerformance(result_socioeconomic)
@@ -578,11 +576,11 @@ The ecological indicator group, as the second example for
 leave-indicators-out analysis, leads to a portfolio covering forests
 only (corresponds to figure 5 of Gosling et al. (2020)). It can be
 followed that all contributions of all other land-cover alternatives in
-all scenarios (even the optimistic outcomes) to the ecological
-indicators are lower then the contribution of forest. This portfolio
-differs even more from the actually observed portfolio then the above
-shown multiobjective portfolio. Also the ecological indicators are
-apparently not sufficient to approximate the farmers’ actual inceptions.
+all scenarios (even the optimistic ones) to the ecological indicators
+are lower then the contribution of forest. This portfolio differs even
+more from the actually observed portfolio then the above shown
+multi-functional portfolio. Also the ecological indicators are therefore
+apparently not sufficient to approximate the farmers’ inceptions.
 
 ### Immediate Economic Success
 
@@ -618,12 +616,12 @@ result_short$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1
 The third example considers the prospective relevant indicators of the
 farmers only. Corresponding to figure 5 of Gosling et al. (2020), this
 scenario only consists of indicators that approximate the immediate
-economic success. And indeed this portfolio best reflects the portfolio
-observed in Eastern Panama. Following, these indicators best reflect the
-farmers’ goals and perceptions in this area. The difference between this
-portfolio and the societal desired multiobjective portfolio highlight
-the requirements a land-cover alternative must fulfill to meet the
-farmers needs and goals. The silvopasture as defined in Gosling et
+economic success. Indeed, this portfolio best reflects the portfolio
+observed in Eastern Panama. Followingly, these indicators best reflect
+the farmers’ goals and perceptions in Eastern Panama. The difference
+between this portfolio and the desired multi-functional portfolio
+highlight the requirements a land-cover alternative must fulfill to meet
+the farmers needs and goals. The silvopasture as defined in Gosling et
 al. (2020) may not serve the requirements of the farmers sufficiently.
 Since farmers rate liquidity and meeting household needs higher then
 long-term profit and economic stability, pasture outperforms
@@ -633,7 +631,22 @@ development towards multifunctional landscapes.
 
 ### The use of fixDistance
 
-Till now, the …
+It can be advantageous to define distinct uncertainties for the
+calculation of the distances to the maximum achievable level (the
+reference)
+![d\_{iu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d_%7Biu%7D "d_{iu}")
+(equation 3 in Husmann et al. (n.d.)) and the actual distances under a
+certain land-cover composition
+![R\_{iu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;R_%7Biu%7D "R_{iu}")
+(equation 5 in Husmann et al. (n.d.), see also equation 9). The
+broadenes uncertainty space allows for a broader state space of the
+distances
+![d\_{ij}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d_%7Bij%7D "d_{ij}"),
+which usually leads to smoother transitions when the uncertainty values
+are raised. Disadvantage is that the distances cannot be interpreted
+straightforwardly any more. The different uncertainty spaces considered
+in the denominator and in the counter of equation 3 (Husmann et al.,
+n.d.) to not normalize the distance to {0, 1} any more.
 
 ``` r
 #### uValue == 0 ####
