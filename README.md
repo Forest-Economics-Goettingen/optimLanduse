@@ -13,7 +13,7 @@
 in- and outputs</a>
 </li>
 <li>
-<a href="#5. Beispielhafte Anwendung">Use-case</a>
+<a href="#5. Beispielhafte Anwendung">Example application</a>
 </li>
 <li>
 <a href="#6. Erweiterte Anwendung">Sophisticated application</a>
@@ -159,10 +159,10 @@ function are displayed again in this list. These include:
     linear program with
     ![N_L](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N_L "N_L")
     (number of land-cover options) coefficients for the inner solution.
-    The inner solution is solved using *lpSolveAPI*. *coefObjective* is
-    the data frame that contains these coefficients.
+    The inner solution is solved using *lpSolveAPI()*. *coefObjective*
+    is the data frame that contains these coefficients.
 -   *coefConstraing*: A data frame with the respective constraints for
-    the inner solution solved by *lpsolveAPI*.
+    the inner solution solved by *lpsolveAPI()*.
 -   *distances*: The distance of each scenario to its own theoretically
     best-achievable contribution (reference). See equation 3 in Husmann
     et al. (n.d.).
@@ -430,7 +430,7 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-Solving the porfolio under increasing assumptions for the untertainty
+Solving the portfolio under increasing assumptions for the uncertainty
 levels (uValue, respectively
 ![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u")
 in equation 4 (Husmann et al, n.d.)) gives sensitivity of the land-cover
@@ -441,8 +441,12 @@ possible) of the indicator consequences on the land-cover options. Here,
 the composition of land-cover alternatives is quite stable. Only the
 small proportion of crops (circa 10 %) is interchanged with small
 proportions of pasture and plantation. Forest and silvopasture are
-practically not affected by the uncertainty level. The plot corresponds
-to figure 3 in Gosling et al. (2020).
+practically not affected by the uncertainty level. Alley cropping does
+not appear in this portfolio at any uncertainty level. This is due to
+the fact that it is not defined as the best land-cover type in any
+indicator and is also the land-cover type that has the highest
+management complexity. The plot corresponds to figure 3 in Gosling et
+al. (2020).
 
 ### Leave-Indicators-Out-Analysis to Investigate the Indicators’ Sensitivity
 
