@@ -393,7 +393,8 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
   theme(text = element_text(size = 18),
         legend.position = "bottom")
 ```
-It can be see that the land-cover allocation transition under raising uncertainty differs of the here presented multi-functional scenario differs slightly from the multi-functional scanrio shown above. The here broadened state space leads an earlier increase of pasture.
+
+It can be see that the land-cover allocation transition under raising uncertainty differs of the here presented multi-functional scenario differs slightly from the multi-functional scenario shown above. The here broadened state space leads an earlier increase of pasture.
 
 
 
