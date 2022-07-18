@@ -247,7 +247,8 @@ Solving the porfolio under increasing assumptions for the untertainty levels (uV
 
 ### Leave-Indicators-Out-Analysis to Investigate the Indicators' Sensitivity
 
-The sensitivity of the portfolio towards indicators or groups of indicators can be straightforwardly analysed by either leaving indicators of interest out and interpreting the response of the portfolio or, alternatively, by adding indicators of interest. Typical way to conduct sensitivity analyses is thus to compare distinctly and independently optimization results.
+The sensitivity of the portfolio towards indicators or groups of indicators can be straightforwardly analysed by either leaving indicators of interest out and interpreting the response of the portfolio or, alternatively, by adding indicators of interest. Typical way to conduct sensitivity analyses is thus to compare distinctly and independently optimization results. The following code examples re-trace 3 relevant subsets of indicators presented in Gosling et al. (2020). The shiny app of *optimLanduse* (<http://134.76.17.50/optimlanduse_shiny/>) also provides functionality to straightforwardly leave-indicators-out by click. The here presented example can also be loaded into the app. Further explanation and instruction are given in the app.
+
 
 ```{r, fig.height = 3, fig.width = 4, warning=FALSE}
 dat_socioeconomic <- dat[dat$indicator != "Protecting soil resources" & dat$indicator !="Protecting water supply",]

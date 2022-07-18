@@ -451,7 +451,12 @@ indicators can be straightforwardly analysed by either leaving
 indicators of interest out and interpreting the response of the
 portfolio or, alternatively, by adding indicators of interest. Typical
 way to conduct sensitivity analyses is thus to compare distinctly and
-independently optimization results.
+independently optimization results. The following code examples re-trace
+3 relevant subsets of indicators presented in Gosling et al. (2020). The
+shiny app of *optimLanduse* (<http://134.76.17.50/optimlanduse_shiny/>)
+also provides functionality to straightforwardly leave-indicators-out by
+click. The here presented example can also be loaded into the app.
+Further explanation and instruction are given in the app.
 
 ``` r
 dat_socioeconomic <- dat[dat$indicator != "Protecting soil resources" & dat$indicator !="Protecting water supply",]
@@ -682,11 +687,12 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
         legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- --> It can be
-see that the land-cover allocation transition under raising uncertainty
-differs of the here presented multi-functional scenario differs slightly
-from the multi-functional scanrio shown above. The here broadened state
-space leads an earlier increase of pasture.
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+It can be see that the land-cover allocation transition under raising
+uncertainty differs of the here presented multi-functional scenario
+differs slightly from the multi-functional scenario shown above. The
+here broadened state space leads an earlier increase of pasture.
 
 <h3>
 <a name="7. Suggested">Suggested citation </a>
