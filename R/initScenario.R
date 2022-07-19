@@ -64,7 +64,7 @@ initScenario <- function(coefTable,  uValue = 1, optimisticRule = "expectation",
   }
 
   ## Drop unnecessary colums ##
-  if(any(!(names(dat) %in%
+  if(any(!(names(coefTable) %in%
            c("indicator", "direction", "landUse", "indicatorValue",
              "indicatorUncertainty", "indicatorGroup")))) {
     warning("Non-necessary columns detected and neglected.")
