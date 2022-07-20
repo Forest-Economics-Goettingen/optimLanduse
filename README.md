@@ -29,18 +29,23 @@ in- and outputs</a>
 <a name="1. Einleitung">Introduction</a>
 </h3>
 
-The R package **optimLanduse** provides tools for easy and systematic
-applications of the robust multiobjective land-cover composition
-optimization approach of Knoke et al. (2016). It includes tools to
-determine the land-cover composition that best balances the multiple
-functions and services a landscape can provide, and tools for
-understanding and visualizing how these compromises are reasoned. The
-**README.md** below guides users through the application and highlights
-possible use-cases on the basis of a published data set. Illustrating
-the consequences of considering alternative (sets of) ecosystem
-functions on the theoretically optimal landscape composition provides
-easily interpretable information for landscape modeling and
-decision-making.
+The question when managing ecosystems is how to simultaneously combat
+biodiversity loss and maintain ecosystem functioning while increasing
+human welfare. Designing multifunctional landscapes means deciding upon
+the composition and configuration of land-cover types, given that
+landscape patterns drive the landscape\`s ecological value and its
+ability to satisfy societal demands. Land-cover allocation models, and
+among them particularly optimization approaches, have proven helpful in
+revealing trade-offs between multiple objectives and services provided
+by different land-cover compositions.
+
+The R package **optimLanduse** provides functions for easy and
+systematic applications of the robust multiobjective land-cover
+composition optimization approach of Knoke et al. (2016). It includes
+tools to determine the land-cover composition that best balances the
+multiple functions and services a landscape can provide, and tools for
+deeper understanding and visualizing the contributions of the distinct
+indicators.
 
 *(CP: Der Satz davor ist mir nicht ganz klar, interpretable gibt es
 schon aber klingt schon arg genglisch. Das Ergebnis soll in landscape
