@@ -64,14 +64,9 @@ philosophy of the overall approach, see
 
 This chapter provides a brief overview over the package functions (Fig.
 1). For detailed information about methodological background, functions,
-and workflow please refer to Husmann et al. (n.d.) listed in the
-<a href="#7. Suggested">suggested citation</a> section. We also refer
-the reader to the respective help pages of the package for more
-information. *CP: Der letzte Satz kommt etwas unvermittelt. Meint ihr
-hier: The package requires the lpSolveApi function of the lpSolveApi
-package oder so in der Art? “comes from” ist n.m.E. genglisch* *VVG:
-Habe es hier gelöscht und einfach in Zeile 95 verfrachtet. Da wo wir bei
-coefObjective beschreiben, dass lpSolve genutzt wird.*
+and workflow please also refer to Husmann et al. (n.d.). We further
+refer the reader to the respective help pages of the package for more
+information.
 
 <p align="center">
 <img width="781.6" height="452" src="./man/figures/flowchart.png">
@@ -95,19 +90,17 @@ data are required:
     indicator combination. The column names of the table must follow the
     expected nomenclature displayed below. You also find this format in
     the built-in example tables **exampleGosling.xlsx** or
-    **exampleEmpty.xlsx**. All further columns will be dropped if
-    passed.
+    **exampleEmpty.xlsx**. The help files of the *exampleData()* and
+    *initScenario()* functions contain more details regarding the
+    required data format. Also an empty template incl. the predefined
+    headings can be accessed via *exampleData(“exampleEmpty.xlsx”)*. All
+    further columns will be dropped if passed.
 
 *Table 1: Example of the data set from Gosling et al. (2020) to
 illustrate the required data structure.*
 <p align="center">
 <img width="673.4" height="298.2" src="./man/figures/exampleGraphic.png">
 </p>
-
-\| See the help files of the *exampleData()* and *initScenario()*
-functions for more details. An empty template (incl. predefined
-headings) \| can be accessed via the *exampleData(“exampleEmpty.xlsx”)*
-function. <br>
 
 -   *uValue*: The argument for the uncertainty level
     (![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u"),
@@ -130,26 +123,23 @@ function. <br>
 
 #### Solver and List with results
 
-The *solveScenario()* function requires the initialized
+The *solveScenario()* function takes the initialized
 *optimLanduse*-object and only a few optional solver-specific arguments.
-As the solving process has no stochastic element, the calculation times
-depend almost entirely on the number of digits calculated.
 
 -   *digitsPrecision*: Provides the only possibility for the user to
     influence the calculation time. As the solving process has no
-    stochastic element, the calculation times depend almost entirely on
-    the number of digits calculated.
+    stochastic element, the calculation times depend practically on the
+    number of digits calculated only.
 
 -   *lowerBound* & *upperBound*: Optional bounds for the land-cover
-    options. The lower bound must be 0 or a vector with lower bounds in
-    the dimension of the land-cover options. The upper bound,
-    respectively, 1 or a vector with upper bounds in the dimension of
-    the land-cover options. Choosing 0 and 1 (the defaults) as
-    boundaries for all decision variables, means that no land-cover
-    alternative is forced into the portfolio and that no land-cover
-    alternative is assigned a maximum.
+    alternatives. The lower bound must be 0 or a vector with lower
+    bounds in the dimension of the number of land-cover alternatives.
+    The upper bound, respectively, 1 or a vector with upper bounds.
+    Choosing 0 and 1 (the defaults) as boundaries for all decision
+    variables, means that no land-cover alternative is forced into the
+    portfolio and that no land-cover alternative is assigned a maximum.
 
-The resulting *list with results* contains different Information of the
+The returned *list with results* contains different Information of the
 optimization model. First the information of the *initScenario()*
 function are displayed again in this list. These include:
 
@@ -157,11 +147,11 @@ function are displayed again in this list. These include:
     used.
 -   *scenarioTable*: Data frame with one row for each combination of
     worst-case and best-case outcomes of all indicators (thus the number
-    of scenarios
+    of rows equals the number of scenarios
     ![N_S](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N_S "N_S")
-    in Husmann et al (n.d.)). The columns contain certain relevant
-    calculation steps of the optimization program. *adjSem\** are the
-    uncertainty adjusted indicators
+    in Husmann et al (n.d.)). The columns contain relevant calculation
+    steps of the optimization program. *adjSem\** are the uncertainty
+    adjusted indicators
     (![R\_{liu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;R_%7Bliu%7D "R_{liu}")
     in Husmann et al. (n.d.)). *minAdjSem* are the minimal uncertainty
     adjusted indicators
@@ -209,7 +199,7 @@ Eastern Panama. The data of this study is accessible in the *Appendix A*
 of Gosling et al. (2020) and is also firmly integrated into the
 **optimLanduse** package. It can be accessed via
 *exampleData(“exampleGosling.xlsx”)*. The data integrated in the package
-comes already in the expected *optimLanduse* format, such that it can be
+comes already in the required *optimLanduse* format, such that it can be
 used without any data processing.
 
 Enriching agricultural farms with agroforestry has been promoted as a
