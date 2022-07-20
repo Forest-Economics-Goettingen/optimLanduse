@@ -37,19 +37,40 @@ functions and services a landscape can provide, and tools for
 understanding and visualizing how these compromises are reasoned. The
 **README.md** below guides users through the application and highlights
 possible use-cases on the basis of a published data set. Illustrating
-the consequences of alternative ecosystem functions on the theoretically
-optimal landscape composition provides easily interpretable information
-for landscape modeling and decision making. The method is already
-established in land-cover optimization and has been applied in a couple
-of studies. More details about the theory, the definition of the formal
+the consequences of considering alternative (sets of) ecosystem
+functions on the theoretically optimal landscape composition provides
+easily interpretable information for landscape modeling and
+decision-making.
+
+*(CP: Der Satz davor ist mir nicht ganz klar, interpretable gibt es
+schon aber klingt schon arg genglisch. Das Ergebnis soll in landscape
+modelling eingehen? Machen wir nicht landscape modelling? Bitte einfach
+nochmal anschauen, fällt mir gerade etwas schwer eine Verbesserung
+vorzuschlagen. )*
+
+*VVG: Was wir meinen ist ja, dass diese Ergebnisse die wir produzieren
+den Decision makern beim landscape modelling helfen können, richtig?
+Landscape modelling ist hier also nicht der wirkliche
+modellierungsprozess den wir machen, sondern dieses prozess auf die
+Fläche zu bringen. Also viellicht sowas wie: The package output
+illustrates the consequences of considering different (sets of)
+ecosystem functions on the theoretically optimal landscape composition
+and, with that provides important information for landscape planning and
+decision-making*
+
+The method has already been applied and further developed in a series of
+studies. More details about the theory, the definition of the formal
 optimization problem and also significant examples are listed in the
-<a href="#8. Literatur">literature</a> section
+<a href="#8. Literatur">literature</a> section *CP: Was ist hier mit
+significant example gemeint?* *VVG: Vielleicht einfach: and also more
+example apllications are listed in the*
 
 The package opens the approach of Knoke et al. (2016) to the community
 of landscape planners and provides opportunities for straightforward
 systematic or batch applications. To further enhance this, we have
 designed a graphical shiny dashboard for the package to get a quick idea
-of the functionalities of the package, see
+of the functionalities of the package and the modelling philosophy of
+the overall approach (*CP: oder so etwas in der Art…*), see
 <http://134.76.17.50/optimlanduse_shiny/>.
 
 <h3>
@@ -59,13 +80,21 @@ of the functionalities of the package, see
 This chapter provides a brief overview over the package functions. For
 detailed information about methodological background, functions, and
 workflow please refer to Husmann et al. (n.d.) listed in the
-<a href="#7. Suggested">suggested citation</a> section. Furthermore you
-can consider the respective help pages for more information. The
-function *lpSolveAPI()* comes from the **lpSolveAPI** package.
+<a href="#7. Suggested">suggested citation</a> section. We also refer
+the reader to the respective help pages of the package for more
+information. *CP: Der letzte Satz kommt etwas unvermittelt. Meint ihr
+hier: The package requires the lpSolveApi function of the lpSolveApi
+package oder so in der Art? “comes from” ist n.m.E. genglisch* *VVG:
+Habe es hier gelöscht und einfach in Zeile 95 verfrachtet. Da wo wir bei
+coefObjective beschreiben, dass lpSolve genutzt wird.*
 
 <p align="center">
 <img width="781.6" height="452" src="./man/figures/flowchart.png">
 </p>
+
+*Figure 1: Overview of the functions of the* ***optimLanduse***
+*package. Green diamonds: input and output data; blue rectangles:
+functions; gray parallelograms: optional function settings.*
 
 #### Initialization and Input
 
@@ -87,6 +116,9 @@ data are required:
 <p align="center">
 <img width="673.4" height="298.2" src="./man/figures/exampleGraphic.png">
 </p>
+
+*Table 1: Example of the data set from Gosling et al. (2020) to
+illustrate the required data structure.*
 
 \| See the help files of the *exampleData()* and *initScenario()*
 functions for more details. An empty template (incl. predefined
@@ -159,8 +191,9 @@ function are displayed again in this list. These include:
     linear program with
     ![N_L](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N_L "N_L")
     (number of land-cover options) coefficients for the inner solution.
-    The inner solution is solved using *lpSolveAPI()*. *coefObjective*
-    is the data frame that contains these coefficients.
+    The inner solution is solved using the *lpSolveAPI()* function of
+    the **lpSolveApi** package. *coefObjective* is the data frame that
+    contains these coefficients.
 -   *coefConstraing*: A data frame with the respective constraints for
     the inner solution solved by *lpsolveAPI()*.
 -   *distances*: The distance of each scenario to its own theoretically
@@ -195,17 +228,20 @@ optimLanduse package. It can be accessed via
 comes already in the expected *optimLanduse* format, such that it can be
 used without any data processing.
 
-Enriching agricultural farms with forest plantations has potential to
-enhance the ecosystem functioning of farms in Panama. Gosling et
-al. (2020) therefore used the optimization model presented here to
-understand smallholder farmers’ perceptions and values of agroforestry
-systems. They identified 10 relevant indicators for a predefined set of
-land-cover alternatives, which represent the farmers’ goals. A
-subsequent survey of farmers provided the empirical basis in the form of
-indicators’ expectations (arithmetic mean) and uncertainties (standard
-error of the mean) for each land-cover alternative. Descriptions of the
-land-cover alternatives and indicators can be found in tables 1 and 2 in
-Gosling et al. (2020).
+Enriching agricultural farms with agroforestry has been promoted as a
+means to enhance ecosystem functioning of farms in Panama, while
+maintaining important economic functions. Gosling et al. (2020)
+therefore used the optimization model presented here to understand
+smallholder farmers’ perceptions and values of agroforestry systems.
+They identified 10 relevant indicators for a predefined set of
+land-cover alternatives, which represent the farmers’ goals (such as
+long and short-term income or labor demand, as well as carbon and water
+regulation). A survey with local farmers provided the empirical basis in
+the form of the farmer’s expectations on the indicator performance of
+each land-cover (arithmetic mean) and its uncertainties (using the
+standard error of the mean across the survey’s respondents).
+Descriptions of the land-cover alternatives and indicators can be found
+in tables 1 and 2 in Gosling et al. (2020).
 
 ### Installing *optimLanduse*, Loading Required Packages and Importing the Data
 
@@ -243,10 +279,10 @@ init <- initScenario(coefTable = dat,
                      # 3 is the default
 ```
 
-In consistence with Gosling et al., we chose the expectations of the
+In line with Gosling et al., we chose the expected value of the
 indicator as optimistic outcomes *(optimisticRule = “expectation”)* and
-the same uncertainty for the calculation of the averaged distances and
-the uncertainty space (*fixDistance = NA*, see equations 4 and 9 in
+the same uncertainty level for the calculation of the averaged distances
+and the uncertainty space (*fixDistance = NA*, see equations 4 and 9 in
 Husmann et al. (n.d.) for more details).
 
 ### Solving the Initialized *optimLanduse* Object
@@ -272,15 +308,27 @@ result$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1 : 6) 
   guides(fill=guide_legend(title = ""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+<img src="README_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
-The here optimized farm composition corresponds to figure 3
+*Figure 2: Composition of the optimized farm (based on data shown in
+Table 1), including all indicators. Each land-cover option is shown in
+an allocated share (%).*
+
+<!-- <p style="text-align: center;"> </p>  -->
+
+The resulting optimized farm composition corresponds to figure 3
 (![f_u=2](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u%3D2 "f_u=2"))
-in Gosling et al (2020). It can be seen that the farm composition that
-best fulfills all 10 indicators (i.e. the multi-functional portfolio)
-practically only covers silvopasture and forest. The averaged observed
-farm portfolio in 2018 was, however, mainly composed of pasture and
-cropland and only small share of forest (circa 15 %).
+in Gosling et al. (2020). It can be seen that the farm composition that
+best fulfills all 10 indicators (i.e. the multi-functional portfolio) is
+dominated by silvopasture and forest. According to Gosling et al. (2020)
+this reveals the potential of agroforestry to serve as a compromise
+solution to fulfill multiple ecological and economic functions. Yet, the
+average farm portfolio of the surveyed farms was mainly composed of
+pasture and cropland with only a small share of forest (14 %). This
+reveals that not all of the selected objectives (and their weights)
+currently drive land-use decisions. The optimization approach can then
+be used to dive deeper into the effect of different goals on the
+resulting optimized land-use composition and the effects of uncertainty.
 
 ### Calculating the Portfolio Performances of the Optimized *optimLanduse* Object
 
@@ -314,29 +362,62 @@ ggplot(performance$scenarioTable,
            vjust = -1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+<img src="README_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+
+*Figure 3: The performance of each of the 10 indicators for the result
+of the ideal farm composition. The colored points are the achieved
+levels of the indicators of all scenarios s. The dotted, horizontal red
+line illustrates the guaranteed performance*
+![(1-\\beta)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%281-%5Cbeta%29 "(1-\beta)")*,
+thus the robust feasible solution of the program (Equation 1 in (Husmann
+et al, n.d.)).*
+
+*CP: Im Folgenden Absatz ist nicht ganz klar auf was Ihr Euch da
+bezieht. Ich denke ich würde für alle Grafiken eine Figure caption
+einfügen, das macht es für den Leser deutlich leichter und Ihr könnt
+dann besser darauf verweisen.*
 
 Looking at the performances of this multi-functional farm reveals, which
-indicators restrict the result. Here, the indicators 1 (financial
-stability), 3 (investment costs) and 8 (meeting household needs) are
-very close to each other. It can be followed that the portfolio is
-apparently restricted by these 3 indicators. In the worst-performing
-scenarios, these 3 indicators are commonly the worst performing
-indicators with the maximum distance of
-![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta").
-Or in other words, the guaranteed performance
+indicators restrict the result (*CP: Wirklich restrict the result oder
+drive the largest distance (beta…) under specific uncertainty scenarios.
+Es stimmt natürlich, aber hier vielleicht noch technischer und mit mehr
+Bezug zur Formel arbeiten, das macht es denke ich leichter für den
+Leser*). Here, the indicators 1 (financial stability), 3 (investment
+costs) and 8 (meeting household needs) show the largest beta values for
+the most pessimistic uncertainty scenarios *CP: closest to each other in
+terms of what?*. It can be concluded that the portfolio is apparently
+restricted by these 3 indicators. In the worst-performing uncertainty
+scenarios, these 3 indicators show the maximum distance of
+![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
+across all indicators. In other words, the guaranteed performance
 ![1-\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1-%5Cbeta "1-\beta")
-(lowestPerformance) is defined by one the these indicators. It can be
-interpreted that these 3 indicators are be worthwhile to consider in
-order to find strategy that developes the land-cover composition in a
-desired way. According to Gosling et al. (2020), this results were
-expectable, since the need for short-term liquidity mainly drives
-decisions of the farms of smallholder farmer. Intermediate-term economic
-success is not relevant until consumption of the household is secured.
+(lowestPerformance) is defined by one the these indicators. (*Die Sätze
+hier sind ein bisschen wiederholend, vielleicht nochmal straffen, aber
+im Zweifel lieber doppelt drin lassen, ist ja ein readme und hat keine
+Beschränkung*) These 3 indicators should therefore be carefully
+considered when discussing future land-use alternatives and concepts.
+According to Gosling et al. (2020), this result is in line with current
+observed behavior, since the need for short-term liquidity mainly drives
+decisions of smallholder farmers in the study region. Intermediate-term
+economic success is not relevant until consumption of the household is
+secured.
+
 While the performances of indicator 1 differ relatively strong among the
 scenarios, the indicators 3 and 8 are similar in each scenario. It thus
 may be interesting to investigate the reasons for this particular
-worst-performing scenario of indicator 1.
+worst-performing scenario of indicator 1. *CP: Hab nicht ganz verstanden
+was Euch hier wichtig ist, vielleicht eine alternative Formulierung:
+Fig. xy can be used to further explore the effects of uncertainty on the
+modelled land-use decisions. Indicator 1 shows a larger deviation in
+indicator performance pij (oder wie ihr es nennt) between uncertainty
+scenarios. This might be in parts be attributed to the larger standard
+errors of this indicator. In contrast, Indicators 3 and 8 still show a
+low guaranteed performance level, while differences between uncertainty
+scenarios are less prominent. … oder so irgendwie Such in-depth analyses
+help to identify trade-offs among different indicators and their likely
+effects on land-use decisions…..Soll hier nochmal gesagt werden wann die
+Grafik gemacht werden sollte und wann nicht? Vielleicht auch nicht
+unbedingt notwendig? *
 
 ``` r
 performance$beta
@@ -347,50 +428,49 @@ performance$beta
 ``` r
 lowestPerformance <- performance$scenarioTable[order(performance$scenarioTable$performance,
                                 decreasing = FALSE),]
-head(lowestPerformance[,c(1 : 8, 31)], n = 9)
+performanceExample<- head(lowestPerformance[,c(1 : 8, 31)], n = 9)
+
+knitr::kable(performanceExample, row.names = F)
 ```
 
-    ##               indicator outcomeCrops outcomePasture outcomeAlley Cropping
-    ## 9   Financial stability         High           High                  High
-    ## 11  Financial stability         High            Low                  High
-    ## 13  Financial stability         High           High                   Low
-    ## 15  Financial stability         High            Low                   Low
-    ## 153    Investment costs         High           High                  High
-    ## 154    Investment costs          Low           High                  High
-    ## 157    Investment costs         High           High                   Low
-    ## 158    Investment costs          Low           High                   Low
-    ## 185    Investment costs         High           High                  High
-    ##     outcomeSilvopasture outcomePlantation outcomeForest      direction
-    ## 9                   Low              High          High more is better
-    ## 11                  Low              High          High more is better
-    ## 13                  Low              High          High more is better
-    ## 15                  Low              High          High more is better
-    ## 153                 Low               Low          High less is better
-    ## 154                 Low               Low          High less is better
-    ## 157                 Low               Low          High less is better
-    ## 158                 Low               Low          High less is better
-    ## 185                 Low               Low           Low less is better
-    ##     performance
-    ## 9      38.68000
-    ## 11     38.68000
-    ## 13     38.68000
-    ## 15     38.68000
-    ## 153    38.68000
-    ## 154    38.68000
-    ## 157    38.68000
-    ## 158    38.68000
-    ## 185    38.68223
+| indicator           | outcomeCrops | outcomePasture | outcomeAlley Cropping | outcomeSilvopasture | outcomePlantation | outcomeForest | direction      | performance |
+|:--------------------|:-------------|:---------------|:----------------------|:--------------------|:------------------|:--------------|:---------------|------------:|
+| Financial stability | High         | High           | High                  | Low                 | High              | High          | more is better |    38.68000 |
+| Financial stability | High         | Low            | High                  | Low                 | High              | High          | more is better |    38.68000 |
+| Financial stability | High         | High           | Low                   | Low                 | High              | High          | more is better |    38.68000 |
+| Financial stability | High         | Low            | Low                   | Low                 | High              | High          | more is better |    38.68000 |
+| Investment costs    | High         | High           | High                  | Low                 | Low               | High          | less is better |    38.68000 |
+| Investment costs    | Low          | High           | High                  | Low                 | Low               | High          | less is better |    38.68000 |
+| Investment costs    | High         | High           | Low                   | Low                 | Low               | High          | less is better |    38.68000 |
+| Investment costs    | Low          | High           | Low                   | Low                 | Low               | High          | less is better |    38.68000 |
+| Investment costs    | High         | High           | High                  | Low                 | Low               | Low           | less is better |    38.68223 |
 
 Further elaborating the packages’ results indeed reveals that indicator
 1 (financial stability) restricts the optimum and that the worst
 performing scenarios of indicator 3 (investment costs) are equal to the
 worst performing scenarios of indicator 1.
 ![1-\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1-%5Cbeta "1-\beta")
-results to this worst performances. All the worst performing scenarios
-have in common, that the outcome of silvopasture is pessimistic (Low)
-and the outcome of forest is optimistic (High). This relationship thus
-might be of interest when developing strategies or policies for a
-desired landscape development.
+results to this worst performances. *CP: Letzten Satz verstehe ich nicht
+ganz. Kann der Satz weg?* All of the worst performing scenarios have in
+common that the outcome of silvopasture is pessimistic (Low) and the
+outcome of forest is optimistic (High). This relationship thus might be
+of interest when developing strategies or policies for a desired
+landscape development. *CP: Hm, verstehe ich auch nicht ganz. Kann der
+ganze Absatz vielleicht einfach weg?* *Nachdem ich die Tabelle gesehen
+habe verstehe ich glaube was Ihr meint. Allerdings bin ich mir nicht so
+sicher ob man da so in der Tiefe eingeht, wenn man keine Erklärung hat?
+oder ihr müsstet die noch ergänzen. sivlopasture ist eben der Indikator
+der am besten abschneidet und in der aktuellen Zusammensetzung den
+höchsten Anteil hat. Ich denke ich würde eher den Code kommentieren.
+Also z.B. sowas wie: For further exploring the role of different
+indicators for modelled land-use decision, it might be helpful to
+identify the indicators and uncertainty scenarios with the lowest
+guaranteed performance (…code…). Here, this is the case for the
+indicators 1 and 3 for the pessimistic scenarios of silvopasture.*
+*Interessant ist in diesem Zusammenhang ja auch das optimierte gegenüber
+der heutigen Landnutzung zu vergleichen, welcher Indikator dann z.B.
+eine deutlich schlechtere Min performance hätte - das ist aber natürlich
+im package nicht ganz so leicht auszurechnen*
 
 <h3>
 <a name="6. Erweiterte Anwendung">Sophisticated application</a>
@@ -437,30 +517,41 @@ in equation 4 (Husmann et al, n.d.)) gives sensitivity of the land-cover
 compositions towards increasing aversion of risk of the farmer. The
 higher the uncertainty level, the higher the standard error of the mean
 (Gosling et al. use the s.e.m.; any other uncertainty measure is also
-possible) of the indicator consequences on the land-cover options. Here,
-the composition of land-cover alternatives is quite stable. Only the
-small proportion of crops (circa 10 %) is interchanged with small
-proportions of pasture and plantation. Forest and silvopasture are
-practically not affected by the uncertainty level. Alley cropping does
-not appear in this portfolio at any uncertainty level. This is due to
-the fact that it is not defined as the best land-cover type in any
-indicator and is also the land-cover type that has the highest
-management complexity. The plot corresponds to figure 3 in Gosling et
-al. (2020).
+possible) of the indicator consequences on the land-cover options. *CP:
+STreng genommen verändert sich der STandardfehler ja nicht. Vielleicht
+lieber sowas wie … The higher the uncertainty level the larger the
+uncertainty space, defined by the multiple of the standard error or
+stand deviation of the expected (mean) indicator value*.
+
+Here, the composition of land-cover alternatives is quite stable across
+different uncertainty levels. Only the small proportion of crops (circa
+10 % *CP:Genau angeben*) is interchanged with small proportions of
+pasture and plantation under uncertainty levels larger than 2. The share
+of forest and silvopasture is hardly affected by the uncertainty level.
+Alley cropping does not appear in this portfolio at any uncertainty
+level. This is due to the fact that it is not defined as the best
+land-cover type in any indicator and is also the land-cover type that
+has the highest management complexity. The plot corresponds to figure 3
+in Gosling et al. (2020).
 
 ### Leave-Indicators-Out-Analysis to Investigate the Indicators’ Sensitivity
 
+*Soll es bei “leave-indicators-out-analysis” bleiben oder ginge auch
+etwas wie .. selection of specific indicator (bundles) oder “in and
+exclusion of indicators”*
+
 The sensitivity of the portfolio towards indicators or groups of
-indicators can be straightforwardly analysed by either leaving
-indicators of interest out and interpreting the response of the
-portfolio or, alternatively, by adding indicators of interest. Typical
-way to conduct sensitivity analyses is thus to compare distinctly and
-independently optimization results. The following code examples re-trace
-3 relevant subsets of indicators presented in Gosling et al. (2020). The
-shiny app of *optimLanduse* (<http://134.76.17.50/optimlanduse_shiny/>)
-also provides functionality to straightforwardly leave-indicators-out by
-click. The here presented example can also be loaded into the app.
-Further explanation and instruction are given in the app.
+indicators can be analysed by either excluding indicators of interest
+and interpreting the response of the resulting land-use composition or,
+alternatively, by adding indicators of interest. To do so individual and
+independent optimization runs are carried out in and excluding different
+(sets of) indicators. The following code exemplifies such optimization
+runs for 3 relevant subsets of indicators presented in Gosling et
+al. (2020). The shiny app of *optimLanduse*
+(<http://134.76.17.50/optimlanduse_shiny/>) also provides functionality
+to straightforwardly leave-indicators-out by a single click. The here
+presented example can also be loaded into the app. Further explanation
+and instructions are given in the app.
 
 ``` r
 dat_socioeconomic <- dat[dat$indicator != "Protecting soil resources" & dat$indicator !="Protecting water supply",]
@@ -490,9 +581,9 @@ result_socioeconomic$landUse %>% gather(key = landCoverOption, value = landCover
 
 ![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
-First leave-indicator-out example considers socio-economic indicators
-only (see also figure 5 of Gosling et al. (2020)). Expectedly, it
-corresponds to the above shown multio-functional portfolio, as all
+The first leave-indicator-out example considers socio-economic
+indicators only (see also figure 5 of Gosling et al. (2020)). This
+corresponds to the above shown multi-functional portfolio, as all
 indicators relevant for the solution of the multi-functional portfolio
 are captured also in the socio-economic group.
 
@@ -546,11 +637,12 @@ head(lowestPerformance_socioeconomic[,c(1 : 8, 31)], n = 9)
     ## 158    38.68000
     ## 185    38.68223
 
-A look at the relevant performances reveals this finding. The result is
-still limited by financial stability and investment costs. Accordingly,
-also this socio-economic portfolio still does not perfectly reflects the
-actual observable land-cover composition, so that among these considered
-indicators further indicators appear to be relevant for the farmers.
+Summarizing the relevant performances reveals that the result is still
+limited by financial stability and investment costs. Accordingly, also
+this socio-economic portfolio still does not perfectly reflect the
+currently observed land-cover composition. This means that further
+indicators appear to be relevant for the farmers (*CP: Or altnertave
+weighings are likely…*).
 
 ``` r
 dat_ecologic <- dat[dat$indicator %in% c("Protecting soil resources",
@@ -582,14 +674,15 @@ result_ecologic$landUse %>% gather(key = landCoverOption, value = landCoverShare
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 The ecological indicator group, as the second example for
-leave-indicators-out analysis, leads to a portfolio covering forests
-only (corresponds to figure 5 of Gosling et al. (2020)). It can be
-followed that all contributions of all other land-cover alternatives in
-all scenarios (even the optimistic ones) to the ecological indicators
-are lower then the contribution of forest. This portfolio differs even
-more from the actually observed portfolio then the above shown
+leave-indicators-out analysis, leads to a land-use portfolio comprising
+forests only (corresponds to figure 5 of Gosling et al. (2020)). It can
+be concluded that all contributions of all other land-cover alternatives
+in all scenarios (even the optimistic ones) to the ecological indicators
+are lower than that of forests. This portfolio differs even more from
+the actually observed portfolio *differs in what?* then the above shown
 multi-functional portfolio. Also the ecological indicators are therefore
-apparently not sufficient to approximate the farmers’ inceptions.
+apparently not sufficient to approximate the farmers’ inceptions (*CP:
+perceptions?*.
 
 ### Immediate Economic Success
 
@@ -626,36 +719,40 @@ The third example considers the prospective relevant indicators of the
 farmers only. Corresponding to figure 5 of Gosling et al. (2020), this
 scenario only consists of indicators that approximate the immediate
 economic success. Indeed, this portfolio best reflects the portfolio
-observed in Eastern Panama. Followingly, these indicators best reflect
-the farmers’ goals and perceptions in Eastern Panama. The difference
-between this portfolio and the desired multi-functional portfolio
-highlight the requirements a land-cover alternative must fulfill to meet
-the farmers needs and goals. The silvopasture as defined in Gosling et
-al. (2020) may not serve the requirements of the farmers sufficiently.
-Since farmers rate liquidity and meeting household needs higher then
-long-term profit and economic stability, pasture outperforms
-silvopasture in the realistic scenario. Policies or development plans
-may consider these indicators as key elements when promoting a landscape
-development towards multifunctional landscapes.
+observed in Eastern Panama. Hence, these indicators best reflect the
+farmers’ goals and perceptions in Eastern Panama. The difference between
+this portfolio and the desired multi-functional portfolio highlight the
+requirements a land-cover alternative must fulfill to meet the farmers
+needs and goals. The silvopasture as defined in Gosling et al. (2020)
+may not serve the requirements of the farmers sufficiently. Since
+farmers rate liquidity and meeting household needs higher than long-term
+profit and economic stability, pasture outperforms silvopasture in the
+realistic scenario. Policies or development plans may consider these
+indicators as key elements when promoting a landscape development
+towards multifunctional landscapes.
 
 ### The use of fixDistance
 
-It can be advantageous to define distinct uncertainties for the
+It can be advantageous to define distinct uncertainty levels for the
 calculation of the distances to the maximum achievable level (the
 reference)
 ![d\_{iu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d_%7Biu%7D "d_{iu}")
 (equation 3 in Husmann et al. (n.d.)) and the actual distances under a
 certain land-cover composition
 ![R\_{iu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;R_%7Biu%7D "R_{iu}")
-(equation 5 in Husmann et al. (n.d.), see also equation 9). The
-broadenes uncertainty space allows for a broader state space of the
-distances
+(equation 5 in Husmann et al. (n.d.), see also equation 9). *CP: Mit dem
+folgenden Satz tue ich mich sehr scchwer… Vielleicht sowas wie: For
+instance by using an uncertainty level of 3 the uncertainty space
+becomes larger, while the uncertainty space reamins constant…. and thus
+leads to… * The broadened uncertainty space allows for a broader state
+space of the distances
 ![d\_{ij}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d_%7Bij%7D "d_{ij}"),
-which usually leads to smoother transitions when the uncertainty values
-are raised. Disadvantage is that the distances cannot be interpreted
-straightforwardly any more. The different uncertainty spaces considered
-in the denominator and in the counter of equation 3 (Husmann et al.,
-n.d.) to not normalize the distance to {0, 1} any more.
+which usually leads to smoother transitions (*CP: between what?*) when
+the uncertainty values are raised. The disadvantage is that the
+distances cannot be interpreted straightforwardly any more. The
+different uncertainty spaces considered in the denominator and in the
+counter of equation 3 (Husmann et al., n.d.) to (*CP:do? An dem Satz ist
+was komisch*) not normalize the distance to {0, 1} any more.
 
 ``` r
 #### uValue 3 ####
@@ -693,10 +790,12 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
 
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
-It can be see that the land-cover allocation transition under raising
-uncertainty differs of the here presented multi-functional scenario
-differs slightly from the multi-functional scenario shown above. The
-here broadened state space leads an earlier increase of pasture.
+*CP: Hier ist auch was komisch* It can be seen that the land-cover
+allocation transition under raising uncertainty differs slightly from
+the multi-functional scenario shown above. The here broadened state
+space leads an earlier increase of pasture (*CP: Ist hier gemeint: leads
+to selection of a larger share of pasture under low uncertainty levels
+as compared to…*).
 
 <h3>
 <a name="7. Suggested">Suggested citation </a>

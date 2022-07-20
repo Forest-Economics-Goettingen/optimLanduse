@@ -1,5 +1,6 @@
 ---
-output: github_document
+output: 
+  github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -39,10 +40,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The R package **optimLanduse** provides tools for easy and systematic applications of the robust multiobjective land-cover composition optimization approach of Knoke et al. (2016). It includes tools to determine the land-cover composition that best balances the multiple functions and services a landscape can provide, and tools for understanding and visualizing how these compromises are reasoned. The **README.md** below guides users through the application and highlights possible use-cases on the basis of a published data set. Illustrating the consequences of considering alternative (sets of) ecosystem functions on the theoretically optimal landscape composition provides easily interpretable information for landscape modeling and decision-making. 
 
-*(CP: Der Satz davor ist mir nicht ganz klar, interpretable gibt es schon aber klingt schon arg genglisch. Das Ergebnis soll in landscape modelling eingehen? Machen wir nicht landscape modelling? Bitte einfach nochmal anschauen, fällt mir gerade etwas schwer eine Verbesserung vorzuschlagen.)* 
+*(CP: Der Satz davor ist mir nicht ganz klar, interpretable gibt es schon aber klingt schon arg genglisch. Das Ergebnis soll in landscape modelling eingehen? Machen wir nicht landscape modelling? Bitte einfach nochmal anschauen, fällt mir gerade etwas schwer eine Verbesserung vorzuschlagen. )*
+
+*VVG: Was wir meinen ist ja, dass diese Ergebnisse die wir produzieren den Decision makern beim landscape modelling helfen können, richtig? Landscape modelling ist hier also nicht der wirkliche modellierungsprozess den wir machen, sondern dieses prozess auf die Fläche zu bringen. Also viellicht sowas wie: The package output illustrates the consequences of considering different (sets of) ecosystem functions on the theoretically optimal landscape composition and, with that provides important information for landscape planning and decision-making*
 
 The method has already been applied and further developed in a series of studies. More details about the theory, the definition of the formal optimization problem and also significant examples are listed in the <a href="#8. Literatur">literature</a> section
 *CP: Was ist hier mit significant example gemeint?*
+*VVG: Vielleicht einfach: and also more example apllications are listed in the*
 
 The package opens the approach of Knoke et al. (2016) to the community of landscape planners and provides opportunities for straightforward systematic or batch applications. To further enhance this, we have designed a graphical shiny dashboard for the package to get a quick idea of the functionalities of the package and the modelling philosophy of the overall approach (*CP: oder so etwas in der Art...*), see <http://134.76.17.50/optimlanduse_shiny/>.
 
@@ -50,12 +54,15 @@ The package opens the approach of Knoke et al. (2016) to the community of landsc
 <a name="3. Input und Output">Package structure</a>
 </h3>
 
-This chapter provides a brief overview over the package functions. For detailed information about methodological background, functions, and workflow please refer to Husmann et al. (n.d.) listed in the <a href="#7. Suggested">suggested citation</a> section. We also refer the reader to the respective help pages of the package for more information. The function *lpSolveAPI()* comes from the **lpSolveAPI** package.
+This chapter provides a brief overview over the package functions. For detailed information about methodological background, functions, and workflow please refer to Husmann et al. (n.d.) listed in the <a href="#7. Suggested">suggested citation</a> section. We also refer the reader to the respective help pages of the package for more information.
 *CP: Der letzte Satz kommt etwas unvermittelt. Meint ihr hier: The package requires the lpSolveApi function of the lpSolveApi package oder so in der Art? "comes from" ist n.m.E. genglisch*
+*VVG: Habe es hier gelöscht und einfach in Zeile 95 verfrachtet. Da wo wir bei coefObjective beschreiben, dass lpSolve genutzt wird.*
+
 
 <p align="center">
   <img width="781.6" height="452" src="./man/figures/flowchart.png">
 </p>
+*Figure 1: Overview of the functions of the* ***optimLanduse*** *package. Green diamonds: input and output data; blue rectangles: functions; gray parallelograms: optional function settings.*
 
 #### Initialization and Input
 
@@ -66,6 +73,7 @@ The *initScenario()* function combines the user settings with the data into an *
 <p align="center">
   <img width="673.4" height="298.2" src="./man/figures/exampleGraphic.png">
 </p>
+*Table 1: Example of the data set from Gosling et al. (2020) to illustrate the required data structure.*
 
 \| See the help files of the *exampleData()* and *initScenario()* functions for more details. An empty template (incl. predefined headings) \| can be accessed via the *exampleData("exampleEmpty.xlsx")* function. <br>
 
@@ -87,7 +95,7 @@ The resulting *list with results* contains different Information of the optimiza
 
 -   *scenarioSettings*: Data frame with *uValue* and *optimisticRule* used.
 -   *scenarioTable*: Data frame with one row for each combination of worst-case and best-case outcomes of all indicators (thus the number of scenarios $N_S$ in Husmann et al (n.d.)). The columns contain certain relevant calculation steps of the optimization program. *adjSem\** are the uncertainty adjusted indicators ($R_{liu}$ in Husmann et al. (n.d.)). *minAdjSem* are the minimal uncertainty adjusted indicators $min(R_{liu})$ and $max(R_{liu})$ the maximal uncertainty adjusted indicators. diffAdjSem are the range between these uncertainties adjusted indicators $\delta_{\text{min,max}_{iu}}$.
--   *coefObjective*: The optimization program is translated into a linear program with $N_L$ (number of land-cover options) coefficients for the inner solution. The inner solution is solved using *lpSolveAPI()*. *coefObjective* is the data frame that contains these coefficients.
+-   *coefObjective*: The optimization program is translated into a linear program with $N_L$ (number of land-cover options) coefficients for the inner solution. The inner solution is solved using the *lpSolveAPI()* function of the **lpSolveApi** package. *coefObjective* is the data frame that contains these coefficients.
 -   *coefConstraing*: A data frame with the respective constraints for the inner solution solved by *lpsolveAPI()*.
 -   *distances*: The distance of each scenario to its own theoretically best-achievable contribution (reference). See equation 3 in Husmann et al. (n.d.).
 
@@ -126,6 +134,7 @@ library(ggsci)
 # Loading the example data
 path <- exampleData("exampleGosling.xlsx")
 dat <- read_excel(path)
+
 ```
 
 *dat* is in the required format. Refer to the help of the *initScenario()* function or to the <a href="#3. Input und Output">detailed description of the functions' in- and outputs</a> chapter for more details.
@@ -147,7 +156,7 @@ In line with Gosling et al., we chose the expected value of the indicator as opt
 
 ### Solving the Initialized *optimLanduse* Object
 
-```{r, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4}
+```{r, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4, fig.align='center'}
 # Solve the initialized optimLanduse object using the solveScenario() function                     
 result <- solveScenario(x = init)
 
@@ -168,11 +177,15 @@ result$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1 : 6) 
   guides(fill=guide_legend(title = ""))
 ```
 
-The resulting optimized farm composition corresponds to figure 3 ($f_u=2$) in Gosling et al (2020). It can be seen that the farm composition that best fulfills all 10 indicators (i.e. the multi-functional portfolio) is dominated by silvopasture and forest. According to Gosling et al. (2020) this reveals the potential of agroforestry to serve as a compromise solution to fulfill multiple ecological and economic functions. Yet, the average farm portfolio in the study area (*CP: alternatively: the average farm portfolio of the surveyed farms)* was mainly composed of pasture and cropland with only a small share of forest (circa 15 %) (*CP: Why circa?*). This reveals that not all of the selected objectives (and their weights) currently drive land-use decisions. The optimization approach can then be used to dive deeper into the effect of different goals on the resulting optimized land-use composition and the effects of uncertainty. 
+*Figure 2: Composition of the optimized farm (based on data shown in Table 1), including all indicators. Each land-cover option is shown in an allocated share (%).*
+
+<!-- <p style="text-align: center;"> </p>  -->
+
+The resulting optimized farm composition corresponds to figure 3 ($f_u=2$) in Gosling et al. (2020). It can be seen that the farm composition that best fulfills all 10 indicators (i.e. the multi-functional portfolio) is dominated by silvopasture and forest. According to Gosling et al. (2020) this reveals the potential of agroforestry to serve as a compromise solution to fulfill multiple ecological and economic functions. Yet, the average farm portfolio of the surveyed farms was mainly composed of pasture and cropland with only a small share of forest (14 %). This reveals that not all of the selected objectives (and their weights) currently drive land-use decisions. The optimization approach can then be used to dive deeper into the effect of different goals on the resulting optimized land-use composition and the effects of uncertainty. 
 
 ### Calculating the Portfolio Performances of the Optimized *optimLanduse* Object
 
-```{r, results='hide', message=FALSE, warning=FALSE, fig.height = 5, fig.width = 10}
+```{r, results='hide', message=FALSE, warning=FALSE, fig.height = 5, fig.width = 10, fig.align='center'}
 # Performance calculations
 performance <- calcPerformance(result)
 
@@ -202,6 +215,9 @@ ggplot(performance$scenarioTable,
            vjust = -1)
 ```
 
+*Figure 3: The performance of each of the 10 indicators for the result of the ideal farm composition. The colored points are the achieved levels of the indicators of all scenarios s. The dotted, horizontal red line illustrates the guaranteed performance* $(1-\beta)$*, thus the robust feasible solution of the program (Equation 1 in (Husmann et al, n.d.)).*
+
+
 *CP: Im Folgenden Absatz ist nicht ganz klar auf was Ihr Euch da bezieht. Ich denke ich würde für alle Grafiken eine Figure caption einfügen, das macht es für den Leser deutlich leichter und Ihr könnt dann besser darauf verweisen.*
 
 Looking at the performances of this multi-functional farm reveals, which indicators restrict the result (*CP: Wirklich restrict the result oder drive the largest distance (beta...) under specific uncertainty scenarios. Es stimmt natürlich, aber hier vielleicht noch technischer und mit mehr Bezug zur Formel arbeiten, das macht es denke ich leichter für den Leser*). Here, the indicators 1 (financial stability), 3 (investment costs) and 8 (meeting household needs) show the largest beta values for the most pessimistic uncertainty scenarios *CP: closest to each other in terms of what?*. It can be concluded that the portfolio is apparently restricted by these 3 indicators. In the worst-performing uncertainty scenarios, these 3 indicators show the maximum distance of $\beta$ across all indicators. In other words, the guaranteed performance $1-\beta$ (lowestPerformance) is defined by one the these indicators. (*Die Sätze hier sind ein bisschen wiederholend, vielleicht nochmal straffen, aber im Zweifel lieber doppelt drin lassen, ist ja ein readme und hat keine Beschränkung*) These 3 indicators should therefore be carefully considered when discussing future land-use alternatives and concepts. According to Gosling et al. (2020), this result is in line with current observed behavior, since the need for short-term liquidity mainly drives decisions of smallholder farmers in the study region. Intermediate-term economic success is not relevant until consumption of the household is secured. 
@@ -213,7 +229,9 @@ While the performances of indicator 1 differ relatively strong among the scenari
 performance$beta
 lowestPerformance <- performance$scenarioTable[order(performance$scenarioTable$performance,
                                 decreasing = FALSE),]
-head(lowestPerformance[,c(1 : 8, 31)], n = 9)
+performanceExample<- head(lowestPerformance[,c(1 : 8, 31)], n = 9)
+
+knitr::kable(performanceExample, row.names = F)
 ```
 
 Further elaborating the packages' results indeed reveals that indicator 1 (financial stability) restricts the optimum and that the worst performing scenarios of indicator 3 (investment costs) are equal to the worst performing scenarios of indicator 1. $1-\beta$ results to this worst performances. *CP: Letzten Satz verstehe ich nicht ganz. Kann der Satz weg?* All of the worst performing scenarios have in common that the outcome of silvopasture is pessimistic (Low) and the outcome of forest is optimistic (High). This relationship thus might be of interest when developing strategies or policies for a desired landscape development.
