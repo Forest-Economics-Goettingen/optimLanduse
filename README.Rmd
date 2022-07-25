@@ -93,7 +93,7 @@ This is followed by a summary of the results of the optimization:
 
 #### Post-Processing
 
--   *calcPerfomance()*: Attaches the portfolio performances of all indicators and scenarios as data frame. The data can be used for straightforward visualization of the performance (e.g. Fig. 3). The performance is defined as the distance to the maximum achievable level for each indicator and uncertainty scenario.
+-   *calcPerformance()*: Attaches the portfolio performances of all indicators and scenarios as data frame. The data can be used for straightforward visualization of the performance (e.g. Fig. 3). The performance is defined as the distance to the maximum achievable level for each indicator and uncertainty scenario.
 
 <h3>
 <a name="5. Beispielhafte Anwendung">Example application</a>
@@ -166,8 +166,6 @@ result$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1 : 6) 
 
 *Figure 2: Composition of the optimized farm (based on data of Gosling et al. (2020)), including all indicators. Each land-cover option is shown in an allocated share (%).*
 
-<!-- <p style="text-align: center;"> </p>  -->
-
 The resulting optimized farm composition (Fig. 2) corresponds to figure 3 ($f_u=2$) in Gosling et al. (2020). It can be seen that the farm composition that best fulfills all 10 indicators (i.e. the multi-functional portfolio) is dominated by silvopasture and forest. According to Gosling et al. (2020) this reveals the potential of agroforestry to serve as a compromise solution to fulfill multiple ecological and economic functions. Yet, the average farm portfolio of the surveyed farms was mainly composed of pasture and cropland with only a small share of forest (14 %). This reveals that not all of the selected objectives (and their weights) currently drive land-cover decisions. The optimization approach can then be used to dive deeper into the effect of different goals on the resulting optimized land-cover composition and the effects of uncertainty. 
 
 ### Calculating the Portfolio Performances of the Optimized *optimLanduse* Object
@@ -207,7 +205,7 @@ ggplot(performance$scenarioTable,
 
 *CP: Im Folgenden Absatz ist nicht ganz klar auf was Ihr Euch da bezieht. Ich denke ich würde für alle Grafiken eine Figure caption einfügen, das macht es für den Leser deutlich leichter und Ihr könnt dann besser darauf verweisen.*
 
-Looking at the performances (Fig. 3) of this multi-functional farm reveals, which indicators restrict the result *(VVG: vielleicht: ... which indicators perform poorly and therefore restrict the solution. - das ist der Satz aus unserem TeX-Dokument)* (*CP: Wirklich restrict the result oder drive the largest distance (beta...) under specific uncertainty scenarios. Es stimmt natürlich, aber hier vielleicht noch technischer und mit mehr Bezug zur Formel arbeiten, das macht es denke ich leichter für den Leser*). Here, the indicators 1 (financial stability), 3 (investment costs) and 8 (meeting household needs) show the largest $\beta$ values for the most pessimistic uncertainty scenarios *CP: closest to each other in terms of what?*. It can be concluded that the portfolio is apparently restricted by these 3 indicators. In the worst-performing uncertainty scenarios, these 3 indicators show the maximum distance of $\beta$ across all indicators. In other words, the guaranteed performance $1-\beta$ (lowestPerformance) is defined by one the these indicators. (*CP: Die Sätze hier sind ein bisschen wiederholend, vielleicht nochmal straffen, aber im Zweifel lieber doppelt drin lassen, ist ja ein readme und hat keine Beschränkung*) (*VVG: Wenn wir im ersten Satz nicht direkt auf die Distanz eingehen, finde ich kann man es einfach so lassen, dann eist es nicht wiederholend sondern man steigert das Detail*) These 3 indicators should therefore be carefully considered when discussing future land-cover alternatives and concepts. According to Gosling et al. (2020), this result is in line with current observed behavior, since the need for short-term liquidity mainly drives decisions of smallholder farmers in the study region. Intermediate-term economic success is not relevant until consumption of the household is secured. 
+Looking at the performances (Fig. 3) of this multi-functional farm reveals, which indicators restrict the result *(VVG: vielleicht: ... which indicators perform poorly and therefore restrict the solution. - das ist der Satz aus unserem TeX-Dokument)* (*CP: Wirklich restrict the result oder drive the largest distance (beta...) under specific uncertainty scenarios. Es stimmt natürlich, aber hier vielleicht noch technischer und mit mehr Bezug zur Formel arbeiten, das macht es denke ich leichter für den Leser*). Here, the indicators 1 (financial stability), 3 (investment costs) and 8 (meeting household needs) show the largest $\beta$ values for the most pessimistic uncertainty scenarios *CP: closest to each other in terms of what?*. It can be concluded that the portfolio is apparently restricted by these 3 indicators. In the worst-performing uncertainty scenarios, these 3 indicators show the maximum distance of $\beta$ across all indicators. In other words, the guaranteed performance $1-\beta$ (lowestPerformance) is defined by one the these indicators. (*CP: Die Sätze hier sind ein bisschen wiederholend, vielleicht nochmal straffen, aber im Zweifel lieber doppelt drin lassen, ist ja ein readme und hat keine Beschränkung*) (*VVG: Wenn wir im ersten Satz nicht direkt auf die Distanz eingehen, finde ich kann man es einfach so lassen, dann eist es nicht wiederholend sondern man steigert das Detail*) A precise overview of the performance of the individual scenarios is provided by the output *scenarioTable* after using the *calcPerformance()* function (Table 2). These 3 indicators should therefore be carefully considered when discussing future land-cover alternatives and concepts. According to Gosling et al. (2020), this result is in line with current observed behavior, since the need for short-term liquidity mainly drives decisions of smallholder farmers in the study region. Intermediate-term economic success is not relevant until consumption of the household is secured. 
 
 While the performances of indicator 1 differ relatively strong among the scenarios, the indicators 3 and 8 are similar in each scenario. It thus may be interesting to investigate the reasons for this particular worst-performing scenario of indicator 1.*(VVG: Wie Carola direkt hier drunter beschreibt, drüfte es ja vor allem an den verschiedenen Unsicherheiten liegen oder? Wenn man u = 0 setzt gibt es ja gar keine Unterschiede zwischen den einzelnen Szenarien, dann liegt jeder dieser kreise übereinander, daher finde ich den ersten Satz von Carola ganz gut... Auch wenn ich darüber nachdenken muss, warum es nur "in parts" sein soll - wenn ich mich nicht täusche, dürfte es fast ausschließlich durch die verschiedenen standardfehler/unsicherheiten getrieben werden - und dann könnte es beispielweise interessant sein, dass zu untersuchen, also warum diese standardfehler zwischen den Indikatoren so unterschiedlich sind)*
 *CP: Hab nicht ganz verstanden was Euch hier wichtig ist, vielleicht eine alternative Formulierung: Fig. 3 can be used to further explore the effects of uncertainty on the modeled land-use decisions. Indicator 1 shows a larger deviation in indicator performance pij (oder wie ihr es nennt; VVG: dürfte 1-diu sein oder? 1-beta ist guaranteed performance, 1-diu dürfte einfach die performance jedes szenarios sein) between uncertainty scenarios. This might be in parts be attributed to the larger standard errors of this indicator. In contrast, Indicators 3 and 8 still show a low guaranteed performance level (VVG: " a low guaranteed performance finde ich irreführend, da es ja die exakt gleiche guaranteed performance ist im worst-case szenario mit geringen differenzen zwischen den einzelnen szenarien), while differences between uncertainty scenarios are less prominent. ... oder so irgendwie: Such in-depth analyses help to identify trade-offs among different indicators and their likely effects on land-use decisions.....Soll hier nochmal gesagt werden wann die Grafik gemacht werden sollte und wann nicht? Vielleicht auch nicht unbedingt notwendig? VVG: Glaube wann die Grafik gemacht werden sollte, finde ich nicht so relevant hier im Text*
@@ -217,26 +215,75 @@ performance$beta
 ```
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
-lowestPerformance <- performance$scenarioTable[order(performance$scenarioTable$performance,
-                                                     decreasing = FALSE),]
-performanceExample <- head(lowestPerformance[,c(1 : 8, 31)], n = 9)
+# lowestPerformance <- performance$scenarioTable[order(performance$scenarioTable$performance,
+#                                                      decreasing = FALSE),]
+# performanceExample <- head(lowestPerformance[,c(1 : 8, 31)], n = 8)
+# 
+# knitr::kable(performanceExample, row.names = F)
+
+performanceExample <- head(performance$scenarioTable[,c(1 : 8, 31)], n = 4)
 
 knitr::kable(performanceExample, row.names = F)
+
 ```
 
-*Table 2: An extract of the performance table of all indicators created through the calcPerformance() function with the worst performing scenarios*
+*Table 2: An extract of the scenario table of all indicators created through the calcPerformance() function with the worst performing scenarios*
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 knitr::kable(performanceExample, row.names = F)
 ```
 
-
-Further elaborating the packages' results (Table 2) indeed reveals that indicator 1 (financial stability) restricts the optimum and that the worst performing scenarios of indicator 3 (investment costs) are equal to the worst performing scenarios of indicator 1. (*VVG: Hier stimmt was nicht, im Absatz zuvor sagen wir, dass das Portfolio durch drei Indikatoren begrenzt wird: 1, 3 und 8. Nun sagen wir zwei. Wenn ich es ausprobiere mit den Daten von Liz ist es wirklich so, dass Portfolio gleich bleibt wenn man nur die drei Inikatoren nutzt und nicht alle 10. Sobald ich aber zusätzlich den Indikator 8 rausnehme, verändert sich das Portfolio komplett. D.h. der Indikator 8 ist auch begrenzend. Nun ist die Frage, warum die Performance das nicht aufzeigt, also warum sie nicht exakt der Performance von 1 und 3 entspricht - um somit auch das portfolio zu begrenzen. Ich meine die Performance liegt extrem nahe an indikator 1 und 3, 38.68000 zu 38.71221 ... hängt das mit Rundungen zusammen? Oder kann ein Portfolio, dass nicht eine exakte Grenze bildet auch das Portfolio begrenzen?*) $1-\beta$ results to this worst performances. *CP: Letzten Satz verstehe ich nicht ganz. Kann der Satz weg?* All of the worst performing scenarios have in common that the outcome of silvopasture is pessimistic (Low) and the outcome of forest is optimistic (High). This relationship thus might be of interest when developing strategies or policies for a desired landscape development.
+<!-- Further elaborating the packages' results (Table 2) indeed reveals that indicator 1 (financial stability) restricts the optimum and that the worst performing scenarios of indicator 3 (investment costs) are equal to the worst performing scenarios of indicator 1. (*VVG: Hier stimmt was nicht, im Absatz zuvor sagen wir, dass das Portfolio durch drei Indikatoren begrenzt wird: 1, 3 und 8. Nun sagen wir zwei. Wenn ich es ausprobiere mit den Daten von Liz ist es wirklich so, dass Portfolio gleich bleibt wenn man nur die drei Inikatoren nutzt und nicht alle 10. Sobald ich aber zusätzlich den Indikator 8 rausnehme, verändert sich das Portfolio komplett. D.h. der Indikator 8 ist auch begrenzend. Nun ist die Frage, warum die Performance das nicht aufzeigt, also warum sie nicht exakt der Performance von 1 und 3 entspricht - um somit auch das portfolio zu begrenzen. Ich meine die Performance liegt extrem nahe an indikator 1 und 3, 38.68000 zu 38.71221 ... hängt das mit Rundungen zusammen? Oder kann ein Portfolio, dass nicht eine exakte Grenze bildet auch das Portfolio begrenzen?*) $1-\beta$ results to this worst performances. *CP: Letzten Satz verstehe ich nicht ganz. Kann der Satz weg?* All of the worst performing scenarios have in common that the outcome of silvopasture is pessimistic (Low) and the outcome of forest is optimistic (High). This relationship thus might be of interest when developing strategies or policies for a desired landscape development.
 *CP: Hm, verstehe ich auch nicht ganz. Kann der ganze Absatz vielleicht einfach weg?*
 *Nachdem ich die Tabelle gesehen habe verstehe ich glaube was Ihr meint. Allerdings bin ich mir nicht so sicher ob man da so in der Tiefe eingeht, wenn man keine Erklärung hat? oder ihr müsstet die noch ergänzen. sivlopasture ist eben der Indikator der am besten abschneidet und in der aktuellen Zusammensetzung den höchsten Anteil hat. Ich denke ich würde eher den Code kommentieren. Also z.B. sowas wie: For further exploring the role of different indicators for modeled land-use decision, it might be helpful to identify the indicators and uncertainty scenarios with the lowest guaranteed performance (...code...). Here, this is the case for the indicators 1 and 3 for the pessimistic scenarios of silvopasture.*
 *Interessant ist in diesem Zusammenhang ja auch das optimierte gegenüber der heutigen Landnutzung zu vergleichen, welcher Indikator dann z.B. eine deutlich schlechtere Min performance hätte - das ist aber natürlich im package nicht ganz so leicht auszurechnen*
 
-*VVG: Das könnte man recht einfach einbauen -> die aktuelle Landnutzungsart als lowerBound und upperBound eintragen bei solveScenario und schauen wie die Indikatoren in dieser erzwungenen Land-cover allocation performen. Die Frage ist, ob wir das wollen - geht ja in ne andere Richtung als der ursprüngliche Absatz hier*
+*VVG: Das könnte man recht einfach einbauen -> die aktuelle Landnutzungsart als lowerBound und upperBound eintragen bei solveScenario und schauen wie die Indikatoren in dieser erzwungenen Land-cover allocation performen. Die Frage ist, ob wir das wollen - geht ja in ne andere Richtung als der ursprüngliche Absatz hier* -->
+
+### Comparison of the performance of the currently observed land-cover composition to the optimized composition
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+result_current <- solveScenario(x = init,
+                        lowerBound = c(0.26, 0.59, 0, 0, 0.01, 0.14),
+                        upperBound = c(0.26, 0.59, 0, 0, 0.01, 0.14))
+
+performance_current <- calcPerformance(result_current)
+
+performance_current$scenarioTable$performance <- performance_current$scenarioTable$performance * 100
+```
+
+```{r, message=FALSE, warning=FALSE}
+performance_current$beta
+```
+
+```{r, results='hide', message=FALSE, warning=FALSE, fig.height = 5, fig.width = 10, fig.align='center'}
+ggplot(performance_current$scenarioTable,
+       aes(x = indicator,
+           y = performance,
+           color = indicator)) +
+  geom_point() +
+  geom_hline(yintercept =
+               min(performance_current$scenarioTable$performance),
+             linetype = "dashed", color = "red") +
+  guides(color = guide_legend(title = "",
+                              nrow = 10)) +
+  theme_classic() + 
+  theme(text = element_text(size = 18),
+        legend.position="right",
+        axis.ticks.x = element_blank()) +
+  scale_x_discrete(labels = seq(1, 10)) +
+  labs(y = "Min-max normalized indicator value (%)",
+       x = "Indicators") + 
+  scale_y_continuous(breaks = seq(0, 101, 10), 
+                     limits = c(0, 101)) +
+  geom_hline(aes(yintercept=100), size = 1) + 
+  annotate(geom = "Text", x = 6, y = 100, label = "Maximum achievable indicator level",
+           vjust = -1)
+```
+
+*Figure 4: The performance of each of the 10 indicators for the result of the currently observed land-cover composition. The colored points are the achieved levels of the indicators of all scenarios s. The dotted, horizontal red line illustrates the guaranteed performance* $(1-\beta)$*, thus the robust feasible solution of the program (Equation 1 in (Husmann et al, n.d.)).*
+
+Figure 4 shows the performance of the ten indicators under the restriction of the currently observed land-cover composition. This performance is calculated by implementing the land-cover shares in the *lowerBound* and *upperBound* arguments. By this restriction, results like the $\beta$ value or the performances of the different indicators for the currently observed composition can be calculated. The comparison of the performances of the currently observed land-cover composition (Fig. 4) with the performances of the optimized composition (Fig. 3) shows that the worst-case scenario of, e.g., liquidity and meeting household needs in the optimized composition is far below the worst-case scenario of the same indicators in the currently observed land-cover composition. In contrast, the performance of, e.g.,  the worst-case scenarios of financial stability, protecting soil resources, and protecting water supply shows a significant increase. Overall, the maximum distance of the worst performing scenario of the currently observed land-cover composition ($\beta$) gets reduced by about 30 percentage points, from $\beta$ = 0.9114 to $\beta$ = 0.6132 (comparing the horizontal red line of Fig. 3 and Fig. 4). This interaction shows that the optimization process can help to reduce trade-offs between the different indicators.
 
 <h3>
 <a name="6. Erweiterte Anwendung">Sophisticated application</a>
@@ -275,7 +322,6 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
 ```
 
 *Figure 4: Theoretically ideal farm compositions under increasing levels of uncertainty.*
-
 
 Solving the portfolio (Fig. 4) under increasing assumptions for the uncertainty levels (uValue, respectively $f_u$ in equation 4 (Husmann et al, n.d.)) gives sensitivity of the land-cover compositions towards increasing aversion of risk of the farmer. The higher the uncertainty level, the higher the standard error of the mean (Gosling et al. use the s.e.m.; any other uncertainty measure is also possible) of the indicator consequences on the land-cover options. 
 *CP: STreng genommen verändert sich der STandardfehler ja nicht. Vielleicht lieber sowas wie ... The higher the uncertainty level the larger the uncertainty space, defined by the multiple of the standard error or stand deviation of the expected (mean) indicator value*.
@@ -332,23 +378,35 @@ performance_socioeconomic$scenarioTable$performance <-
 performance_socioeconomic$beta
 ```
 
-```{r, results='hide'}
-lowestPerformance_socioeconomic <- performance_socioeconomic$scenarioTable[
-  order(performance_socioeconomic$scenarioTable$performance,
-        decreasing = FALSE),]
+```{r, results='hide', message=FALSE, warning=FALSE, fig.height = 5, fig.width = 10, fig.align='center'}
 
-performanceExample_socioeconomic <- head(lowestPerformance_socioeconomic[,c(1 : 8, 31)], n = 9)
-
-knitr::kable(performanceExample_socioeconomic, row.names = F)
+ggplot(performance_socioeconomic$scenarioTable,
+       aes(x = indicator,
+           y = performance,
+           color = indicator)) +
+  geom_point() +
+  geom_hline(yintercept =
+               min(performance$scenarioTable$performance),
+             linetype = "dashed", color = "red") +
+  guides(color = guide_legend(title = "",
+                              nrow = 10)) +
+  theme_classic() + 
+  theme(text = element_text(size = 18),
+        legend.position="right",
+        axis.ticks.x = element_blank()) +
+  scale_x_discrete(labels = seq(1, 10)) +
+  labs(y = "Min-max normalized indicator value (%)",
+       x = "Indicators") + 
+  scale_y_continuous(breaks = seq(0, 101, 10), 
+                     limits = c(0, 101)) +
+  geom_hline(aes(yintercept=100), size = 1) + 
+  annotate(geom = "Text", x = 6, y = 100, label = "Maximum achievable indicator level",
+           vjust = -1)
 ```
 
-*Table 3: An extract of the performance table of only socio-economic indicators created through the calcPerformance() function with the worst performing scenarios*
+*Figure 6: The performance of each of the socio-economic indicators. The colored points are the achieved levels of the indicators of all scenarios s. The dotted, horizontal red line illustrates the guaranteed performance* $(1-\beta)$*, thus the robust feasible solution of the program (Equation 1 in (Husmann et al, n.d.)).*
 
-```{r, echo=FALSE}
-knitr::kable(performanceExample_socioeconomic, row.names = F)
-```
-
-Summarizing the relevant performances (Table 3) reveals that the result is still limited by financial stability and investment costs. Accordingly, also this socio-economic portfolio still does not perfectly reflect the currently observed land-cover composition. This means that further indicators appear to be relevant for the farmers (*CP: Or altnertave weighings are likely...*).
+An analysis of the performance of the socio-economic indicators shows that the $\beta$ value remains the same and therefore the guaranteed performance $(1-\beta)$ also remains the same. Visualizing these performances (Fig. 6) reveals that the result is still limited by financial stability, investment costs and meeting household needs.  Accordingly, also this socio-economic portfolio still does not perfectly reflect the currently observed land-cover composition. This means that further indicators appear to be relevant for the farmers (*CP: Or altnertave weighings are likely...*).
 
 ```{r, fig.height = 3, fig.width = 4, warning=FALSE}
 dat_ecologic <- dat[dat$indicator %in% c("Protecting soil resources",
@@ -377,9 +435,9 @@ result_ecologic$landUse %>% gather(key = landCoverOption, value = landCoverShare
   guides(fill=guide_legend(title=""))
 ```
 
-*Figure 6: Composition of the optimized farm (based on data of Gosling et al. (2020)), including only ecologic indicators. Each land-cover option is shown in an allocated share (%).*
+*Figure 7: Composition of the optimized farm (based on data of Gosling et al. (2020)), including only ecologic indicators. Each land-cover option is shown in an allocated share (%).*
 
-The ecological indicator group, as the second example for leave-indicators-out analysis, leads to a land-cover portfolio comprising forests only (Fig.6; corresponds to figure 5 of Gosling et al. (2020)). It can be concluded that all contributions of all other land-cover alternatives in all scenarios (even the optimistic ones) to the ecological indicators are lower than that of forests. This portfolio differs even more from the actually observed portfolio *differs in what?* then the above shown multi-functional portfolio. Also the ecological indicators are therefore apparently not sufficient to approximate the farmers' perceptions.
+The ecological indicator group, as the second example for leave-indicators-out analysis, leads to a land-cover portfolio comprising forests only (Fig. 7; corresponds to figure 5 of Gosling et al. (2020)). It can be concluded that all contributions of all other land-cover alternatives in all scenarios (even the optimistic ones) to the ecological indicators are lower than that of forests. This portfolio differs even more from the actually observed portfolio *differs in what?* then the above shown multi-functional portfolio. Also the ecological indicators are therefore apparently not sufficient to approximate the farmers' perceptions.
 
 ### Immediate  Economic Success
 
@@ -411,9 +469,9 @@ result_short$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1
   guides(fill = guide_legend(title = ""))
 ```
 
-*Figure 7: Composition of the optimized farm (based on data of Gosling et al. (2020)), including the prospective relevant indicators of the farmers only. Each land-cover option is shown in an allocated share (%).*
+*Figure 8: Composition of the optimized farm (based on data of Gosling et al. (2020)), including the prospective relevant indicators of the farmers only. Each land-cover option is shown in an allocated share (%).*
 
-The third example considers the prospective relevant indicators of the farmers only (Fig. 7). Corresponding to figure 5 of Gosling et al. (2020), this scenario only consists of indicators that approximate the immediate economic success. Indeed, this portfolio best reflects the portfolio observed in Eastern Panama. Hence, these indicators best reflect the farmers' goals and perceptions in Eastern Panama. The difference between this portfolio and the desired multi-functional portfolio (Fig. 2) highlights the requirements a land-cover alternative must fulfill to meet the farmers' needs and goals. The silvopasture as defined in Gosling et al. (2020) may not serve the requirements of the farmers sufficiently. Since farmers rate liquidity and meeting household needs higher than long-term profit and economic stability, pasture outperforms silvopasture in the realistic scenario. Policies or development plans may consider these indicators as key elements when promoting a landscape development towards multifunctional landscapes.
+The third example considers the prospective relevant indicators of the farmers only (Fig. 8). Corresponding to figure 5 of Gosling et al. (2020), this scenario only consists of indicators that approximate the immediate economic success. Indeed, this portfolio best reflects the portfolio observed in Eastern Panama. Hence, these indicators best reflect the farmers' goals and perceptions in Eastern Panama. The difference between this portfolio and the desired multi-functional portfolio (Fig. 2) highlights the requirements a land-cover alternative must fulfill to meet the farmers' needs and goals. The silvopasture as defined in Gosling et al. (2020) may not serve the requirements of the farmers sufficiently. Since farmers rate liquidity and meeting household needs higher than long-term profit and economic stability, pasture outperforms silvopasture in the realistic scenario. Policies or development plans may consider these indicators as key elements when promoting a landscape development towards multifunctional landscapes.
 
 ### The use of fixDistance
 
@@ -455,10 +513,10 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
         legend.position = "bottom")
 ```
 
-*Figure 8: Theoretically ideal farm compositions using the fixDistance argument and increasing levels of uncertainty.*
+*Figure 9: Theoretically ideal farm compositions using the fixDistance argument and increasing levels of uncertainty.*
 
 *CP: Hier ist auch was komisch*
-It can be seen that the land-cover allocation transition under raising uncertainty (Fig. 8) differs slightly from the multifunctional scenario shown above (Fig. 4). The here broadened state space leads an earlier increase of pasture (*CP: Ist hier gemeint: leads to selection of a larger share of pasture under low uncertainty levels as compared to...*).
+It can be seen that the land-cover allocation transition under raising uncertainty (Fig. 9) differs slightly from the multifunctional scenario shown above (Fig. 4). The here broadened state space leads an earlier increase of pasture (*CP: Ist hier gemeint: leads to selection of a larger share of pasture under low uncertainty levels as compared to...*).
 
 
 <h3>

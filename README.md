@@ -181,7 +181,7 @@ This is followed by a summary of the results of the optimization:
 
 #### Post-Processing
 
--   *calcPerfomance()*: Attaches the portfolio performances of all
+-   *calcPerformance()*: Attaches the portfolio performances of all
     indicators and scenarios as data frame. The data can be used for
     straightforward visualization of the performance (e.g. Fig. 3). The
     performance is defined as the distance to the maximum achievable
@@ -287,8 +287,6 @@ result$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1 : 6) 
 et al. (2020)), including all indicators. Each land-cover option is
 shown in an allocated share (%).*
 
-<!-- <p style="text-align: center;"> </p>  -->
-
 The resulting optimized farm composition (Fig. 2) corresponds to figure
 3
 (![f_u=2](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u%3D2 "f_u=2"))
@@ -353,27 +351,34 @@ einfügen, das macht es für den Leser deutlich leichter und Ihr könnt
 dann besser darauf verweisen.*
 
 Looking at the performances (Fig. 3) of this multi-functional farm
-reveals, which indicators restrict the result (*CP: Wirklich restrict
-the result oder drive the largest distance (beta…) under specific
-uncertainty scenarios. Es stimmt natürlich, aber hier vielleicht noch
-technischer und mit mehr Bezug zur Formel arbeiten, das macht es denke
-ich leichter für den Leser*). Here, the indicators 1 (financial
-stability), 3 (investment costs) and 8 (meeting household needs) show
-the largest beta values for the most pessimistic uncertainty scenarios
-*CP: closest to each other in terms of what?*. It can be concluded that
-the portfolio is apparently restricted by these 3 indicators. In the
-worst-performing uncertainty scenarios, these 3 indicators show the
-maximum distance of
+reveals, which indicators restrict the result *(VVG: vielleicht: … which
+indicators perform poorly and therefore restrict the solution. - das ist
+der Satz aus unserem TeX-Dokument)* (*CP: Wirklich restrict the result
+oder drive the largest distance (beta…) under specific uncertainty
+scenarios. Es stimmt natürlich, aber hier vielleicht noch technischer
+und mit mehr Bezug zur Formel arbeiten, das macht es denke ich leichter
+für den Leser*). Here, the indicators 1 (financial stability), 3
+(investment costs) and 8 (meeting household needs) show the largest
+![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
+values for the most pessimistic uncertainty scenarios *CP: closest to
+each other in terms of what?*. It can be concluded that the portfolio is
+apparently restricted by these 3 indicators. In the worst-performing
+uncertainty scenarios, these 3 indicators show the maximum distance of
 ![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
 across all indicators. In other words, the guaranteed performance
 ![1-\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1-%5Cbeta "1-\beta")
-(lowestPerformance) is defined by one the these indicators. (*Die Sätze
-hier sind ein bisschen wiederholend, vielleicht nochmal straffen, aber
-im Zweifel lieber doppelt drin lassen, ist ja ein readme und hat keine
-Beschränkung*) These 3 indicators should therefore be carefully
-considered when discussing future land-cover alternatives and concepts.
-According to Gosling et al. (2020), this result is in line with current
-observed behavior, since the need for short-term liquidity mainly drives
+(lowestPerformance) is defined by one the these indicators. (*CP: Die
+Sätze hier sind ein bisschen wiederholend, vielleicht nochmal straffen,
+aber im Zweifel lieber doppelt drin lassen, ist ja ein readme und hat
+keine Beschränkung*) (*VVG: Wenn wir im ersten Satz nicht direkt auf die
+Distanz eingehen, finde ich kann man es einfach so lassen, dann eist es
+nicht wiederholend sondern man steigert das Detail*) A precise overview
+of the performance of the individual scenarios is provided by the output
+*scenarioTable* after using the *calcPerformance()* function (Table 2).
+These 3 indicators should therefore be carefully considered when
+discussing future land-cover alternatives and concepts. According to
+Gosling et al. (2020), this result is in line with current observed
+behavior, since the need for short-term liquidity mainly drives
 decisions of smallholder farmers in the study region. Intermediate-term
 economic success is not relevant until consumption of the household is
 secured.
@@ -381,19 +386,34 @@ secured.
 While the performances of indicator 1 differ relatively strong among the
 scenarios, the indicators 3 and 8 are similar in each scenario. It thus
 may be interesting to investigate the reasons for this particular
-worst-performing scenario of indicator 1. *CP: Hab nicht ganz verstanden
-was Euch hier wichtig ist, vielleicht eine alternative Formulierung:
-Fig. xy can be used to further explore the effects of uncertainty on the
-modelled land-use decisions. Indicator 1 shows a larger deviation in
-indicator performance pij (oder wie ihr es nennt) between uncertainty
-scenarios. This might be in parts be attributed to the larger standard
-errors of this indicator. In contrast, Indicators 3 and 8 still show a
-low guaranteed performance level, while differences between uncertainty
-scenarios are less prominent. … oder so irgendwie: Such in-depth
-analyses help to identify trade-offs among different indicators and
-their likely effects on land-use decisions…..Soll hier nochmal gesagt
-werden wann die Grafik gemacht werden sollte und wann nicht? Vielleicht
-auch nicht unbedingt notwendig? *
+worst-performing scenario of indicator 1.*(VVG: Wie Carola direkt hier
+drunter beschreibt, drüfte es ja vor allem an den verschiedenen
+Unsicherheiten liegen oder? Wenn man u = 0 setzt gibt es ja gar keine
+Unterschiede zwischen den einzelnen Szenarien, dann liegt jeder dieser
+kreise übereinander, daher finde ich den ersten Satz von Carola ganz
+gut… Auch wenn ich darüber nachdenken muss, warum es nur “in parts” sein
+soll - wenn ich mich nicht täusche, dürfte es fast ausschließlich durch
+die verschiedenen standardfehler/unsicherheiten getrieben werden - und
+dann könnte es beispielweise interessant sein, dass zu untersuchen, also
+warum diese standardfehler zwischen den Indikatoren so unterschiedlich
+sind)* *CP: Hab nicht ganz verstanden was Euch hier wichtig ist,
+vielleicht eine alternative Formulierung: Fig. 3 can be used to further
+explore the effects of uncertainty on the modeled land-use decisions.
+Indicator 1 shows a larger deviation in indicator performance pij (oder
+wie ihr es nennt; VVG: dürfte 1-diu sein oder? 1-beta ist guaranteed
+performance, 1-diu dürfte einfach die performance jedes szenarios sein)
+between uncertainty scenarios. This might be in parts be attributed to
+the larger standard errors of this indicator. In contrast, Indicators 3
+and 8 still show a low guaranteed performance level (VVG: ” a low
+guaranteed performance finde ich irreführend, da es ja die exakt gleiche
+guaranteed performance ist im worst-case szenario mit geringen
+differenzen zwischen den einzelnen szenarien), while differences between
+uncertainty scenarios are less prominent. … oder so irgendwie: Such
+in-depth analyses help to identify trade-offs among different indicators
+and their likely effects on land-use decisions…..Soll hier nochmal
+gesagt werden wann die Grafik gemacht werden sollte und wann nicht?
+Vielleicht auch nicht unbedingt notwendig? VVG: Glaube wann die Grafik
+gemacht werden sollte, finde ich nicht so relevant hier im Text*
 
 ``` r
 performance$beta
@@ -402,55 +422,102 @@ performance$beta
     ## [1] 0.6132
 
 ``` r
-lowestPerformance <- performance$scenarioTable[order(performance$scenarioTable$performance,
-                                                     decreasing = FALSE),]
-performanceExample <- head(lowestPerformance[,c(1 : 8, 31)], n = 9)
+# lowestPerformance <- performance$scenarioTable[order(performance$scenarioTable$performance,
+#                                                      decreasing = FALSE),]
+# performanceExample <- head(lowestPerformance[,c(1 : 8, 31)], n = 8)
+# 
+# knitr::kable(performanceExample, row.names = F)
+
+performanceExample <- head(performance$scenarioTable[,c(1 : 8, 31)], n = 4)
 
 knitr::kable(performanceExample, row.names = F)
 ```
 
-*Table 2: An extract of the performance table of all indicators created
+*Table 2: An extract of the scenario table of all indicators created
 through the calcPerformance() function with the worst performing
 scenarios*
 
 | indicator           | outcomeCrops | outcomePasture | outcomeAlley Cropping | outcomeSilvopasture | outcomePlantation | outcomeForest | direction      | performance |
 |:--------------------|:-------------|:---------------|:----------------------|:--------------------|:------------------|:--------------|:---------------|------------:|
-| Financial stability | High         | High           | High                  | Low                 | High              | High          | more is better |    38.68000 |
-| Financial stability | High         | Low            | High                  | Low                 | High              | High          | more is better |    38.68000 |
-| Financial stability | High         | High           | Low                   | Low                 | High              | High          | more is better |    38.68000 |
-| Financial stability | High         | Low            | Low                   | Low                 | High              | High          | more is better |    38.68000 |
-| Investment costs    | High         | High           | High                  | Low                 | Low               | High          | less is better |    38.68000 |
-| Investment costs    | Low          | High           | High                  | Low                 | Low               | High          | less is better |    38.68000 |
-| Investment costs    | High         | High           | Low                   | Low                 | Low               | High          | less is better |    38.68000 |
-| Investment costs    | Low          | High           | Low                   | Low                 | Low               | High          | less is better |    38.68000 |
-| Investment costs    | High         | High           | High                  | Low                 | Low               | Low           | less is better |    38.68223 |
+| Financial stability | High         | High           | High                  | High                | High              | High          | more is better |    61.31992 |
+| Financial stability | Low          | High           | High                  | High                | High              | High          | more is better |    72.31477 |
+| Financial stability | High         | Low            | High                  | High                | High              | High          | more is better |    61.31992 |
+| Financial stability | Low          | Low            | High                  | High                | High              | High          | more is better |    72.31477 |
 
-Further elaborating the packages’ results (Table 2) indeed reveals that
-indicator 1 (financial stability) restricts the optimum and that the
-worst performing scenarios of indicator 3 (investment costs) are equal
-to the worst performing scenarios of indicator 1.
-![1-\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1-%5Cbeta "1-\beta")
-results to this worst performances. *CP: Letzten Satz verstehe ich nicht
-ganz. Kann der Satz weg?* All of the worst performing scenarios have in
-common that the outcome of silvopasture is pessimistic (Low) and the
-outcome of forest is optimistic (High). This relationship thus might be
-of interest when developing strategies or policies for a desired
-landscape development. *CP: Hm, verstehe ich auch nicht ganz. Kann der
-ganze Absatz vielleicht einfach weg?* *Nachdem ich die Tabelle gesehen
-habe verstehe ich glaube was Ihr meint. Allerdings bin ich mir nicht so
-sicher ob man da so in der Tiefe eingeht, wenn man keine Erklärung hat?
-oder ihr müsstet die noch ergänzen. sivlopasture ist eben der Indikator
-der am besten abschneidet und in der aktuellen Zusammensetzung den
-höchsten Anteil hat. Ich denke ich würde eher den Code kommentieren.
-Also z.B. sowas wie: For further exploring the role of different
-indicators for modelled land-use decision, it might be helpful to
-identify the indicators and uncertainty scenarios with the lowest
-guaranteed performance (…code…). Here, this is the case for the
-indicators 1 and 3 for the pessimistic scenarios of silvopasture.*
-*Interessant ist in diesem Zusammenhang ja auch das optimierte gegenüber
-der heutigen Landnutzung zu vergleichen, welcher Indikator dann z.B.
-eine deutlich schlechtere Min performance hätte - das ist aber natürlich
-im package nicht ganz so leicht auszurechnen*
+<!-- Further elaborating the packages' results (Table 2) indeed reveals that indicator 1 (financial stability) restricts the optimum and that the worst performing scenarios of indicator 3 (investment costs) are equal to the worst performing scenarios of indicator 1. (*VVG: Hier stimmt was nicht, im Absatz zuvor sagen wir, dass das Portfolio durch drei Indikatoren begrenzt wird: 1, 3 und 8. Nun sagen wir zwei. Wenn ich es ausprobiere mit den Daten von Liz ist es wirklich so, dass Portfolio gleich bleibt wenn man nur die drei Inikatoren nutzt und nicht alle 10. Sobald ich aber zusätzlich den Indikator 8 rausnehme, verändert sich das Portfolio komplett. D.h. der Indikator 8 ist auch begrenzend. Nun ist die Frage, warum die Performance das nicht aufzeigt, also warum sie nicht exakt der Performance von 1 und 3 entspricht - um somit auch das portfolio zu begrenzen. Ich meine die Performance liegt extrem nahe an indikator 1 und 3, 38.68000 zu 38.71221 ... hängt das mit Rundungen zusammen? Oder kann ein Portfolio, dass nicht eine exakte Grenze bildet auch das Portfolio begrenzen?*) $1-\beta$ results to this worst performances. *CP: Letzten Satz verstehe ich nicht ganz. Kann der Satz weg?* All of the worst performing scenarios have in common that the outcome of silvopasture is pessimistic (Low) and the outcome of forest is optimistic (High). This relationship thus might be of interest when developing strategies or policies for a desired landscape development.
+*CP: Hm, verstehe ich auch nicht ganz. Kann der ganze Absatz vielleicht einfach weg?*
+*Nachdem ich die Tabelle gesehen habe verstehe ich glaube was Ihr meint. Allerdings bin ich mir nicht so sicher ob man da so in der Tiefe eingeht, wenn man keine Erklärung hat? oder ihr müsstet die noch ergänzen. sivlopasture ist eben der Indikator der am besten abschneidet und in der aktuellen Zusammensetzung den höchsten Anteil hat. Ich denke ich würde eher den Code kommentieren. Also z.B. sowas wie: For further exploring the role of different indicators for modeled land-use decision, it might be helpful to identify the indicators and uncertainty scenarios with the lowest guaranteed performance (...code...). Here, this is the case for the indicators 1 and 3 for the pessimistic scenarios of silvopasture.*
+*Interessant ist in diesem Zusammenhang ja auch das optimierte gegenüber der heutigen Landnutzung zu vergleichen, welcher Indikator dann z.B. eine deutlich schlechtere Min performance hätte - das ist aber natürlich im package nicht ganz so leicht auszurechnen*
+
+*VVG: Das könnte man recht einfach einbauen -> die aktuelle Landnutzungsart als lowerBound und upperBound eintragen bei solveScenario und schauen wie die Indikatoren in dieser erzwungenen Land-cover allocation performen. Die Frage ist, ob wir das wollen - geht ja in ne andere Richtung als der ursprüngliche Absatz hier* -->
+
+### Comparison of the performance of the currently observed land-cover composition to the optimized composition
+
+``` r
+result_current <- solveScenario(x = init,
+                        lowerBound = c(0.26, 0.59, 0, 0, 0.01, 0.14),
+                        upperBound = c(0.26, 0.59, 0, 0, 0.01, 0.14))
+
+performance_current <- calcPerformance(result_current)
+
+performance_current$scenarioTable$performance <- performance_current$scenarioTable$performance * 100
+```
+
+``` r
+performance_current$beta
+```
+
+    ## [1] 0.9114
+
+``` r
+ggplot(performance_current$scenarioTable,
+       aes(x = indicator,
+           y = performance,
+           color = indicator)) +
+  geom_point() +
+  geom_hline(yintercept =
+               min(performance_current$scenarioTable$performance),
+             linetype = "dashed", color = "red") +
+  guides(color = guide_legend(title = "",
+                              nrow = 10)) +
+  theme_classic() + 
+  theme(text = element_text(size = 18),
+        legend.position="right",
+        axis.ticks.x = element_blank()) +
+  scale_x_discrete(labels = seq(1, 10)) +
+  labs(y = "Min-max normalized indicator value (%)",
+       x = "Indicators") + 
+  scale_y_continuous(breaks = seq(0, 101, 10), 
+                     limits = c(0, 101)) +
+  geom_hline(aes(yintercept=100), size = 1) + 
+  annotate(geom = "Text", x = 6, y = 100, label = "Maximum achievable indicator level",
+           vjust = -1)
+```
+
+<img src="README_files/figure-gfm/unnamed-chunk-11-1.png" style="display: block; margin: auto;" />
+
+Figure 4 shows the performance of the ten indicators under the
+restriction of the currently observed land-cover composition. This
+performance is calculated by implementing the land-cover shares in the
+*lowerBound* and *upperBound* arguments. By this restriction, results
+like the
+![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
+value or the performances of the different indicators for the currently
+observed composition can be calculated. The comparison of the
+performances of the currently observed land-cover composition with the
+performances of the optimized composition shows that the worst-case
+scenario of, e.g., liquidity and meeting household needs in the
+optimized composition is far below the worst-case scenario of the same
+indicators in the currently observed land-cover composition. In
+contrast, the performance of, e.g., the worst-case scenarios of
+financial stability, protecting soil resources, and protecting water
+supply shows a significant increase. Overall, the maximum distance of
+the worst performing scenario of the currently observed land-cover
+composition gets reduced by about 30 percentage points, from
+![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
+0.9114 to 0.6132 (comparing the horizontal red line of Fig. 3 and Fig.
+4). This interaction shows that the optimization process can help to
+reduce trade-offs between the different indicators.
 
 <h3>
 <a name="6. Erweiterte Anwendung">Sophisticated application</a>
@@ -488,7 +555,7 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
         legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 *Figure 4: Theoretically ideal farm compositions under increasing levels
 of uncertainty.*
@@ -573,7 +640,7 @@ result_socioeconomic$landUse %>% gather(key = landCoverOption, value = landCover
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 *Figure 5: Composition of the optimized farm (based on data of Gosling
 et al. (2020)), including only socio-economic indicators. Each
@@ -597,37 +664,51 @@ performance_socioeconomic$beta
     ## [1] 0.6132
 
 ``` r
-lowestPerformance_socioeconomic <- performance_socioeconomic$scenarioTable[
-  order(performance_socioeconomic$scenarioTable$performance,
-        decreasing = FALSE),]
-
-performanceExample_socioeconomic <- head(lowestPerformance_socioeconomic[,c(1 : 8, 31)], n = 9)
-
-knitr::kable(performanceExample_socioeconomic, row.names = F)
+ggplot(performance_socioeconomic$scenarioTable,
+       aes(x = indicator,
+           y = performance,
+           color = indicator)) +
+  geom_point() +
+  geom_hline(yintercept =
+               min(performance$scenarioTable$performance),
+             linetype = "dashed", color = "red") +
+  guides(color = guide_legend(title = "",
+                              nrow = 10)) +
+  theme_classic() + 
+  theme(text = element_text(size = 18),
+        legend.position="right",
+        axis.ticks.x = element_blank()) +
+  scale_x_discrete(labels = seq(1, 10)) +
+  labs(y = "Min-max normalized indicator value (%)",
+       x = "Indicators") + 
+  scale_y_continuous(breaks = seq(0, 101, 10), 
+                     limits = c(0, 101)) +
+  geom_hline(aes(yintercept=100), size = 1) + 
+  annotate(geom = "Text", x = 6, y = 100, label = "Maximum achievable indicator level",
+           vjust = -1)
 ```
 
-*Table 3: An extract of the performance table of only socio-economic
-indicators created through the calcPerformance() function with the worst
-performing scenarios*
+<img src="README_files/figure-gfm/unnamed-chunk-15-1.png" style="display: block; margin: auto;" />
 
-| indicator           | outcomeCrops | outcomePasture | outcomeAlley Cropping | outcomeSilvopasture | outcomePlantation | outcomeForest | direction      | performance |
-|:--------------------|:-------------|:---------------|:----------------------|:--------------------|:------------------|:--------------|:---------------|------------:|
-| Financial stability | High         | High           | High                  | Low                 | High              | High          | more is better |    38.68000 |
-| Financial stability | High         | Low            | High                  | Low                 | High              | High          | more is better |    38.68000 |
-| Financial stability | High         | High           | Low                   | Low                 | High              | High          | more is better |    38.68000 |
-| Financial stability | High         | Low            | Low                   | Low                 | High              | High          | more is better |    38.68000 |
-| Investment costs    | High         | High           | High                  | Low                 | Low               | High          | less is better |    38.68000 |
-| Investment costs    | Low          | High           | High                  | Low                 | Low               | High          | less is better |    38.68000 |
-| Investment costs    | High         | High           | Low                   | Low                 | Low               | High          | less is better |    38.68000 |
-| Investment costs    | Low          | High           | Low                   | Low                 | Low               | High          | less is better |    38.68000 |
-| Investment costs    | High         | High           | High                  | Low                 | Low               | Low           | less is better |    38.68223 |
+*Figure 6: The performance of each of the socio-economic indicators. The
+colored points are the achieved levels of the indicators of all
+scenarios s. The dotted, horizontal red line illustrates the guaranteed
+performance*
+![(1-\\beta)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%281-%5Cbeta%29 "(1-\beta)")*,
+thus the robust feasible solution of the program (Equation 1 in (Husmann
+et al, n.d.)).*
 
-Summarizing the relevant performances (Table 3) reveals that the result
-is still limited by financial stability and investment costs.
-Accordingly, also this socio-economic portfolio still does not perfectly
-reflect the currently observed land-cover composition. This means that
-further indicators appear to be relevant for the farmers (*CP: Or
-altnertave weighings are likely…*).
+An analysis of the performance of the socio-economic indicators shows
+that the
+![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
+value remains the same and therefore the guaranteed performance
+![(1-\\beta)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%281-%5Cbeta%29 "(1-\beta)")
+also remains the same. Visualizing these performances (Fig. 6) reveals
+that the result is still limited by financial stability, investment
+costs and meeting household needs. Accordingly, also this socio-economic
+portfolio still does not perfectly reflect the currently observed
+land-cover composition. This means that further indicators appear to be
+relevant for the farmers (*CP: Or altnertave weighings are likely…*).
 
 ``` r
 dat_ecologic <- dat[dat$indicator %in% c("Protecting soil resources",
@@ -656,15 +737,15 @@ result_ecologic$landUse %>% gather(key = landCoverOption, value = landCoverShare
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
-*Figure 6: Composition of the optimized farm (based on data of Gosling
+*Figure 7: Composition of the optimized farm (based on data of Gosling
 et al. (2020)), including only ecologic indicators. Each land-cover
 option is shown in an allocated share (%).*
 
 The ecological indicator group, as the second example for
 leave-indicators-out analysis, leads to a land-cover portfolio
-comprising forests only (Fig.6; corresponds to figure 5 of Gosling et
+comprising forests only (Fig. 7; corresponds to figure 5 of Gosling et
 al. (2020)). It can be concluded that all contributions of all other
 land-cover alternatives in all scenarios (even the optimistic ones) to
 the ecological indicators are lower than that of forests. This portfolio
@@ -702,15 +783,15 @@ result_short$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1
   guides(fill = guide_legend(title = ""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
-*Figure 7: Composition of the optimized farm (based on data of Gosling
+*Figure 8: Composition of the optimized farm (based on data of Gosling
 et al. (2020)), including the prospective relevant indicators of the
 farmers only. Each land-cover option is shown in an allocated share
 (%).*
 
 The third example considers the prospective relevant indicators of the
-farmers only (Fig. 7). Corresponding to figure 5 of Gosling et
+farmers only (Fig. 8). Corresponding to figure 5 of Gosling et
 al. (2020), this scenario only consists of indicators that approximate
 the immediate economic success. Indeed, this portfolio best reflects the
 portfolio observed in Eastern Panama. Hence, these indicators best
@@ -738,8 +819,10 @@ certain land-cover composition
 folgenden Satz tue ich mich sehr scchwer… Vielleicht sowas wie: For
 instance by using an uncertainty level of 3 the uncertainty space
 becomes larger, while the uncertainty space reamins constant…. and thus
-leads to… * The broadened uncertainty space allows for a broader state
-space of the distances
+leads to… VVG: Hier im Satz von Carola stimmt was nicht oder? der
+uncertainty space kann ja nicht “lager” und “remains constant”
+gleichzeitig abdecken* The broadened uncertainty space allows for a
+broader state space of the distances
 ![d\_{ij}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d_%7Bij%7D "d_{ij}"),
 which usually leads to smoother transitions (*CP: between what?*) when
 the uncertainty values are raised. The disadvantage is that the
@@ -782,13 +865,13 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
         legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
-*Figure 8: Theoretically ideal farm compositions using the fixDistance
+*Figure 9: Theoretically ideal farm compositions using the fixDistance
 argument and increasing levels of uncertainty.*
 
 *CP: Hier ist auch was komisch* It can be seen that the land-cover
-allocation transition under raising uncertainty (Fig. 8) differs
+allocation transition under raising uncertainty (Fig. 9) differs
 slightly from the multifunctional scenario shown above (Fig. 4). The
 here broadened state space leads an earlier increase of pasture (*CP:
 Ist hier gemeint: leads to selection of a larger share of pasture under
