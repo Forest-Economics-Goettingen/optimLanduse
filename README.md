@@ -499,7 +499,6 @@ is reduced by about 30 percentage points, from
 = 0.6132 (comparing the horizontal red line of Fig. 3 and Fig. 4). This
 interaction shows that the optimization process can help to reduce
 trade-offs between the different indicators.
-<!-- Was heißt das? Ehrlich gesagt verstehe ich immer noch nicht warum wir das current Szenario brauchen. Welche -->
 
 <h3>
 <a name="6. Erweiterte Anwendung">4. Sophisticated application</a>
