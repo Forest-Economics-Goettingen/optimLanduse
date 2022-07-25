@@ -6,27 +6,27 @@
 </h3>
 <ul>
 <li>
-<a href="#1. Einleitung">Introduction</a>
+<a href="#1. Einleitung">1. Introduction</a>
 </li>
 <li>
-<a href="#3. Input und Output">Detailed description of the functions’
+<a href="#3. Input und Output">2. Detailed description of the functions’
 in- and outputs</a>
 </li>
 <li>
-<a href="#5. Beispielhafte Anwendung">Example application</a>
+<a href="#5. Beispielhafte Anwendung">3. Example application</a>
 </li>
 <li>
-<a href="#6. Erweiterte Anwendung">Sophisticated application</a>
+<a href="#6. Erweiterte Anwendung">4. Sophisticated application</a>
 </li>
 <li>
-<a href="#7. Suggested">Suggested citation</a>
+<a href="#7. Suggested">5. Suggested citation</a>
 </li>
 <li>
-<a href="#8. Literatur">Literature</a>
+<a href="#8. Literatur">6. Literature</a>
 </li>
 </ul>
 <h3>
-<a name="1. Einleitung">Introduction</a>
+<a name="1. Einleitung">1. Introduction</a>
 </h3>
 
 When managing ecosystems the question is how to simultaneously combat
@@ -58,7 +58,7 @@ functionalities and the modeling philosophy of the overall approach, see
 <http://134.76.17.50/optimlanduse_shiny/>.
 
 <h3>
-<a name="3. Input und Output">Package structure</a>
+<a name="3. Input und Output">2. Package structure</a>
 </h3>
 
 This chapter provides a brief overview over the package functions (Fig.
@@ -66,6 +66,14 @@ This chapter provides a brief overview over the package functions (Fig.
 and workflow please also refer to Husmann et al. (n.d.). We further
 refer the reader to the respective help pages of the package for more
 information.
+
+The stable version of the package can be installed using the CRAN
+server. The development version can be found on the GitHub project page.
+
+``` r
+# If not already installed
+install.packages("optimLanduse")
+```
 
 <p align="center">
 <img width="781.6" height="452" src="./man/figures/flowchart.png">
@@ -188,7 +196,7 @@ This is followed by a summary of the results of the optimization:
     level for each indicator and uncertainty scenario.
 
 <h3>
-<a name="5. Beispielhafte Anwendung">Example application</a>
+<a name="5. Beispielhafte Anwendung">3. Example application</a>
 </h3>
 
 We here present the basic workflow on a literature example. Aim of this
@@ -217,11 +225,6 @@ Descriptions of the land-cover alternatives and indicators can be found
 in tables 1 and 2 in Gosling et al. (2020).
 
 ### Installing **optimLanduse**, Loading Required Packages and Importing the Data
-
-``` r
-# If not already installed
-# install.packages("optimLanduse", repos = "https://ftp.gwdg.de/pub/misc/cran/")
-```
 
 ``` r
 library(optimLanduse)
@@ -453,7 +456,7 @@ eine deutlich schlechtere Min performance hätte - das ist aber natürlich
 im package nicht ganz so leicht auszurechnen*
 
 <h3>
-<a name="6. Erweiterte Anwendung">Sophisticated application</a>
+<a name="6. Erweiterte Anwendung">4. Sophisticated application</a>
 </h3>
 
 ### Batch Analysis: Solving Multiple Uncertainty Values
@@ -795,7 +798,7 @@ Ist hier gemeint: leads to selection of a larger share of pasture under
 low uncertainty levels as compared to…*).
 
 <h3>
-<a name="7. Suggested">Suggested citation </a>
+<a name="7. Suggested">5. Suggested citation </a>
 </h3>
 
 Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse:
@@ -803,7 +806,7 @@ Robust Land-Use Optimization. R package version 1.1.0.
 <https://CRAN.R-project.org/package=optimLanduse>.
 
 <h3>
-<a name="8. Literatur">Literature</a>
+<a name="8. Literatur">6. Literature</a>
 </h3>
 
 Gosling, E., Reith, E., Knoke T., Paul, C. (2020): A goal programming
