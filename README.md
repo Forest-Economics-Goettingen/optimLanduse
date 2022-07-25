@@ -496,6 +496,14 @@ ggplot(performance_current$scenarioTable,
 
 <img src="README_files/figure-gfm/unnamed-chunk-11-1.png" style="display: block; margin: auto;" />
 
+*Figure 4: The performance of each of the 10 indicators for the result
+of the currently observed land-cover composition. The colored points are
+the achieved levels of the indicators of all scenarios s. The dotted,
+horizontal red line illustrates the guaranteed performance*
+![(1-\\beta)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%281-%5Cbeta%29 "(1-\beta)")*,
+thus the robust feasible solution of the program (Equation 1 in (Husmann
+et al, n.d.)).*
+
 Figure 4 shows the performance of the ten indicators under the
 restriction of the currently observed land-cover composition. This
 performance is calculated by implementing the land-cover shares in the
@@ -504,20 +512,24 @@ like the
 ![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
 value or the performances of the different indicators for the currently
 observed composition can be calculated. The comparison of the
-performances of the currently observed land-cover composition with the
-performances of the optimized composition shows that the worst-case
-scenario of, e.g., liquidity and meeting household needs in the
-optimized composition is far below the worst-case scenario of the same
-indicators in the currently observed land-cover composition. In
+performances of the currently observed land-cover composition (Fig. 4)
+with the performances of the optimized composition (Fig. 3) shows that
+the worst-case scenario of, e.g., liquidity and meeting household needs
+in the optimized composition is far below the worst-case scenario of the
+same indicators in the currently observed land-cover composition. In
 contrast, the performance of, e.g., the worst-case scenarios of
 financial stability, protecting soil resources, and protecting water
 supply shows a significant increase. Overall, the maximum distance of
 the worst performing scenario of the currently observed land-cover
-composition gets reduced by about 30 percentage points, from
+composition
+(![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta"))
+gets reduced by about 30 percentage points, from
 ![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
-0.9114 to 0.6132 (comparing the horizontal red line of Fig. 3 and Fig.
-4). This interaction shows that the optimization process can help to
-reduce trade-offs between the different indicators.
+= 0.9114 to
+![\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
+= 0.6132 (comparing the horizontal red line of Fig. 3 and Fig. 4). This
+interaction shows that the optimization process can help to reduce
+trade-offs between the different indicators.
 
 <h3>
 <a name="6. Erweiterte Anwendung">Sophisticated application</a>
