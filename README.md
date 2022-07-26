@@ -55,7 +55,9 @@ community of landscape planners and provides opportunities for
 systematic or batch applications. To further enhance this, we have
 designed a shiny dashboard for the package to get a quick idea of its
 functionalities and the modeling philosophy of the overall approach, see
-<http://134.76.17.50/optimlanduse_shiny/>.
+<http://134.76.17.50/optimlanduse_shiny/>. The current package version
+optimizes land-cover compositions, but aspects of configuration may be
+added in the future.
 
 <h3>
 <a name="3. Input und Output">2. Package structure</a>
@@ -93,10 +95,10 @@ data are required:
     long-oriented type of data structure (Table 1). All combinations of
     land-cover (landUse) alternatives and indicators have to be listed
     vertically. Each row must contain the average expectation, the
-    uncertainty, and the direction of the respective land-cover and
-    indicator combination. The column names of the table must follow the
-    expected nomenclature displayed below. You also find this format in
-    the built-in example tables **exampleGosling.xlsx** or
+    uncertainty, and the direction (more/less is better) of the respective
+    land-cover and indicator combination. The column names of the table must
+    follow the expected nomenclature displayed below. You also find this
+    format in the built-in example tables **exampleGosling.xlsx** or
     **exampleEmpty.xlsx**. The help files of the *exampleData()* and
     *initScenario()* functions contain more details regarding the
     required data format. Also an empty template incl. the predefined
@@ -175,9 +177,9 @@ function are displayed again in this list. These include:
     The inner solution is solved using the *lpSolveAPI()* function of
     the **lpSolveApi** package. *coefObjective* is the data frame that
     contains these coefficients.
--   *coefConstraing*: A data frame with the respective constraints for
+-   *coefConstraint*: A data frame with the respective constraints for
     the inner solution solved by *lpsolveAPI()*.
--   *distances*: The distance of each scenario to its own theoretically
+-   *distance*: The distance of each scenario to its own theoretically
     best-achievable contribution (reference). See Equation 3 in Husmann
     et al. (n.d.).
 
@@ -455,9 +457,9 @@ et al, n.d.)).*
 
 Setting the arguments for the lower and upper bounds exactly to the
 currently observed land-cover composition forces a solution that
-corresponds to the current land-cove composition (Fig. 4). It allows to
-compare and evaluate the differences of the optimized land-cover
-composition with the currently observed composition. Comparing e.g. the
+corresponds to the current land-cove composition (Fig. 4). It allows for
+comparing and evaluating the differences of the optimized land-cover
+composition with the currently observed composition. Comparing, e.g., the
 guaranteed performances
 ![1-\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1-%5Cbeta "1-\beta")
 provides objective measure how an optimization enhances the achievements
@@ -864,7 +866,7 @@ approach to evaluate agroforestry systems in Eastern Panama<em>Journal
 of Environmental Management</em> **261**.
 <https://doi.org/10.1016/j.jenvman.2020.110248>
 
-Husmann, K.; von Groß, V.; Bödeker, K.; Fuchs, J.; Paul, C.; Knoke, T.
+Husmann, K.; von Groß, V.; Bödeker, K.; Fuchs, J.M.; Paul, C.; Knoke, T.
 (no date): *optimLanduse*: A Package for Multiobjective Land-cover
 Composition Optimization under Uncertainty. In: *Methods Ecol Evol.*
 Under revision.
