@@ -96,7 +96,7 @@ The returned *list with results* contains different Information of the optimizat
 
 This is followed by a summary of the results of the optimization:
 
--   *β*: The maximum distance of the worst performing scenario (Equation 1 in Husmann et al. (n.d.)).
+-   $\beta$: The maximum distance of the worst performing scenario (Equation 1 in Husmann et al. (n.d.)).
 -   *landUse*: The resulting land-cover composition in the optimum.
 
 #### Post-Processing
