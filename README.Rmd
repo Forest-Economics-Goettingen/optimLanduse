@@ -460,12 +460,7 @@ The third example is composed of a bundle of indicators that prospectively refle
 
 ### The use of fixDistance
 
-It can be advantageous to define distinct uncertainty levels for the calculation of the distances to the maximum achievable level (the reference) $d_{iu}$ (Equation 3 in Husmann et al. (n.d.)) and the actual distances under a certain land-cover composition $R_{liu}$ (Equation 5 in Husmann et al. (n.d.), see also Equation 9). Too narrow uncertainty space of $R_{liu}$ could restrict the state space of the distances too strictly. The broader uncertainty spaces allow for higher freedom of $R_{liu}$ to cover combinations land-cover compositions. The distances are thus allowed to be higher. This usually results in a more similar composition of the land-cover composition with similar levels of uncertainty. The transitions between the portfolios under raising uncertainty values are smoother. Disadvantage of distinct uncertainty spaces is that the distances cannot be interpreted straightforwardly any more. The different uncertainty spaces considered in the denominator and the counter of Equation 3 (Husmann et al., n.d.) lead to distances that are not inevitably in the inverval \{0, 1\} anymore. 
-
-
-*CP: Mit dem folgenden Satz tue ich mich sehr scchwer... Vielleicht sowas wie: For instance by using an uncertainty level of 3 the uncertainty space becomes larger, while the uncertainty space remains constant.... and thus leads to... VVG: Hier im Satz von Carola stimmt was nicht oder? der uncertainty space kann ja nicht "lager" und "remains constant" gleichzeitig abdecken* 
-
-
+It can be advantageous to define distinct uncertainty levels for the calculation of the distances to the maximum achievable level (the reference) $d_{iu}$ (Equation 3 in Husmann et al. (n.d.)) and the actual distances under a certain land-cover composition $R_{liu}$ (Equation 5 in Husmann et al. (n.d.), see also Equation 9). Too narrow uncertainty space of $R_{liu}$ could restrict the state space of the distances too strictly. The broader uncertainty spaces allow for higher freedom of $R_{liu}$ to cover combinations land-cover compositions. The distances are thus allowed to be higher. This usually results in a more similar composition of the land-cover composition with similar levels of uncertainty. The transitions between the portfolios under raising uncertainty values are smoother. Disadvantage of distinct uncertainty spaces is that the distances cannot be interpreted straightforwardly any more. The different uncertainty spaces considered in the denominator and the counter of Equation 3 (Husmann et al., n.d.) lead to distances that are not inevitably in the interval \{0, 1\} anymore. 
 
 
 ```{r, fig.height = 5, fig.width = 7}
@@ -505,7 +500,6 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
 
 *Fig. 10: Theoretically ideal farm compositions using the fixDistance argument and increasing levels of uncertainty.*
 
-*CP: Hier ist auch was komisch*
 It can be seen that the land-cover allocation transition under increasing uncertainty levels (Fig. 10) differs slightly from the multi-functional scenario shown above (Fig. 2). The here broadened state space leads a higher share of pasture under low uncertainty levels as compared to the multi-functional portfolio above (Fig. 5).
 
 
