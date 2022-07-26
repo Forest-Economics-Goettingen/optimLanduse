@@ -259,7 +259,8 @@ in- and outputs</a> chapter for more details.
 init <- initScenario(coefTable = dat,
                      uValue = 2,
                      optimisticRule = "expectation", 
-                     # optimistic contribution of each indicator directly defined by their average 
+                     # optimistic contribution of each indicator directly defined
+                     # by their average 
                      fixDistance = NA) 
                      # 3 is the default
 ```
@@ -277,7 +278,8 @@ Husmann et al. (n.d.) for more details).
 result <- solveScenario(x = init)
 
 # Visualize the farm composition
-result$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1 : 6) %>% 
+result$landUse %>% gather(key = landCoverOption,
+                          value = landCoverShare, 1 : 6) %>% 
   mutate(portfolio = "Optimal farm composition",
          landCoverShare = landCoverShare * 100) %>% 
   ggplot(aes(y = landCoverShare, x = portfolio, fill = landCoverOption)) + 
@@ -417,7 +419,8 @@ result_current <- solveScenario(x = init,
 
 performance_current <- calcPerformance(result_current)
 
-performance_current$scenarioTable$performance <- performance_current$scenarioTable$performance * 100
+performance_current$scenarioTable$performance <-
+  performance_current$scenarioTable$performance * 100
 ```
 
 ``` r
@@ -587,7 +590,8 @@ straightforward functionality to define sets of indicators with a single
 click. Further explanation and instructions are given in the app.
 
 ``` r
-dat_socioeconomic <- dat[dat$indicator != "Protecting soil resources" & dat$indicator !="Protecting water supply",]
+dat_socioeconomic <- dat[!dat$indicator %in% c("Protecting soil resources",
+                                              "Protecting water supply"),]
 
 init_socioeconomic <- initScenario(dat_socioeconomic,
                                    uValue = 2,
@@ -596,7 +600,8 @@ init_socioeconomic <- initScenario(dat_socioeconomic,
 
 result_socioeconomic <- solveScenario(x = init_socioeconomic)
 
-result_socioeconomic$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1 : 6) %>% 
+result_socioeconomic$landUse %>% gather(key = landCoverOption,
+                                        value = landCoverShare, 1 : 6) %>% 
   mutate(portfolio = "Socio-economic",
          landCoverShare = landCoverShare * 100) %>% 
   ggplot(aes(y = landCoverShare, x = portfolio, fill = landCoverOption)) + 
