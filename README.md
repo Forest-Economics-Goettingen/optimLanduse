@@ -9,17 +9,17 @@
 <a href="#1. Einleitung">1. Introduction</a>
 </li>
 <li>
-<a href="#3. Input und Output">2. Detailed description of the functions’
-in- and outputs</a>
+<a href="#3. Input und Output">2. Detailed Description of the Functions’
+In- and Outputs</a>
 </li>
 <li>
-<a href="#5. Beispielhafte Anwendung">3. Example application</a>
+<a href="#5. Beispielhafte Anwendung">3. Example Application</a>
 </li>
 <li>
-<a href="#6. Erweiterte Anwendung">4. Sophisticated application</a>
+<a href="#6. Erweiterte Anwendung">4. Sophisticated Application</a>
 </li>
 <li>
-<a href="#7. Suggested">5. Suggested citation</a>
+<a href="#7. Suggested">5. Suggested Citation</a>
 </li>
 <li>
 <a href="#8. Literatur">6. Literature</a>
@@ -60,7 +60,8 @@ optimizes land-cover compositions, but aspects of configuration may be
 added in the future.
 
 <h3>
-<a name="3. Input und Output">2. Package structure</a>
+<a name="3. Input und Output">2. Detailed Description of the Functions’
+In- and Outputs</a>
 </h3>
 
 This chapter provides a brief overview over the package functions (Fig.
@@ -205,7 +206,7 @@ This is followed by a summary of the results of the optimization:
     level for each indicator and uncertainty scenario.
 
 <h3>
-<a name="5. Beispielhafte Anwendung">3. Example application</a>
+<a name="5. Beispielhafte Anwendung">3. Example Application</a>
 </h3>
 
 We here present the basic workflow on a literature example. Aim of this
@@ -495,7 +496,7 @@ multi-functional portfolio therefore does not promise immediate economic
 success for the farmers.
 
 <h3>
-<a name="6. Erweiterte Anwendung">4. Sophisticated application</a>
+<a name="6. Erweiterte Anwendung">4. Sophisticated Application</a>
 </h3>
 
 ### Batch Analysis: Solving Multiple Uncertainty Values
@@ -855,7 +856,7 @@ space leads a higher share of pasture under low uncertainty levels as
 compared to the multi-functional portfolio above (Fig. 5).
 
 <h3>
-<a name="7. Suggested">5. Suggested citation </a>
+<a name="7. Suggested">5. Suggested Citation </a>
 </h3>
 
 Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse:
