@@ -15,13 +15,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 <li><a href="#1. Einleitung">1. Introduction</a></li>
 
-<li><a href="#3. Input und Output">2. Detailed description of the functions' in- and outputs</a></li>
+<li><a href="#3. Input und Output">2. Detailed Description of the Functions' In- and Outputs</a></li>
 
-<li><a href="#5. Beispielhafte Anwendung">3. Example application</a></li>
+<li><a href="#5. Beispielhafte Anwendung">3. Example Application</a></li>
 
-<li><a href="#6. Erweiterte Anwendung">4. Sophisticated application</a></li>
+<li><a href="#6. Erweiterte Anwendung">4. Sophisticated Application</a></li>
 
-<li><a href="#7. Suggested">5. Suggested citation</a></li>
+<li><a href="#7. Suggested">5. Suggested Citation</a></li>
 
 <li><a href="#8. Literatur">6. Literature</a></li>
 
@@ -33,7 +33,7 @@ When managing ecosystems the question is how to simultaneously combat biodiversi
 
 The R package **optimLanduse** provides functions for easy and systematic applications of the robust multiobjective land-cover composition optimization approach of Knoke et al. (2016). It includes tools to determine the land-cover composition that best balances the multiple functions and services a landscape can provide and tools for deeper understanding and visualizing the contributions of the distinct indicators. The method has been developed and applied in a series of studies before. You find some examples in the <a href="#8. Literatur">literature</a> section. The methodological background of the approach can e.g. be found in Knoke et al. (2016) and Husmann et al. (n.d). We here refer to the nomenclature of Husmann et al. (n.d.). The package opens the approach of Knoke et al. (2016) to the community of landscape planners and provides opportunities for systematic or batch applications. To further enhance this, we have designed a shiny dashboard for the package to get a quick idea of its functionalities and the modeling philosophy of the overall approach, see <http://134.76.17.50/optimlanduse_shiny/>. The current package version optimizes land-cover compositions, but aspects of configuration may be added in the future.
 
-<h3><a name="3. Input und Output">2. Package structure</a></h3>
+<h3><a name="3. Input und Output">2. Detailed Description of the Functions’ In- and Outputs</a></h3>
 
 This chapter provides a brief overview over the package functions (Fig. 1). For detailed information about methodological background, functions, and workflow please also refer to Husmann et al. (n.d.). We further refer the reader to the respective help pages of the package for more information.
 
@@ -97,7 +97,7 @@ This is followed by a summary of the results of the optimization:
 
 -   *calcPerformance()*: Attaches the portfolio performances of all indicators and scenarios as a data frame. The data can be used for straightforward visualization of the performance (e.g. Fig. 3). The performance is defined as the distance to the maximum achievable level for each indicator and uncertainty scenario.
 
-<h3><a name="5. Beispielhafte Anwendung">3. Example application</a></h3>
+<h3><a name="5. Beispielhafte Anwendung">3. Example Application</a></h3>
 
 We here present the basic workflow on a literature example. Aim of this chapter is to introduce the functionality of the packages' functions and to explain the relevant in- and output on the example of a use-case in Eastern Panama. The data of this study is accessible in the *Appendix A* of Gosling et al. (2020) and is also firmly integrated into the **optimLanduse** package. It can be accessed via *exampleData("exampleGosling.xlsx")*. The data integrated in the package comes already in the required *optimLanduse* format, such that it can be used without any data processing.
 
@@ -269,7 +269,7 @@ Setting the arguments for the lower and upper bounds exactly to the currently ob
 
 Amounting to 0.387, the guaranteed performance of the multifunctional portfolio is considerably higher then the guaranteed performance of the current land-cover composition (0.089). Each of the indicators considered is thus fulfilled by at least 38.7% compared to its individual achievable level in the optimized portfolio. The comparison of the performances of the currently observed land-cover composition (Fig. 4) with the performances of the multifunctional portfolio (Fig. 3) reveals that, for example, the performance of the financial stability is significantly higher in the optimized portfolio. The performance of meeting households needs and liquidity, for example, decreases significantly. The price to be paid for the best-possible compromise is thus a fundamentally lower performance of the both indicators that approximate the immediate economic success. The generally desirable multifunctional portfolio therefore does not promise immediate economic success for the farmers.
 
-<h3><a name="6. Erweiterte Anwendung">4. Sophisticated application</a></h3>
+<h3><a name="6. Erweiterte Anwendung">4. Sophisticated Application</a></h3>
 
 ### Batch Analysis: Solving Multiple Uncertainty Values
 
@@ -492,7 +492,7 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
 
 It can be seen that the land-cover allocation transition under increasing uncertainty levels (Fig. 10) differs slightly from the multifunctional scenario shown above (Fig. 2). The here broadened state space leads a higher share of pasture under low uncertainty levels as compared to the multifunctional portfolio above (Fig. 5).
 
-<h3><a name="7. Suggested">5. Suggested citation </a></h3>
+<h3><a name="7. Suggested">5. Suggested Citation </a></h3>
 
 Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse: Robust Land-Use Optimization. R package version 1.1.0. <https://CRAN.R-project.org/package=optimLanduse>.
 
