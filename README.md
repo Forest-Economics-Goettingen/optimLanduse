@@ -305,7 +305,7 @@ in an allocated share (%).*
 The resulting optimized farm composition (Fig. 2) corresponds to Fig. 3
 (![f_u=2](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u%3D2 "f_u=2"))
 in Gosling et al. (2020). It can be seen that the farm composition that
-best contributes to all 10 indicators (i.e. the multi-functional
+best contributes to all 10 indicators (i.e. the multifunctional
 portfolio) is dominated by silvopasture and forest. According to Gosling
 et al. (2020), this reveals the potential of agroforestry to serve as a
 compromise solution to fulfill multiple ecological and economic
@@ -360,8 +360,8 @@ thus the robust feasible solution of the program (Equation 1 in Husmann
 et al (n.d.)).*
 
 Fig. 3 can be used to further explore the effects of the indicators on
-the modeled land-use decisions. Looking at the performances of this
-multi-functional farm reveals, which indicator equals
+the modeled land-cover decisions. Looking at the performances of this
+multifunctional farm reveals, which indicator equals
 ![\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
 and therefore defines the result (Equation 1 in Husmann et al. (n.d.)).
 
@@ -479,20 +479,20 @@ optimization. Due to the compromise nature of the approach, indicators
 can also fall off in the optimized portfolio when compared to the
 current land-cover composition.
 
-Amounting to 0.387, the guaranteed performance of the multi-functional
+Amounting to 0.387, the guaranteed performance of the multifunctional
 portfolio is considerably higher then the guaranteed performance of the
 current land-cover composition (0.089). Each of the indicators
 considered is thus fulfilled by at least 38.7% compared to its
 individual achievable level in the optimized portfolio. The comparison
 of the performances of the currently observed land-cover composition
-(Fig. 4) with the performances of the multi-functional portfolio (Fig.
-3) reveals that, for example, the performance of the financial stability
-is significantly higher in the optimized portfolio. The performance of
+(Fig. 4) with the performances of the multifunctional portfolio (Fig. 3)
+reveals that, for example, the performance of the financial stability is
+significantly higher in the optimized portfolio. The performance of
 meeting households needs and liquidity, for example, decreases
 significantly. The price to be paid for the best-possible compromise is
 thus a fundamentally lower performance of the both indicators that
 approximate the immediate economic success. The generally desirable
-multi-functional portfolio therefore does not promise immediate economic
+multifunctional portfolio therefore does not promise immediate economic
 success for the farmers.
 
 <h3>
@@ -626,10 +626,10 @@ option is shown in an allocated share (%).*
 
 The first example considers socio-economic indicators only (Fig. 6; see
 also Fig. 5 of Gosling et al. (2020)). The result corresponds to the
-above shown multi-functional portfolio (Fig. 2). This is expected, as
-all indicators relevant to the solution of the multi-functional
-portfolio (financial stability, investment costs, and meeting household
-needs) are also captured in the socio-economic bundle.
+above shown multifunctional portfolio (Fig. 2). This is expected, as all
+indicators relevant to the solution of the multifunctional portfolio
+(financial stability, investment costs, and meeting household needs) are
+also captured in the socio-economic bundle.
 
 ``` r
 performance_socioeconomic <- calcPerformance(result_socioeconomic)
@@ -679,11 +679,11 @@ et al, n.d.)).*
 
 An analysis of the performance of the socio-economic indicators shows
 that the performances of the three relevant indicators equal the
-multi-functional portfolio (Fig. 7). The result is still defined by
+multifunctional portfolio (Fig. 7). The result is still defined by
 financial stability, investment costs and meeting household needs.
 Consequently, the guaranteed performance
 ![(1-\beta)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%281-%5Cbeta%29 "(1-\beta)")
-also equals the multi-functional portfolio. Therefore, this
+also equals the multifunctional portfolio. Therefore, this
 socio-economic portfolio also does not perfectly reflect the currently
 observed land-cover composition. This means that further indicators
 appear to be relevant for the actual farmers’ decisions.
@@ -774,7 +774,7 @@ consists of indicators that approximate immediate economic success.
 Indeed, the land-cover composition of this portfolio reflects the
 portfolio observed in Eastern Panama best. Hence, these indicators best
 reflect the farmers’ goals and perceptions in Eastern Panama. The
-difference between this portfolio and the desired multi-functional
+difference between this portfolio and the desired multifunctional
 portfolio (Fig. 2) highlights the requirements a land-cover alternative
 must fulfill to meet the farmers’ requirements and goals. The
 silvopasture, as defined in Gosling et al. (2020), may not serve the
@@ -782,8 +782,8 @@ requirements of the farmers sufficiently. Since farmers rate liquidity
 and meeting household needs higher than long-term profit and economic
 stability, pasture outperforms silvopasture in the immediate return
 scenario. Policies or development plans may consider these indicators
-key elements when promoting landscape development toward
-multi-functional landscapes.
+key elements when promoting landscape development toward multifunctional
+landscapes.
 
 ### The use of fixDistance
 
@@ -851,9 +851,9 @@ argument and increasing levels of uncertainty.*
 
 It can be seen that the land-cover allocation transition under
 increasing uncertainty levels (Fig. 10) differs slightly from the
-multi-functional scenario shown above (Fig. 2). The here broadened state
+multifunctional scenario shown above (Fig. 2). The here broadened state
 space leads a higher share of pasture under low uncertainty levels as
-compared to the multi-functional portfolio above (Fig. 5).
+compared to the multifunctional portfolio above (Fig. 5).
 
 <h3>
 <a name="7. Suggested">5. Suggested Citation </a>
