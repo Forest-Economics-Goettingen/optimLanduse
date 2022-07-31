@@ -8,7 +8,7 @@
 
 #' Perform the optimization
 #'
-#' The function solves the optimization framework, specified by the initialized \emph{optimLanduse} object.
+#' The function solves the optimization framework specified by the initialized \emph{optimLanduse} object.
 #'
 #' The methodological background and the formulation of the optimization
 #' framework are described in Knoke et al. (2016) and in Husmann et al. (n d.)

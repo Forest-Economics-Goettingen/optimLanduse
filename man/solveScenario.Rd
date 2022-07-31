@@ -20,7 +20,7 @@ possibility to influence the calculation time.}
 A solved landUse portfolio ready for export or further data processing.
 }
 \description{
-The function solves the optimization framework, specified by the initialized \emph{optimLanduse} object.
+The function solves the optimization framework specified by the initialized \emph{optimLanduse} object.
 }
 \details{
 The methodological background and the formulation of the optimization

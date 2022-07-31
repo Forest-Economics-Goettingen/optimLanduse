@@ -19,15 +19,13 @@ error or "SD" for standard deviation.}
 }
 \value{
 A formatted coefficients table with land-use options and indicator values ready for initialization via \code{\link{initScenario}}.
-#' @references Gosling, E., Reith, E., Knoke, T. et al. Exploring farmer perceptions of agroforestry via multi-objective optimisation:
-a test application in Eastern Panama. Agroforest Syst 94, 2003–2020 (2020). https://doi.org/10.1007/s10457-020-00519-0
 }
 \description{
-The input data must suit to the specific expected optimLanduse format prior to
+The input data must suit the specific expected optimLanduse format prior to
 initialization and optimization. This function
 provides the possibility to easily transform data from the commonly used form
 of the exemplary data
-\code{\link{exampleData}} into to the expected format. Please consider that the application of this function
+\code{\link{exampleData}} into the expected format. Please consider that the application of this function
 is not mandatory and in most cases not required. Best practice is to
 transform your data yourself into the expected format. Detailed information
 about the expected format and possible data processing can be found on the
@@ -39,4 +37,8 @@ and an error message will be thrown.
 require(readxl)
 dat <- read_xlsx(exampleData("exampleGosling_dataPrep.xlsx"), col_names = TRUE)
 dat <- dataPreparation(dat, uncertainty = "sd", expVAL = "mean")
+}
+\references{
+Gosling, E., Reith, E., Knoke, T. et al. Exploring farmer perceptions of agroforestry via multi-objective optimisation:
+a test application in Eastern Panama. Agroforest Syst 94, 2003–2020 (2020). https://doi.org/10.1007/s10457-020-00519-0
 }
