@@ -13,28 +13,28 @@
 #' the expected \emph{optimLanduse} format. The expected format is explained in the example on the
 #' \href{https://github.com/Forest-Economics-Goettingen/optimLanduse/}{GitHub project page}.
 #'
-#'  The aim of separating the initialization from the optimization is to save
+#'  Separating the initialization from the optimization is to save
 #'  computation time in batch analysis. The separated function calls allow the
 #'  user to perform multiple
-#'  optimizations from one initialized object. This could save time in scenario or
+#'  optimizations from one initialized object. This could save time in the scenario or
 #'  sensitivity analysis.
 #'
 #'  A detailed description of the input parameters can be found in Husmann et al. (n.d.).
 #'
 #' @param coefTable Coefficient table in the expected \emph{optimLanduse} format.
 #' @param uValue \emph{u} Value. The uncertainty value delivered in the coefTable is
-#' multiplied with this u value. The value therefore enables scenario analyses with differing
+#' multiplied with this u value. The value, therefore, enables scenario analyses with differing
 #' uncertainties in relation to indicator values. Higher u values can be interpreted as a higher
 #' risk aversion of the decision maker.
 #' @param optimisticRule Either \emph{expectation} or \emph{uncertaintyAdjustedExpectation}.
 #' The rule indicates whether the optimistic outcomes of an indicator are directly
 #' reflected by their expectations or if the indicator is calculated as expectation +
-#' uncertainty when "more is better", expectation - uncertainty respectively when "less is better".
+#' uncertainty when "more is better" or expectation - uncertainty respectively when "less is better".
 #' An optimization based on \emph{expectation} considers only downside risks.
 #' @param fixDistance This optional numeric value allows to define distinct uncertainty levels for the
 #' calculation of the uncertainty space and the averaged distances of a certain land-cover composition
 #' (see Equation 9 in Husmann et al. (n. d.)). Passing NA disables fixDistance. In this case,
-#' the untertainty space is defined by uValue.
+#' the uncertainty space is defined by uValue.
 #' @return An initialized optimLanduse S3 object ready for optimization.
 #' @references Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., Knoke, T. (no date): optimLanduse:
 #' A Package for Multiobjective Land-cover1Composition Optimization under Uncertainty. \emph{Methods

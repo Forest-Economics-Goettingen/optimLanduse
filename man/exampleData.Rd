@@ -7,7 +7,7 @@
 exampleData(fileName = "exampleGosling.xlsx")
 }
 \arguments{
-\item{fileName}{Name of example file. See 'details' section for further explanation of all provided examples.}
+\item{fileName}{Name of the example file. See 'details' section for further explanation of all provided examples.}
 }
 \value{
 The path to the example file on your computer.
@@ -15,8 +15,8 @@ The path to the example file on your computer.
 \description{
 optimLanduse comes bundled with exemplary data for land-use optimization. The
 files can also be found on your computer in the package folder `./extdata`. These examples
-provide some quick applications of the package for demonstration and an example of the expected structure
-of the data. Consider also the
+provide some quick applications of the package for demonstration and an example of the expected data
+structure of the data. Consider also the
 \href{https://github.com/Forest-Economics-Goettingen/optimLanduse/}{GitHub project page} for
 exemplary applications of the package.
 }

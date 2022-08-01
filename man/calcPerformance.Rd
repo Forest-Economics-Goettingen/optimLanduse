@@ -13,18 +13,18 @@ calcPerformance(x)
 An optimized optimLanduse object with attached portfolio performance.
 }
 \description{
-The Portfolio performances is calculated and attached to the solved
+The Portfolio performances are calculated and attached to the solved
 optimLanduse object. Each performance measure describes the relative proportion to the maximum achievable
 (the "target") of the indicator, given the current solution. The lowest performance of all indicators
 is the degree of fulfillment of the worst performing
-indicator. It can thus be intepreted as the guaranteed performance
+indicator. It can thus be interpreted as the guaranteed performance
 under the worst-possible scenario. At least this proportion will be
 achieved across all indicators.
 }
 \details{
-For further information and calculation see the supplement of Gosling et al (2020),
+For further information and calculation, see the supplement of Gosling et al. (2020),
 Formula S5 (in the supplement of the paper) and also the paragraph
-optimLanduse functions and workflow - Post-processing in Husmann et al (n. d.).
+optimLanduse functions and workflow - Post-processing in Husmann et al. (n. d.).
 }
 \examples{
 require(ggplot2)
