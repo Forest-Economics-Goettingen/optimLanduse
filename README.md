@@ -16,7 +16,8 @@ In- and Outputs</a>
 <a href="#5. Beispielhafte Anwendung">3. Example Application</a>
 </li>
 <li>
-<a href="#6. Erweiterte Anwendung">4. Sophisticated Application</a>
+<a href="#6. Erweiterte Anwendung">4. Batch application and sensitivity
+analysis</a>
 </li>
 <li>
 <a href="#7. Suggested">5. Suggested Citation</a>
@@ -49,7 +50,7 @@ of the distinct indicators. The method has been developed and applied
 previously in a couple of studies, with some examples to be found in the
 <a href="#8. Literatur">literature</a> section. The methodological
 background of the approach can e.g., be found in Knoke et al. (2016) and
-Husmann et al. (n.d). We here refer to the nomenclature of Husmann et
+Husmann et al. (n.d.). We here refer to the nomenclature of Husmann et
 al. (n.d.). The package opens the approach of Knoke et al. (2016) to the
 community of landscape planners and provides opportunities for
 systematic or batch applications. To further enhance this, we have
@@ -312,9 +313,9 @@ best contributes to all 10 indicators (i.e. the multifunctional
 portfolio) is dominated by silvopasture and forest. According to Gosling
 et al. (2020), this reveals the potential of agroforestry to serve as a
 compromised solution to fulfill multiple ecological and economic
-functions. Recently, however, the average farm portfolio of the surveyed
-farms was mainly composed of pasture and cropland with only a small
-share of forest (14%). This reveals that not all of the selected
+functions. Recently, however, the observed average farm portfolio of the
+surveyed farms was mainly composed of pasture and cropland with only a
+small share of forest (14%). This reveals that not all of the selected
 objectives currently drive farmer’s land-cover decisions. The
 optimization approach can then be used to dive deeper into the effect of
 different goals on the resulting optimized land-cover composition and
@@ -499,7 +500,8 @@ multifunctional portfolio therefore does not promise immediate economic
 success for the farmers.
 
 <h3>
-<a name="6. Erweiterte Anwendung">4. Sophisticated Application</a>
+<a name="6. Erweiterte Anwendung">4. Batch application and sensitivity
+analysis</a>
 </h3>
 
 ### Batch Analysis: Solving Multiple Uncertainty Values
@@ -571,10 +573,12 @@ the long-term income while providing the worst by far to the general
 preferences. It also generally only provides minor contributions to the
 indicators. Under an uncertainty level of 1, for example, plantation
 provides the worst to the general preferences even if all other
-indicators are considered as worst-possible contributions. This ranking,
-however, changes after uncertainty levels above 1.5. The worst-possible
-contribution of forests then has the worst contribution worst among all
-land-cover types.
+indicators are considered as worst-possible contributions. This ranking
+changes after uncertainty levels above 1.5. At uncertainty level of 1.5,
+the worst-possible contribution of forests to the general preferences
+(![1 - 0.99 \* 2 = -98](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1%20-%200.99%20%2A%202%20%3D%20-98 "1 - 0.99 * 2 = -98"),
+Table 1 in Husmann et al. (n.d.)) is then the worst possible
+contributing indicator among all land-cover types.
 
 ### Selecting Specific Indicator Bundles - Investigating the Indicator’s Sensitivities
 
@@ -890,8 +894,3 @@ Paul, C., Weber, M., Knoke, T. (2017): Agroforestry versus farm mosaic
 systems – Comparing land-use efficiency, economic returns and risks
 under climate change effects. <em>Sci. Total Environ.</em> **587-588**.
 <https://doi.org/10.1016/j.scitotenv.2017.02.037>.
-
-Knoke, T., Paul, C., et al. (2020). Accounting for multiple ecosystem
-services in a simulation of land‐use decisions: Does it reduce tropical
-deforestation?. <em>Global change biology</em> **26(4)**.
-<https://doi.org/10.1111/gcb.15003>
