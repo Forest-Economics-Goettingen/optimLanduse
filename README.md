@@ -267,7 +267,7 @@ init <- initScenario(coefTable = dat,
                      # optimistic contribution of each indicator directly defined
                      # by their average 
                      fixDistance = NA) 
-                     # 3 is the default
+# 3 is the default
 ```
 
 In line with Gosling et al. (2020), we chose the expected value of the
@@ -419,8 +419,8 @@ scenarios*
 
 ``` r
 result_current <- solveScenario(x = init,
-                        lowerBound = c(0.26, 0.59, 0, 0, 0.01, 0.14),
-                        upperBound = c(0.26, 0.59, 0, 0, 0.01, 0.14))
+                                lowerBound = c(0.26, 0.59, 0, 0, 0.01, 0.14),
+                                upperBound = c(0.26, 0.59, 0, 0, 0.01, 0.14))
 
 performance_current <- calcPerformance(result_current)
 
@@ -504,6 +504,62 @@ success for the farmers.
 analysis</a>
 </h3>
 
+### Pay-Off Matrix
+
+``` r
+init_payOff <- initScenario(coefTable = dat, 
+                            uValue = 0,
+                            optimisticRule = "expectation",
+                            fixDistance = NA)
+
+payOffDf <- data.frame(indicator = unique(init_payOff$scenarioTable$indicator))
+
+payOffFun <- function(x){
+  indicator_filtered <- x
+  
+  dat_filtered <- dat[dat$indicator == indicator_filtered,]
+  
+  init_filtered <- initScenario(coefTable = dat_filtered,
+                                uValue = 0,
+                                optimisticRule = "expectation",
+                                fixDistance = NA)
+  
+  result_filtered <- solveScenario(x = init_filtered)
+  
+  result_payOff <- solveScenario(x = init_payOff,
+                          lowerBound = result_filtered$landUse,
+                          upperBound = result_filtered$landUse)
+  
+  performance_payOff <- calcPerformance(x = result_payOff)
+  
+  performance_payOff_min <- performance_payOff$scenarioTable %>% 
+    group_by(indicator) %>% 
+    summarise(min = min(performance))
+  
+  return(round(performance_payOff_min$min, 3))
+}
+
+payOff_Matrix<- cbind(payOffDf,
+                 t(apply(payOffDf, 1, payOffFun)))
+
+names(payOff_Matrix) <- c("Indicators", payOff_Matrix$indicator)
+
+knitr::kable(payOff_Matrix, row.names = F)
+```
+
+| Indicators                | Financial stability | General preferences | Investment costs | Labour demand | Liquidity | Long-term income | Management complexity | Meeting household needs | Protecting soil resources | Protecting water supply |
+|:--------------------------|--------------------:|--------------------:|-----------------:|--------------:|----------:|-----------------:|----------------------:|------------------------:|--------------------------:|------------------------:|
+| Financial stability       |               1.000 |               1.000 |            0.074 |         0.205 |     0.836 |            0.911 |                 0.141 |                   0.721 |                     0.465 |                   0.612 |
+| General preferences       |               1.000 |               1.000 |            0.074 |         0.205 |     0.836 |            0.911 |                 0.141 |                   0.721 |                     0.465 |                   0.612 |
+| Investment costs          |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Labour demand             |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Liquidity                 |               0.614 |               0.913 |            0.000 |         0.167 |     1.000 |            0.928 |                 0.266 |                   0.784 |                     0.000 |                   0.106 |
+| Long-term income          |               0.986 |               0.000 |            0.124 |         0.270 |     0.327 |            1.000 |                 0.242 |                   0.066 |                     0.377 |                   0.536 |
+| Management complexity     |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Meeting household needs   |               0.014 |               0.652 |            0.115 |         0.000 |     0.654 |            0.630 |                 0.078 |                   1.000 |                     0.108 |                   0.000 |
+| Protecting soil resources |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Protecting water supply   |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+
 ### Batch Analysis: Solving Multiple Uncertainty Values
 
 ``` r
@@ -536,7 +592,7 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
         legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 *Fig. 5: Theoretically ideal farm compositions under increasing levels
 of uncertainty.*
@@ -599,7 +655,7 @@ click. Further explanation and instructions are given in the app.
 
 ``` r
 dat_socioeconomic <- dat[!dat$indicator %in% c("Protecting soil resources",
-                                              "Protecting water supply"),]
+                                               "Protecting water supply"),]
 
 init_socioeconomic <- initScenario(dat_socioeconomic,
                                    uValue = 2,
@@ -625,7 +681,7 @@ result_socioeconomic$landUse %>% gather(key = landCoverOption,
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 *Fig. 6: Composition of the optimized farm (based on data of Gosling et
 al. (2020)), including only socio-economic indicators. Each land-cover
@@ -674,7 +730,7 @@ ggplot(performance_socioeconomic$scenarioTable,
            vjust = -1)
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-15-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/unnamed-chunk-17-1.png" style="display: block; margin: auto;" />
 
 *Fig. 7: The performance of each of the socio-economic indicators. The
 colored points are the achieved levels of the indicators of all
@@ -722,7 +778,7 @@ result_ecologic$landUse %>% gather(key = landCoverOption, value = landCoverShare
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 *Fig. 8: Composition of the optimized farm (based on data of Gosling et
 al. (2020)), including only ecological indicators. Each land-cover
@@ -767,7 +823,7 @@ result_short$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1
   guides(fill = guide_legend(title = ""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 *Fig. 9: Composition of the optimized farm (based on data of Gosling et
 al. (2020)), including the prospective relevant indicators of the
@@ -852,7 +908,7 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
         legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 *Fig. 10: Theoretically ideal farm compositions using the fixDistance
 argument and increasing levels of uncertainty.*

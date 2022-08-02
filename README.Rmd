@@ -105,7 +105,7 @@ Enriching agricultural farms with agroforestry has been promoted as a means to e
 
 ### Loading Required Packages and Importing the Data
 
-```{r, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4}
+```{r, message=FALSE, warning=FALSE}
 
 library(optimLanduse)
 library(readxl)
@@ -131,7 +131,7 @@ init <- initScenario(coefTable = dat,
                      # optimistic contribution of each indicator directly defined
                      # by their average 
                      fixDistance = NA) 
-                     # 3 is the default
+# 3 is the default
 ```
 
 In line with Gosling et al. (2020), we chose the expected value of the indicators as optimistic outcomes *(optimisticRule = "expectation")* and the same uncertainty level for the calculation of the averaged distances and the uncertainty space (*fixDistance = NA*, see Equations 4 and 9 in Husmann et al. (n.d.) for more details).
@@ -225,8 +225,8 @@ knitr::kable(performanceExample, row.names = F)
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 result_current <- solveScenario(x = init,
-                        lowerBound = c(0.26, 0.59, 0, 0, 0.01, 0.14),
-                        upperBound = c(0.26, 0.59, 0, 0, 0.01, 0.14))
+                                lowerBound = c(0.26, 0.59, 0, 0, 0.01, 0.14),
+                                upperBound = c(0.26, 0.59, 0, 0, 0.01, 0.14))
 
 performance_current <- calcPerformance(result_current)
 
@@ -270,6 +270,57 @@ Setting the arguments for the lower and upper bounds exactly to the currently ob
 Amounting to 0.387, the guaranteed performance of the multifunctional portfolio is considerably higher than the guaranteed performance of the current land-cover composition (0.089). Each of the indicators considered is thus fulfilled by at least 38.7% compared to its individual achievable level in the optimized portfolio. The comparison of the performances of the currently observed land-cover composition (Fig. 4) with the performances of the multifunctional portfolio (Fig. 3) reveals that, for example, the performance of the financial stability is significantly higher in the optimized portfolio. The performance of meeting households needs and liquidity, for example, decreases significantly. The price to be paid for the best-possible compromise is thus a fundamentally lower performance of both indicators that approximate the immediate economic success. The generally desirable multifunctional portfolio therefore does not promise immediate economic success for the farmers.
 
 <h3><a name="6. Erweiterte Anwendung">4. Batch application and sensitivity analysis</a></h3>
+
+
+### Pay-Off Matrix
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+
+init_payOff <- initScenario(coefTable = dat, 
+                            uValue = 0,
+                            optimisticRule = "expectation",
+                            fixDistance = NA)
+
+payOffDf <- data.frame(indicator = unique(init_payOff$scenarioTable$indicator))
+
+payOffFun <- function(x){
+  indicator_filtered <- x
+  
+  dat_filtered <- dat[dat$indicator == indicator_filtered,]
+  
+  init_filtered <- initScenario(coefTable = dat_filtered,
+                                uValue = 0,
+                                optimisticRule = "expectation",
+                                fixDistance = NA)
+  
+  result_filtered <- solveScenario(x = init_filtered)
+  
+  result_payOff <- solveScenario(x = init_payOff,
+                          lowerBound = result_filtered$landUse,
+                          upperBound = result_filtered$landUse)
+  
+  performance_payOff <- calcPerformance(x = result_payOff)
+  
+  performance_payOff_min <- performance_payOff$scenarioTable %>% 
+    group_by(indicator) %>% 
+    summarise(min = min(performance))
+  
+  return(round(performance_payOff_min$min, 3))
+}
+
+payOff_Matrix<- cbind(payOffDf,
+                 t(apply(payOffDf, 1, payOffFun)))
+
+names(payOff_Matrix) <- c("Indicators", payOff_Matrix$indicator)
+
+knitr::kable(payOff_Matrix, row.names = F)
+
+```
+
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+knitr::kable(payOff_Matrix, row.names = F)
+```
 
 ### Batch Analysis: Solving Multiple Uncertainty Values
 
@@ -315,7 +366,7 @@ The sensitivity of the land-cover compositions towards indicators or groups of i
 
 ```{r, fig.height = 3, fig.width = 4, warning=FALSE}
 dat_socioeconomic <- dat[!dat$indicator %in% c("Protecting soil resources",
-                                              "Protecting water supply"),]
+                                               "Protecting water supply"),]
 
 init_socioeconomic <- initScenario(dat_socioeconomic,
                                    uValue = 2,
