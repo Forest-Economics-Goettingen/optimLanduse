@@ -9,6 +9,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## optimLanduse
 
+[![](https://www.r-pkg.org/badges/version/optimLanduse)](https://cran.r-project.org/package=optimLanduse)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/optimLanduse?color=green)](https://cran.r-project.org/package=optimLanduse)
+[![](http://cranlogs.r-pkg.org/badges/last-month/optimLanduse?color=green)](https://cran.r-project.org/package=optimLanduse)
+[![](https://img.shields.io/github/last-commit/Forest-Economics-Goettingen/optimLanduse.svg)](https://github.com/Forest-Economics-Goettingen/optimLanduse/commits/master)
+[![](https://img.shields.io/github/languages/code-size/Forest-Economics-Goettingen/optimLanduse.svg)](https://github.com/Forest-Economics-Goettingen/optimLanduse)
+
 <h3><a name="menu"></a></h3>
 
 <ul>
