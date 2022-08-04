@@ -1003,20 +1003,25 @@ Robust Land-Use Optimization. R package version 1.1.0.
 <a name="8. Literatur">6. Literature</a>
 </h3>
 
-Gosling, E., Reith, E., Knoke T., Paul, C. (2020): A goal programming
-approach to evaluate agroforestry systems in Eastern Panama<em>Journal
-of Environmental Management</em> **261**.
+Gosling, E., Reith, E., Knoke T., Paul, C. (2020). A goal programming
+approach to evaluate agroforestry systems in Eastern Panama. <em>Journal
+of Environmental Management</em>, 261:110248.
 <https://doi.org/10.1016/j.jenvman.2020.110248>
 
-Husmann, K.; von Groß, V.; Bödeker, K.; Fuchs, J.M.; Paul, C.; Knoke, T.
-(no date): *optimLanduse*: A Package for Multiobjective Land-cover
-Composition Optimization under Uncertainty. In: *Methods Ecol Evol.*
-Under revision.
+Husmann, K., von Groß, V., Bödeker, K., Fuchs, J.M., Paul, C., Knoke, T.
+(no date). *optimLanduse*: A Package for Multiobjective Land-cover
+Composition Optimization under Uncertainty. *Methods Ecol Evol.* Under
+revision.
 
-Knoke, T., Paul, C., Hildebrandt, P. et al. (2016): Compositional
+Knoke, T., Paul, C., Hildebrandt, P. et al. (2016). Compositional
 diversity of rehabilitated tropical lands supports multiple ecosystem
-services and buffers uncertainties. <em>Nat Commun</EM> **7**, 11877.
+services and buffers uncertainties. <em>Nat Commun</EM> 7, 11877.
 <https://doi.org/10.1038/ncomms11877>
+
+Knoke, T., Paul, C., Rammig, A., et al. (2020): ccounting for multiple
+ecosystem services in a simulation of land-use decisions: Does it reduce
+tropical deforestation? <em>Global Change Biology</em>, 26(4),
+2403-2420. <https://doi.org/10.1111/gcb.15003>
 
 Paul, C., Weber, M., Knoke, T. (2017): Agroforestry versus farm mosaic
 systems – Comparing land-use efficiency, economic returns and risks
