@@ -846,7 +846,7 @@ payOffDf <- data.frame(indicator = unique(init_payOff$scenarioTable$indicator))
 # Define the function for apply
 payOffFun <- function(x, dat) {
   
-  ## (1) Optimize the land-cover composition considering the indicator x only ##
+  ## (1) Optimize the land-cover composition for the indicator x only ##
   
   # Filter for the indicator x
   indicator_filtered <- x
@@ -861,8 +861,8 @@ payOffFun <- function(x, dat) {
   
   result_filtered <- solveScenario(x = init_filtered)
   
-  ## (2) Optimize the land-cover composition considering all indicators, limited ##
-  ##     to the land-cover composition calculkated in step (1)                   ##
+  ## (2) Optimize the land-cover composition for all indicators, limited ##
+  ##     to the land-cover composition calculated in step (1)                   ##
   
   result_payOff <- solveScenario(x = init_payOff,
                           lowerBound = result_filtered$landUse,
