@@ -472,8 +472,8 @@ the currently observed land-cover composition. The colored points are
 the achieved levels of the indicators of all scenarios s. The dotted,
 horizontal red line illustrates the guaranteed performance*
 ![(1-\beta)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%281-%5Cbeta%29 "(1-\beta)")*,
-thus the robust feasible solution of the program (Equation 1 in (Husmann
-et al, n.d.)).*
+thus the robust feasible solution of the program (Equation 1 in Husmann
+et al. (n.d.)).*
 
 Setting the arguments for the lower and upper bounds exactly to the
 currently observed land-cover composition forces a solution that
@@ -510,62 +510,6 @@ success for the farmers.
 analysis</a>
 </h3>
 
-### Pay-Off Matrix
-
-``` r
-init_payOff <- initScenario(coefTable = dat, 
-                            uValue = 0,
-                            optimisticRule = "expectation",
-                            fixDistance = NA)
-
-payOffDf <- data.frame(indicator = unique(init_payOff$scenarioTable$indicator))
-
-payOffFun <- function(x){
-  indicator_filtered <- x
-  
-  dat_filtered <- dat[dat$indicator == indicator_filtered,]
-  
-  init_filtered <- initScenario(coefTable = dat_filtered,
-                                uValue = 0,
-                                optimisticRule = "expectation",
-                                fixDistance = NA)
-  
-  result_filtered <- solveScenario(x = init_filtered)
-  
-  result_payOff <- solveScenario(x = init_payOff,
-                          lowerBound = result_filtered$landUse,
-                          upperBound = result_filtered$landUse)
-  
-  performance_payOff <- calcPerformance(x = result_payOff)
-  
-  performance_payOff_min <- performance_payOff$scenarioTable %>% 
-    group_by(indicator) %>% 
-    summarise(min = min(performance))
-  
-  return(round(performance_payOff_min$min, 3))
-}
-
-payOff_Matrix<- cbind(payOffDf,
-                 t(apply(payOffDf, 1, payOffFun)))
-
-names(payOff_Matrix) <- c("Indicators", payOff_Matrix$indicator)
-
-knitr::kable(payOff_Matrix, row.names = F)
-```
-
-| Indicators                | Financial stability | General preferences | Investment costs | Labour demand | Liquidity | Long-term income | Management complexity | Meeting household needs | Protecting soil resources | Protecting water supply |
-|:--------------------------|--------------------:|--------------------:|-----------------:|--------------:|----------:|-----------------:|----------------------:|------------------------:|--------------------------:|------------------------:|
-| Financial stability       |               1.000 |               1.000 |            0.074 |         0.205 |     0.836 |            0.911 |                 0.141 |                   0.721 |                     0.465 |                   0.612 |
-| General preferences       |               1.000 |               1.000 |            0.074 |         0.205 |     0.836 |            0.911 |                 0.141 |                   0.721 |                     0.465 |                   0.612 |
-| Investment costs          |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-| Labour demand             |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-| Liquidity                 |               0.614 |               0.913 |            0.000 |         0.167 |     1.000 |            0.928 |                 0.266 |                   0.784 |                     0.000 |                   0.106 |
-| Long-term income          |               0.986 |               0.000 |            0.124 |         0.270 |     0.327 |            1.000 |                 0.242 |                   0.066 |                     0.377 |                   0.536 |
-| Management complexity     |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-| Meeting household needs   |               0.014 |               0.652 |            0.115 |         0.000 |     0.654 |            0.630 |                 0.078 |                   1.000 |                     0.108 |                   0.000 |
-| Protecting soil resources |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-| Protecting water supply   |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-
 ### Batch Analysis: Solving Multiple Uncertainty Values
 
 ``` r
@@ -598,7 +542,7 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
         legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 *Fig. 5: Theoretically ideal farm compositions under increasing levels
 of uncertainty.*
@@ -638,8 +582,8 @@ provides the worst to the general preferences even if all other
 indicators are considered as worst-possible contributions. This ranking
 changes after uncertainty levels above 1.5. At uncertainty level of 1.5,
 the worst-possible contribution of forests to the general preferences
-(![1 - 0.99 \* 2 = -98](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1%20-%200.99%20%2A%202%20%3D%20-98 "1 - 0.99 * 2 = -98"),
-Table 1 in Husmann et al. (n.d.)) is then the worst possible
+(![1 - 0.99 \* 2 = -0.98](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1%20-%200.99%20%2A%202%20%3D%20-0.98 "1 - 0.99 * 2 = -0.98"),
+see Table 1 in Husmann et al. (n.d.)) is then the worst possible
 contributing indicator among all land-cover types.
 
 ### Selecting Specific Indicator Bundles - Investigating the Indicator’s Sensitivities
@@ -687,7 +631,7 @@ result_socioeconomic$landUse %>% gather(key = landCoverOption,
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 *Fig. 6: Composition of the optimized farm (based on data of Gosling et
 al. (2020)), including only socio-economic indicators. Each land-cover
@@ -736,7 +680,7 @@ ggplot(performance_socioeconomic$scenarioTable,
            vjust = -1)
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-17-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/unnamed-chunk-15-1.png" style="display: block; margin: auto;" />
 
 *Fig. 7: The performance of each of the socio-economic indicators. The
 colored points are the achieved levels of the indicators of all
@@ -784,7 +728,7 @@ result_ecologic$landUse %>% gather(key = landCoverOption, value = landCoverShare
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 *Fig. 8: Composition of the optimized farm (based on data of Gosling et
 al. (2020)), including only ecological indicators. Each land-cover
@@ -829,7 +773,7 @@ result_short$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1
   guides(fill = guide_legend(title = ""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 *Fig. 9: Composition of the optimized farm (based on data of Gosling et
 al. (2020)), including the prospective relevant indicators of the
@@ -853,6 +797,128 @@ stability, pasture outperforms silvopasture in the immediate return
 scenario. Policies or development plans may consider these indicators
 key elements when promoting landscape development toward multifunctional
 landscapes.
+
+### Pay-Off Matrix
+
+A pay-off matrix provides information about the influence of single
+indicators on the sensitivity of the results (see e.g. Aldea et al.,
+2014, Table 1; Ezquerro et al., 2019, Table 1; Knoke et al., 2020,
+Supporting Information Table S6). The matrix shows the performances of
+all indicators when only one indicator is considered in the land-cover
+optimization and therewith reveals to which degree the indicators are
+antagonistic. In contrast to Aldea et al. (2014), Ezquerro et al. (2019)
+and Knoke et al. (2020), we here calculate the relative degree of
+fulfillment of the indicators and not their absolute values. The
+relative degree of fulfillment can easily be taken from the optimLanduse
+object, so that no further calculation are required to obtain a pay-off
+matrix.
+
+In the following code, a pay-off matrix is calculated using the *apply*
+function. For this, *payOffFun* encloses all calculation steps.
+*payOffFun* expects the name of the indicator that is to be considered
+in the optimization *x* and the data in the optimLanduse format *dat*.
+In *payOffFun*, firstly (1), the land-cover composition is optimized
+with respect to the one indicatior definied in *x* only. The resulting
+land-cover configuration is then (2) passed as lower and bounds to the
+land-cover optimization that considers all indicators. Accordingly, the
+solution of the second optimization (2) is limited to the result of the
+optimization taking into account the indicator *x* only. Aim of the
+second optimization is to calculate the performances of all indicators
+when optimized only with respect to indicator *x* only. From the set of
+the so calculated performances for each indicator, only the minimum
+performance is taken (3) and saved into the pay-off matrix. To sum up,
+each row of the pay-off matrix contains the minimum performances of all
+indicators when the land-cover configuration is optimized with regard to
+one indicator only. The indicators considered for optimization are
+located on the main diagonal of the resulting pay-off matrix.
+
+``` r
+# Initialize the optimization that considers all indicators outside of the
+# apply function saves calculation time
+init_payOff <- initScenario(coefTable = dat, 
+                            uValue = 0,
+                            optimisticRule = "expectation",
+                            fixDistance = NA)
+
+# Initialize an empty pay-off matrix
+payOffDf <- data.frame(indicator = unique(init_payOff$scenarioTable$indicator))
+
+# Define the function for apply
+payOffFun <- function(x, dat) {
+  
+  ## (1) Optimize the land-cover composition considering the indicator x only ##
+  
+  # Filter for the indicator x
+  indicator_filtered <- x
+  dat_filtered <- dat[dat$indicator == indicator_filtered, ]
+  
+  # Conduct optimization considering the indicator x only
+  
+  init_filtered <- initScenario(coefTable = dat_filtered,
+                                uValue = 0,
+                                optimisticRule = "expectation",
+                                fixDistance = NA)
+  
+  result_filtered <- solveScenario(x = init_filtered)
+  
+  ## (2) Optimize the land-cover composition considering all indicators, limited ##
+  ##     to the land-cover composition calculkated in step (1)                   ##
+  
+  result_payOff <- solveScenario(x = init_payOff,
+                          lowerBound = result_filtered$landUse,
+                          upperBound = result_filtered$landUse)
+  
+  performance_payOff <- calcPerformance(x = result_payOff)
+  
+  ## (3) Taking the minimum performances of each indicator ##
+  
+  performance_payOff_min <- performance_payOff$scenarioTable %>% 
+    group_by(indicator) %>% 
+    summarise(min = min(performance))
+  
+  return(round(performance_payOff_min$min, 3))
+}
+
+# Apply the calculation of the pay-off matrix
+payOff_Matrix<- cbind(payOffDf,
+                 t(apply(payOffDf, 1, payOffFun, dat = dat)))
+
+names(payOff_Matrix) <- c("Indicators", payOff_Matrix$indicator)
+
+knitr::kable(payOff_Matrix, row.names = F)
+```
+
+| Indicators                | Financial stability | General preferences | Investment costs | Labour demand | Liquidity | Long-term income | Management complexity | Meeting household needs | Protecting soil resources | Protecting water supply |
+|:--------------------------|--------------------:|--------------------:|-----------------:|--------------:|----------:|-----------------:|----------------------:|------------------------:|--------------------------:|------------------------:|
+| Financial stability       |               1.000 |               1.000 |            0.074 |         0.205 |     0.836 |            0.911 |                 0.141 |                   0.721 |                     0.465 |                   0.612 |
+| General preferences       |               1.000 |               1.000 |            0.074 |         0.205 |     0.836 |            0.911 |                 0.141 |                   0.721 |                     0.465 |                   0.612 |
+| Investment costs          |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Labour demand             |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Liquidity                 |               0.614 |               0.913 |            0.000 |         0.167 |     1.000 |            0.928 |                 0.266 |                   0.784 |                     0.000 |                   0.106 |
+| Long-term income          |               0.986 |               0.000 |            0.124 |         0.270 |     0.327 |            1.000 |                 0.242 |                   0.066 |                     0.377 |                   0.536 |
+| Management complexity     |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Meeting household needs   |               0.014 |               0.652 |            0.115 |         0.000 |     0.654 |            0.630 |                 0.078 |                   1.000 |                     0.108 |                   0.000 |
+| Protecting soil resources |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Protecting water supply   |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+
+*Table 3: Performances of all indicators when optimized for single
+indicators only (pay-off matrix). The indicators considered for
+optimization are located on the main diagonal. The other entries in the
+rows contain the performances of the respective not-optimized
+indicators.*
+
+It can be followed from the pay-off matrix (Table 3), that e.g. the
+general preferences are fully fulfilled when optimized considering the
+financial stability only (row 1) and vice-versa (row 2). Also the
+long-term income and the liquidity are fulfilled to high degrees. In
+contrast to that, the requirements of the farmers regarding investment
+costs are fulfilled poorly (0.074).
+
+When optimized with respect to the water supply protection only (row
+10), the indicators most relevant for the farmers (meeting household
+needs and Liquidity, Fig. 9) perform very poorly (0.0). So that the from
+societal perspective desirable water supply function is clearly
+antagonistic to the farmer’s requirements.
 
 ### The use of fixDistance
 

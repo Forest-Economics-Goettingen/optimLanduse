@@ -269,7 +269,7 @@ ggplot(performance_current$scenarioTable,
            vjust = -1)
 ```
 
-*Fig. 4: The performance of each of the 10 indicators for the result of the currently observed land-cover composition. The colored points are the achieved levels of the indicators of all scenarios s. The dotted, horizontal red line illustrates the guaranteed performance* $(1-\beta)$*, thus the robust feasible solution of the program (Equation 1 in (Husmann et al, n.d.)).*
+*Fig. 4: The performance of each of the 10 indicators for the result of the currently observed land-cover composition. The colored points are the achieved levels of the indicators of all scenarios s. The dotted, horizontal red line illustrates the guaranteed performance* $(1-\beta)$*, thus the robust feasible solution of the program (Equation 1 in Husmann et al. (n.d.)).*
 
 Setting the arguments for the lower and upper bounds exactly to the currently observed land-cover composition forces a solution that corresponds to the current land-cover composition (Fig. 4). It allows for the comparison and evaluation the differences of the optimized land-cover composition with the currently observed composition. Comparing e.g. the guaranteed performances $1-\beta$ provides an objective measure of how an optimization enhances the achievements of the overall performance. A deeper look at the performances of the indicators reveals which indicators particularly benefit from optimization. Due to the compromise nature of the approach, indicators can also perfom worse in the optimized portfolio when compared to the current land-cover composition.
 
@@ -278,55 +278,7 @@ Amounting to 0.387, the guaranteed performance of the multifunctional portfolio 
 <h3><a name="6. Erweiterte Anwendung">4. Batch application and sensitivity analysis</a></h3>
 
 
-### Pay-Off Matrix
 
-```{r, message=FALSE, warning=FALSE, results='hide'}
-
-init_payOff <- initScenario(coefTable = dat, 
-                            uValue = 0,
-                            optimisticRule = "expectation",
-                            fixDistance = NA)
-
-payOffDf <- data.frame(indicator = unique(init_payOff$scenarioTable$indicator))
-
-payOffFun <- function(x){
-  indicator_filtered <- x
-  
-  dat_filtered <- dat[dat$indicator == indicator_filtered,]
-  
-  init_filtered <- initScenario(coefTable = dat_filtered,
-                                uValue = 0,
-                                optimisticRule = "expectation",
-                                fixDistance = NA)
-  
-  result_filtered <- solveScenario(x = init_filtered)
-  
-  result_payOff <- solveScenario(x = init_payOff,
-                          lowerBound = result_filtered$landUse,
-                          upperBound = result_filtered$landUse)
-  
-  performance_payOff <- calcPerformance(x = result_payOff)
-  
-  performance_payOff_min <- performance_payOff$scenarioTable %>% 
-    group_by(indicator) %>% 
-    summarise(min = min(performance))
-  
-  return(round(performance_payOff_min$min, 3))
-}
-
-payOff_Matrix<- cbind(payOffDf,
-                 t(apply(payOffDf, 1, payOffFun)))
-
-names(payOff_Matrix) <- c("Indicators", payOff_Matrix$indicator)
-
-knitr::kable(payOff_Matrix, row.names = F)
-
-```
-
-
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
-knitr::kable(payOff_Matrix, row.names = F)
-```
 
 ### Batch Analysis: Solving Multiple Uncertainty Values
 
@@ -364,7 +316,7 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
 
 Solving the portfolio (Fig. 5) under increasing assumptions for the uncertainty levels (uValue, respectively $f_u$ in Equation 4 (Husmann et al., n.d.)) provides the sensitivity of the land-cover compositions to an increasing risk aversion of the farmers. Fig. 5 corresponds to Fig. 3 in Gosling et al. (2020). The higher the uncertainty level, the higher the uncertainty spaces of the indicators. Here, the composition of land-cover alternatives is relatively stable across different uncertainty levels (Fig. 5). Comparing portfolios of uValue 0 with uValue 3, the share of forest decreases slightly from 41.2% to 34.3% and silvopasture from 45.9% to 44.9%. The share of crops decreases from 12.9% to 1%. At the same time, the shares of pasture increased from 0% to 9.6% and that of plantation from 0% to 10.2%.
 
-Alley cropping does not appear in any portfolio at any uncertainty level. It does not, on average, contribute best to any indicator. At least one other land-cover type contributes better each indicator. It also contributes the worst (highest) to management complexity. This overall negative contribution does not change with increasing uncertainty levels. By trend, higher uncertainty levels lead to more diverse portfolios. The uncertainty spaces of all indicators increase with increasing uncertainty levels. These broadened individual uncertainty spaces then lead to a broader state space with a higher number of possible candidates for lowest-performing scenarios (i.e., scenarios that can under lower uncertainty not become part of the solution, as their distances could not be the maximum distance of any land-cover composition). Plantation, for example, is not part of the portfolio till an uncertainty level of 1.5. It only provides the best to the long-term income while providing the worst by far to the general preferences. It also generally only provides minor contributions to the indicators. Under an uncertainty level of 1, for example, plantation provides the worst to the general preferences even if all other indicators are considered as worst-possible contributions. This ranking changes after uncertainty levels above 1.5. At uncertainty level of 1.5, the worst-possible contribution of forests to the general preferences ($1 - 0.99 * 2 = -98$, Table 1 in Husmann et al. (n.d.)) is then the worst possible contributing indicator among all land-cover types.
+Alley cropping does not appear in any portfolio at any uncertainty level. It does not, on average, contribute best to any indicator. At least one other land-cover type contributes better each indicator. It also contributes the worst (highest) to management complexity. This overall negative contribution does not change with increasing uncertainty levels. By trend, higher uncertainty levels lead to more diverse portfolios. The uncertainty spaces of all indicators increase with increasing uncertainty levels. These broadened individual uncertainty spaces then lead to a broader state space with a higher number of possible candidates for lowest-performing scenarios (i.e., scenarios that can under lower uncertainty not become part of the solution, as their distances could not be the maximum distance of any land-cover composition). Plantation, for example, is not part of the portfolio till an uncertainty level of 1.5. It only provides the best to the long-term income while providing the worst by far to the general preferences. It also generally only provides minor contributions to the indicators. Under an uncertainty level of 1, for example, plantation provides the worst to the general preferences even if all other indicators are considered as worst-possible contributions. This ranking changes after uncertainty levels above 1.5. At uncertainty level of 1.5, the worst-possible contribution of forests to the general preferences ($1 - 0.99 * 2 = -0.98$, see Table 1 in Husmann et al. (n.d.)) is then the worst possible contributing indicator among all land-cover types.
 
 ### Selecting Specific Indicator Bundles - Investigating the Indicator's Sensitivities
 
@@ -505,6 +457,81 @@ result_short$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1
 *Fig. 9: Composition of the optimized farm (based on data of Gosling et al. (2020)), including the prospective relevant indicators of the farmers only. Each land-cover option is shown in an allocated share (%).*
 
 The third example is composed of a bundle of indicators that prospectively reflect the farmer's needs and perceptions (Fig. 9). Corresponding to Fig. 5 of Gosling et al. (2020), this scenario only consists of indicators that approximate immediate economic success. Indeed, the land-cover composition of this portfolio best reflects the portfolio observed in Eastern Panama. Hence, these indicators best reflect the farmers' goals and perceptions in Eastern Panama. The difference between this portfolio and the desired multifunctional portfolio (Fig. 2) highlights the requirements a land-cover alternative must fulfill to meet the farmers' requirements and goals. The silvopasture, as defined in Gosling et al. (2020), may not serve the requirements of the farmers sufficiently. Since farmers rate liquidity and meeting household needs higher than long-term profit and economic stability, pasture outperforms silvopasture in the immediate return scenario. Policies or development plans may consider these indicators key elements when promoting landscape development toward multifunctional landscapes.
+
+### Pay-Off Matrix
+
+A pay-off matrix provides information about the influence of single indicators on the sensitivity of the results (see e.g. Aldea et al., 2014, Table 1; Ezquerro et al., 2019, Table 1; Knoke et al., 2020, Supporting Information Table S6). The matrix shows the performances of all indicators when only one indicator is considered in the land-cover optimization and therewith reveals to which degree the indicators are antagonistic. In contrast to Aldea et al. (2014), Ezquerro et al. (2019) and Knoke et al. (2020), we here calculate the relative degree of fulfillment of the indicators and not their absolute values. The relative degree of fulfillment can easily be taken from the optimLanduse object, so that no further calculation are required to obtain a pay-off matrix.
+
+In the following code, a pay-off matrix is calculated using the *apply* function. For this, *payOffFun* encloses all calculation steps. *payOffFun* expects the name of the indicator that is to be considered in the optimization *x* and the data in the optimLanduse format *dat*. In *payOffFun*, firstly (1), the land-cover composition is optimized with respect to the one indicatior definied in *x* only. The resulting land-cover configuration is then (2) passed as lower and bounds to the land-cover optimization that considers all indicators. Accordingly, the solution of the second optimization (2) is limited to the result of the optimization taking into account the indicator *x* only. Aim of the second optimization is to calculate the performances of all indicators when optimized only with respect to indicator *x* only. From the set of the so calculated performances for each indicator, only the minimum performance is taken (3) and saved into the pay-off matrix. To sum up, each row of the pay-off matrix contains the minimum performances of all indicators when the land-cover configuration is optimized with regard to one indicator only. The indicators considered for optimization are located on the main diagonal of the resulting pay-off matrix.
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+
+# Initialize the optimization that considers all indicators outside of the
+# apply function saves calculation time
+init_payOff <- initScenario(coefTable = dat, 
+                            uValue = 0,
+                            optimisticRule = "expectation",
+                            fixDistance = NA)
+
+# Initialize an empty pay-off matrix
+payOffDf <- data.frame(indicator = unique(init_payOff$scenarioTable$indicator))
+
+# Define the function for apply
+payOffFun <- function(x, dat) {
+  
+  ## (1) Optimize the land-cover composition considering the indicator x only ##
+  
+  # Filter for the indicator x
+  indicator_filtered <- x
+  dat_filtered <- dat[dat$indicator == indicator_filtered, ]
+  
+  # Conduct optimization considering the indicator x only
+  
+  init_filtered <- initScenario(coefTable = dat_filtered,
+                                uValue = 0,
+                                optimisticRule = "expectation",
+                                fixDistance = NA)
+  
+  result_filtered <- solveScenario(x = init_filtered)
+  
+  ## (2) Optimize the land-cover composition considering all indicators, limited ##
+  ##     to the land-cover composition calculkated in step (1)                   ##
+  
+  result_payOff <- solveScenario(x = init_payOff,
+                          lowerBound = result_filtered$landUse,
+                          upperBound = result_filtered$landUse)
+  
+  performance_payOff <- calcPerformance(x = result_payOff)
+  
+  ## (3) Taking the minimum performances of each indicator ##
+  
+  performance_payOff_min <- performance_payOff$scenarioTable %>% 
+    group_by(indicator) %>% 
+    summarise(min = min(performance))
+  
+  return(round(performance_payOff_min$min, 3))
+}
+
+# Apply the calculation of the pay-off matrix
+payOff_Matrix<- cbind(payOffDf,
+                 t(apply(payOffDf, 1, payOffFun, dat = dat)))
+
+names(payOff_Matrix) <- c("Indicators", payOff_Matrix$indicator)
+
+knitr::kable(payOff_Matrix, row.names = F)
+
+```
+
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+knitr::kable(payOff_Matrix, row.names = F)
+```
+
+*Table 3: Performances of all indicators when optimized for single indicators only (pay-off matrix). The indicators considered for optimization are located on the main diagonal. The other entries in the rows contain the performances of the respective not-optimized indicators.*
+
+It can be followed from the pay-off matrix (Table 3), that e.g. the general preferences are fully fulfilled when optimized considering the financial stability only (row 1) and vice-versa (row 2). Also the long-term income and the liquidity are fulfilled to high degrees. In contrast to that, the requirements of the farmers regarding investment costs are fulfilled poorly (0.074).
+
+When optimized with respect to the water supply protection only (row 10), the indicators most relevant for the farmers (meeting household needs and Liquidity, Fig. 9) perform very poorly (0.0). So that the from societal perspective desirable water supply function is clearly antagonistic to the farmer's requirements.
 
 ### The use of fixDistance
 
