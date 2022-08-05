@@ -14,6 +14,9 @@
 <li>
 <a href="#1. Einleitung">1. Introduction</a>
 </li>
+
+[Intro2BlkaBla](#intro)
+
 <li>
 <a href="#3. Input und Output">2. Detailed Description of the Functions’
 In- and Outputs</a>
@@ -31,10 +34,15 @@ analysis</a>
 <li>
 <a href="#8. Literatur">6. Literature</a>
 </li>
+
+[Literature 2 asdf](#lit)
+
 </ul>
 <h3>
 <a name="1. Einleitung">1. Introduction</a>
 </h3>
+
+# Introduction 2
 
 When managing ecosystems, the question arises as to how to
 simultaneously combat biodiversity loss and maintain ecosystem
@@ -1002,6 +1010,8 @@ Robust Land-Use Optimization. R package version 1.1.0.
 <h3>
 <a name="8. Literatur">6. Literature</a>
 </h3>
+
+# Literature 2
 
 Gosling, E., Reith, E., Knoke T., Paul, C. (2020). A goal programming
 approach to evaluate agroforestry systems in Eastern Panama. <em>Journal
