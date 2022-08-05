@@ -45,8 +45,6 @@ optimLanduse
 [![](https://img.shields.io/github/last-commit/Forest-Economics-Goettingen/optimLanduse.svg)](https://github.com/Forest-Economics-Goettingen/optimLanduse/commits/master)
 [![](https://img.shields.io/github/languages/code-size/Forest-Economics-Goettingen/optimLanduse.svg)](https://github.com/Forest-Economics-Goettingen/optimLanduse)
 
-self made: [Introduction](#1-introduction) [Literature](#6-literature)
-
 # 1 Introduction
 
 When managing ecosystems, the question arises as to how to

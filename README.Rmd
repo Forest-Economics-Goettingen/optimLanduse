@@ -16,10 +16,6 @@ knitr::opts_chunk$set(echo = TRUE)
 [![](https://img.shields.io/github/last-commit/Forest-Economics-Goettingen/optimLanduse.svg)](https://github.com/Forest-Economics-Goettingen/optimLanduse/commits/master)
 [![](https://img.shields.io/github/languages/code-size/Forest-Economics-Goettingen/optimLanduse.svg)](https://github.com/Forest-Economics-Goettingen/optimLanduse)
 
-self made:
-[Introduction]
-[Literature]
-
 # Introduction
 
 When managing ecosystems, the question arises as to how to simultaneously combat biodiversity loss and maintain ecosystem functioning while improving human welfare. Designing multifunctional landscapes means deciding upon the composition and configuration of land-cover types, given that landscape patterns drive the landscape\`s ecological value and its ability to satisfy societal demands. Land-cover allocation models, particularly optimization approaches, have proven helpful in revealing trade-offs between multiple objectives and services provided by different land-cover compositions.
