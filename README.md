@@ -65,14 +65,14 @@ multiple functions and services a landscape can provide, as well as
 tools for a deeper understanding and visualization of the contributions
 of the distinct indicators. The method has been developed and applied
 previously in a couple of studies, with some examples to be found in the
-<a href="#8. Literatur">literature</a> section. The methodological
-background of the approach can e.g., be found in Knoke et al. (2016) and
-Husmann et al. (n.d.). We here refer to the nomenclature of Husmann et
-al. (n.d.). The package opens the approach of Knoke et al. (2016) to the
-community of landscape planners and provides opportunities for
-systematic or batch applications. To further enhance this, we have
-designed a shiny dashboard for the package to get a brief idea of its
-functionalities and to faciliate the usage of the package, see
+[Literature](#6-literature) section. The methodological background of
+the approach can e.g., be found in Knoke et al. (2016) and Husmann et
+al. (n.d.). We here refer to the nomenclature of Husmann et al. (n.d.).
+The package opens the approach of Knoke et al. (2016) to the community
+of landscape planners and provides opportunities for systematic or batch
+applications. To further enhance this, we have designed a shiny
+dashboard for the package to get a brief idea of its functionalities and
+to faciliate the usage of the package, see
 <http://134.76.17.50/optimlanduse_shiny/>. The current package version
 optimizes land-cover compositions, but aspects of configuration may be
 added in the future.
@@ -265,9 +265,8 @@ dat <- read_excel(path)
 ```
 
 *dat* is in the required format. Refer to the help of the
-*initScenario()* function or to the
-<a href="#3. Input und Output">detailed description of the functions’
-in- and outputs</a> chapter for more details.
+*initScenario()* function or to the [Initialization and
+Input](#21-initialization-and-input) chapter for more details.
 
 **Initializing an *optimLanduse* Object**
 
@@ -608,6 +607,8 @@ of *optimLanduse* (<http://134.76.17.50/optimlanduse_shiny/>) provides
 straightforward functionality to define sets of indicators with a single
 click. Further explanation and instructions are given in the app.
 
+### 4.2.1 Socio-economic
+
 ``` r
 dat_socioeconomic <- dat[!dat$indicator %in% c("Protecting soil resources",
                                                "Protecting water supply"),]
@@ -641,8 +642,6 @@ result_socioeconomic$landUse %>% gather(key = landCoverOption,
 *Fig. 6: Composition of the optimized farm (based on data of Gosling et
 al. (2020)), including only socio-economic indicators. Each land-cover
 option is shown in an allocated share (%).*
-
-### 4.2.1 Socio-economic
 
 The first example considers socio-economic indicators only (Fig. 6; see
 also Fig. 5 of Gosling et al. (2020)). The result corresponds to the
@@ -708,6 +707,8 @@ socio-economic portfolio also does not perfectly reflect the currently
 observed land-cover composition. This means that further indicators
 appear to be relevant for the actual farmers’ decisions.
 
+### 4.2.2 Ecological
+
 ``` r
 dat_ecologic <- dat[dat$indicator %in% c("Protecting soil resources",
                                          "Protecting water supply"),]
@@ -740,8 +741,6 @@ result_ecologic$landUse %>% gather(key = landCoverOption, value = landCoverShare
 *Fig. 8: Composition of the optimized farm (based on data of Gosling et
 al. (2020)), including only ecological indicators. Each land-cover
 option is shown in an allocated share (%).*
-
-### 4.2.2 Ecological
 
 As the second example, the ecological indicator group leads to a
 land-cover portfolio comprising of only forests (Fig. 8; corresponds to
@@ -837,8 +836,8 @@ optimized considering the indicator *x* only. From the set of the
 calculated performances for each indicator, only the minimum performance
 is taken (3) and saved into the pay-off matrix. To sum up, each row of
 the pay-off matrix contains the minimum performances of all indicators
-when the land-cover configuration is optimized for one indicator only.
-The indicators considered for optimization are located on the main
+when the land-cover configuration is optimized considering indicator
+only. The indicators considered for optimization are located on the main
 diagonal of the resulting pay-off matrix.
 
 ``` r
