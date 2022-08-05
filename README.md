@@ -73,7 +73,7 @@ of landscape planners and provides opportunities for systematic or batch
 applications. To further enhance this, we have designed a shiny
 dashboard for the package to get a brief idea of its functionalities and
 to faciliate the usage of the package, see
-<http://134.76.17.50/optimlanduse_shiny/>. The current package version
+<http://rshiny.gwdg.de/apps/optimLanduse/>. The current package version
 optimizes land-cover compositions, but aspects of configuration may be
 added in the future.
 
@@ -603,7 +603,7 @@ land-cover compositions under differing indicator combinations may help
 to understand how stakeholders’ preferences design the land-cover
 compositions. The following code exemplifies optimizations for three
 subsets of indicators presented in Gosling et al. (2020). The shiny app
-of *optimLanduse* (<http://134.76.17.50/optimlanduse_shiny/>) provides
+of *optimLanduse* (<http://rshiny.gwdg.de/apps/optimLanduse/>) provides
 straightforward functionality to define sets of indicators with a single
 click. Further explanation and instructions are given in the app.
 
