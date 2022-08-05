@@ -93,12 +93,9 @@ server. The development version can be found on the GitHub project page.
 install.packages("optimLanduse")
 ```
 
-<p align="center">
-
-<img src="./man/figures/flowchart.png" width="781.6" height="452"/>
-
-</p>
-
+<!-- <p align="center"> -->
+<!-- <img src="./man/figures/flowchart.png" width="781.6" height="452"/> -->
+<!-- </p> -->
 *Fig. 1: Overview of the functions of the* ***optimLanduse*** *package.
 Green diamonds: input and output data; blue rectangles: functions; gray
 parallelograms: optional function settings.*
