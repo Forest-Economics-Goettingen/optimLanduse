@@ -1,5 +1,43 @@
+optimLanduse
+================
 
-## optimLanduse
+-   <a href="#1-introduction" id="toc-1-introduction">1 Introduction</a>
+-   <a href="#2-detailed-description-of-the-functions-in--and-outputs"
+    id="toc-2-detailed-description-of-the-functions-in--and-outputs">2
+    Detailed Description of the Functions’ In- and Outputs</a>
+    -   <a href="#21-initialization-and-input"
+        id="toc-21-initialization-and-input">2.1 Initialization and Input</a>
+    -   <a href="#22-solver-and-list-with-results"
+        id="toc-22-solver-and-list-with-results">2.2 Solver and List with
+        results</a>
+    -   <a href="#23-post-processing" id="toc-23-post-processing">2.3
+        Post-Processing</a>
+-   <a href="#3-example-application" id="toc-3-example-application">3
+    Example Application</a>
+-   <a href="#4-batch-application-and-sensitivity-analysis"
+    id="toc-4-batch-application-and-sensitivity-analysis">4 Batch
+    application and sensitivity analysis</a>
+    -   <a href="#41-solving-for-multiple-uncertainty-values"
+        id="toc-41-solving-for-multiple-uncertainty-values">4.1 Solving for
+        Multiple Uncertainty Values</a>
+    -   <a
+        href="#42-selecting-specific-indicator-bundles---investigating-the-indicators-sensitivities"
+        id="toc-42-selecting-specific-indicator-bundles---investigating-the-indicators-sensitivities">4.2
+        Selecting Specific Indicator Bundles - Investigating the Indicator’s
+        Sensitivities</a>
+        -   <a href="#421-socio-economic" id="toc-421-socio-economic">4.2.1
+            Socio-economic</a>
+        -   <a href="#422-ecological" id="toc-422-ecological">4.2.2 Ecological</a>
+        -   <a href="#423-immediate-economic-success"
+            id="toc-423-immediate-economic-success">4.2.3 Immediate Economic
+            Success</a>
+    -   <a href="#43-pay-off-matrix" id="toc-43-pay-off-matrix">4.3 Pay-Off
+        Matrix</a>
+    -   <a href="#44-the-use-of-fixdistance"
+        id="toc-44-the-use-of-fixdistance">4.4 The use of fixDistance</a>
+-   <a href="#5-suggested-citation" id="toc-5-suggested-citation">5
+    Suggested citation</a>
+-   <a href="#6-literature" id="toc-6-literature">6 Literature</a>
 
 [![](https://www.r-pkg.org/badges/version/optimLanduse)](https://cran.r-project.org/package=optimLanduse)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/optimLanduse?color=green)](https://cran.r-project.org/package=optimLanduse)
@@ -7,42 +45,9 @@
 [![](https://img.shields.io/github/last-commit/Forest-Economics-Goettingen/optimLanduse.svg)](https://github.com/Forest-Economics-Goettingen/optimLanduse/commits/master)
 [![](https://img.shields.io/github/languages/code-size/Forest-Economics-Goettingen/optimLanduse.svg)](https://github.com/Forest-Economics-Goettingen/optimLanduse)
 
-<h3>
-<a name="menu"></a>
-</h3>
-<ul>
-<li>
-<a href="#1. Einleitung">1. Introduction</a>
-</li>
+self made: [Introduction](#1-introduction) [Literature](#6-literature)
 
-[Introduction 2](#introduction-2)
-
-<li>
-<a href="#3. Input und Output">2. Detailed Description of the Functions’
-In- and Outputs</a>
-</li>
-<li>
-<a href="#5. Beispielhafte Anwendung">3. Example Application</a>
-</li>
-<li>
-<a href="#6. Erweiterte Anwendung">4. Batch application and sensitivity
-analysis</a>
-</li>
-<li>
-<a href="#7. Suggested">5. Suggested Citation</a>
-</li>
-<li>
-<a href="#8. Literatur">6. Literature</a>
-</li>
-
-[Literature 2](#literature-2)
-
-</ul>
-<h3>
-<a name="1. Einleitung">1. Introduction</a>
-</h3>
-
-# Introduction 2
+# 1 Introduction
 
 When managing ecosystems, the question arises as to how to
 simultaneously combat biodiversity loss and maintain ecosystem
@@ -74,10 +79,7 @@ functionalities and to faciliate the usage of the package, see
 optimizes land-cover compositions, but aspects of configuration may be
 added in the future.
 
-<h3>
-<a name="3. Input und Output">2. Detailed Description of the Functions’
-In- and Outputs</a>
-</h3>
+# 2 Detailed Description of the Functions’ In- and Outputs
 
 This chapter provides a brief overview of the package functions (Fig.
 1). For detailed information on methodological background, functions,
@@ -103,7 +105,7 @@ install.packages("optimLanduse")
 Green diamonds: input and output data; blue rectangles: functions; gray
 parallelograms: optional function settings.*
 
-#### Initialization and Input
+## 2.1 Initialization and Input
 
 The *initScenario()* function combines the user settings with the data
 into an *optimLanduse*-object ready for solving. The following input
@@ -152,7 +154,7 @@ illustrate the required data structure.*
     Equation 9 in Husmann et al. (n. d.)). Passing NA disables
     fixDistance. The uncertainty space is then defined by the uValue.
 
-#### Solver and List with results
+## 2.2 Solver and List with results
 
 The *solveScenario()* function takes the initialized
 *optimLanduse*-object and only a few optional solver-specific arguments.
@@ -214,7 +216,7 @@ This is followed by a summary of the results of the optimization:
 -   *landUse*: The resulting land-cover composition after the
     optimization.
 
-#### Post-Processing
+## 2.3 Post-Processing
 
 -   *calcPerformance()*: Attaches the portfolio performances of all
     indicators and scenarios as a data frame to the soved optimLanduse
@@ -223,9 +225,7 @@ This is followed by a summary of the results of the optimization:
     distance to the maximum achievable level for each indicator and
     uncertainty scenario.
 
-<h3>
-<a name="5. Beispielhafte Anwendung">3. Example Application</a>
-</h3>
+# 3 Example Application
 
 We here present the basic workflow on a literature example. The aim of
 this chapter is to introduce the functionality of the packages’
@@ -252,7 +252,7 @@ standard error of the mean across the survey’s respondents).
 Descriptions of the land-cover alternatives and indicators can be found
 in Tables 1 and 2 in Gosling et al. (2020).
 
-### Loading Required Packages and Importing the Data
+**Loading Required Packages and Importing the Data**
 
 ``` r
 library(optimLanduse)
@@ -271,7 +271,7 @@ dat <- read_excel(path)
 <a href="#3. Input und Output">detailed description of the functions’
 in- and outputs</a> chapter for more details.
 
-### Initializing an *optimLanduse* Object
+**Initializing an *optimLanduse* Object**
 
 ``` r
 # Initializing an optimLanduse-object
@@ -290,7 +290,7 @@ the same uncertainty level for the calculation of the averaged distances
 and the uncertainty space (*fixDistance = NA*, see Equations 4 and 9 in
 Husmann et al. (n.d.) for more details).
 
-### Solving the Initialized *optimLanduse* Object
+**Solving the Initialized *optimLanduse* Object**
 
 ``` r
 # Solve the initialized optimLanduse object using the solveScenario() function                     
@@ -335,7 +335,8 @@ optimization approach can then be used to dive deeper into the effect of
 different goals on the resulting optimized land-cover composition and
 the effects of uncertainty.
 
-### Calculating the Portfolio Performances of the Optimized *optimLanduse* Object
+**Calculating the Portfolio Performances of the Optimized *optimLanduse*
+Object**
 
 ``` r
 # Performance calculations
@@ -429,7 +430,8 @@ scenarios*
 | Financial stability | High         | Low            | High                  | High                | High              | High          | more is better |    61.31992 |
 | Financial stability | Low          | Low            | High                  | High                | High              | High          | more is better |    72.31477 |
 
-### Comparison of the performance of the currently observed land-cover composition to the optimized composition
+**Comparison of the performance of the currently observed land-cover
+composition to the optimized composition**
 
 ``` r
 result_current <- solveScenario(x = init,
@@ -513,12 +515,9 @@ approximate the immediate economic success. The generally desirable
 multifunctional portfolio therefore does not promise immediate economic
 success for the farmers.
 
-<h3>
-<a name="6. Erweiterte Anwendung">4. Batch application and sensitivity
-analysis</a>
-</h3>
+# 4 Batch application and sensitivity analysis
 
-### Batch Analysis: Solving Multiple Uncertainty Values
+## 4.1 Solving for Multiple Uncertainty Values
 
 ``` r
 applyDf <- data.frame(u = seq(0, 3, .5))
@@ -594,7 +593,7 @@ the worst-possible contribution of forests to the general preferences
 see Table 1 in Husmann et al. (n.d.)) is then the worst possible
 contributing indicator among all land-cover types.
 
-### Selecting Specific Indicator Bundles - Investigating the Indicator’s Sensitivities
+## 4.2 Selecting Specific Indicator Bundles - Investigating the Indicator’s Sensitivities
 
 The sensitivity of the land-cover compositions towards indicators or
 groups of indicators can be analyzed by either excluding or adding
@@ -644,6 +643,8 @@ result_socioeconomic$landUse %>% gather(key = landCoverOption,
 *Fig. 6: Composition of the optimized farm (based on data of Gosling et
 al. (2020)), including only socio-economic indicators. Each land-cover
 option is shown in an allocated share (%).*
+
+### 4.2.1 Socio-economic
 
 The first example considers socio-economic indicators only (Fig. 6; see
 also Fig. 5 of Gosling et al. (2020)). The result corresponds to the
@@ -742,6 +743,8 @@ result_ecologic$landUse %>% gather(key = landCoverOption, value = landCoverShare
 al. (2020)), including only ecological indicators. Each land-cover
 option is shown in an allocated share (%).*
 
+### 4.2.2 Ecological
+
 As the second example, the ecological indicator group leads to a
 land-cover portfolio comprising of only forests (Fig. 8; corresponds to
 Fig. 5 of Gosling et al. (2020)). It can be concluded that all
@@ -752,7 +755,7 @@ differs fundamentally from the currently observed portfolio. The
 ecological indicators are therefore apparently not sufficient to
 approximate the farmers’ current perceptions.
 
-### Immediate Economic Success
+### 4.2.3 Immediate Economic Success
 
 ``` r
 dat_short <- dat[dat$indicator %in% c("Meeting household needs",
@@ -806,7 +809,7 @@ scenario. Policies or development plans may consider these indicators
 key elements when promoting landscape development toward multifunctional
 landscapes.
 
-### Pay-Off Matrix
+## 4.3 Pay-Off Matrix
 
 A pay-off matrix provides information about the influence of single
 indicators on the sensitivity of the results (see e.g. Aldea et al.,
@@ -825,20 +828,20 @@ The following code calculates a pay-off matrix using the *apply*
 function. For this, *payOffFun* encloses all calculation steps.
 *payOffFun* expects the name of the indicator that is to be considered
 in the optimization *x* and the data in the optimLanduse format *dat*.
-In *payOffFun*, firstly (1), the land-cover composition is optimized for
-the one indicator defined in *x* only. The resulting land-cover
-configuration is then (2) passed as lower and bounds to the land-cover
-optimization that considers all indicators. Accordingly, the solution of
-the second optimization (2) is limited to the result of the optimization
-taking into account the indicator *x* only. The second optimization aims
-to calculate the performances of all indicators when optimized for the
-indicator *x* only. From the set of the calculated performances for each
-indicator, only the minimum performance is taken (3) and saved into the
-pay-off matrix. To sum up, each row of the pay-off matrix contains the
-minimum performances of all indicators when the land-cover configuration
-is optimized for one indicator only. The indicators considered for
-optimization are located on the main diagonal of the resulting pay-off
-matrix.
+In *payOffFun*, firstly (1), the land-cover composition is optimized
+considering the one indicator defined in *x* only. The resulting
+land-cover configuration is then (2) passed as lower and bounds to the
+land-cover optimization that considers all indicators. Accordingly, the
+solution of the second optimization (2) is limited to the result of the
+optimization taking into account the indicator *x* only. The second
+optimization aims to calculate the performances of all indicators when
+optimized considering the indicator *x* only. From the set of the
+calculated performances for each indicator, only the minimum performance
+is taken (3) and saved into the pay-off matrix. To sum up, each row of
+the pay-off matrix contains the minimum performances of all indicators
+when the land-cover configuration is optimized for one indicator only.
+The indicators considered for optimization are located on the main
+diagonal of the resulting pay-off matrix.
 
 ``` r
 # Initialize the optimization that considers all indicators outside of the
@@ -922,13 +925,13 @@ long-term income and the liquidity are fulfilled to high degrees. In
 contrast, farmers’ requirements regarding investment costs are fulfilled
 poorly (0.074).
 
-When optimized for the water supply protection only (row 10), the
-indicators most relevant for the farmers (meeting household needs and
-Liquidity, Fig. 9) perform very poorly (0.0). This shows that from a
-societal perspective, the desirable water supply function is clearly
-antagonistic to the farmer’s requirements.
+When optimized considering the water supply protection only (row 10),
+the indicators most relevant for the farmers (meeting household needs
+and Liquidity, Fig. 9) perform very poorly (0.0). This shows that the
+water supply function is clearly antagonistic to the farmer’s
+requirements.
 
-### The use of fixDistance
+## 4.4 The use of fixDistance
 
 It can be advantageous to define distinct uncertainty levels for the
 calculation of the distances to the maximum achievable level (the
@@ -999,19 +1002,13 @@ multifunctional scenario shown above (Fig. 2). The here broadened state
 space leads to a higher share of pasture under low uncertainty levels as
 compared to the multifunctional portfolio above (Fig. 5).
 
-<h3>
-<a name="7. Suggested">5. Suggested Citation </a>
-</h3>
+# 5 Suggested citation
 
 Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse:
 Robust Land-Use Optimization. R package version 1.1.0.
 <https://CRAN.R-project.org/package=optimLanduse>.
 
-<h3>
-<a name="8. Literatur">6. Literature</a>
-</h3>
-
-# Literature 2
+# 6 Literature
 
 Gosling, E., Reith, E., Knoke T., Paul, C. (2020). A goal programming
 approach to evaluate agroforestry systems in Eastern Panama. <em>Journal
