@@ -15,7 +15,7 @@
 <a href="#1. Einleitung">1. Introduction</a>
 </li>
 
-[Intro2BlkaBla](#intro)
+[Introduction 2](#introduction-2)
 
 <li>
 <a href="#3. Input und Output">2. Detailed Description of the Functions’
@@ -35,7 +35,7 @@ analysis</a>
 <a href="#8. Literatur">6. Literature</a>
 </li>
 
-[Literature 2 asdf](#lit)
+[Literature 2](#literature-2)
 
 </ul>
 <h3>
