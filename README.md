@@ -1012,6 +1012,12 @@ Participatory Goal Programming in Forest Management: An Application
 Integrating Several Ecosystem Services. <em>Forests</em>, 5, 3352-3371.
 <https://doi.org/10.3390/f5123352>
 
+Ezquerro, M., Pardos, M., Diaz-Balteiro, L. (2019): Integrating variable
+retention systems into strategic forest management to deal with
+conservation biodiversity objectives. <em>Forest Ecology and
+Management</em>, 433, 585-593.
+<https://doi.org/10.1016/j.foreco.2018.11.003>
+
 Gosling, E., Reith, E., Knoke T., Paul, C. (2020): A goal programming
 approach to evaluate agroforestry systems in Eastern Panama. <em>Journal
 of Environmental Management</em>, 261:110248.
@@ -1031,12 +1037,6 @@ Knoke, T., Paul, C., Rammig, A., et al. (2020): Accounting for multiple
 ecosystem services in a simulation of land-use decisions: Does it reduce
 tropical deforestation? <em>Global Change Biology</em>, 26(4),
 2403-2420. <https://doi.org/10.1111/gcb.15003>
-
-Ezquerro, M., Pardos, M., Diaz-Balteiro, L. (2019): Integrating variable
-retention systems into strategic forest management to deal with
-conservation biodiversity objectives. <em>Forest Ecology and
-Management</em>, 433, 585-593.
-<https://doi.org/10.1016/j.foreco.2018.11.003>
 
 Paul, C., Weber, M., Knoke, T. (2017): Agroforestry versus farm mosaic
 systems – Comparing land-use efficiency, economic returns and risks
