@@ -870,7 +870,7 @@ payOffFun <- function(x, dat) {
   result_filtered <- solveScenario(x = init_filtered)
   
   ## (2) Optimize the land-cover composition for all indicators, limited ##
-  ##     to the land-cover composition calculated in step (1)                   ##
+  ##     to the land-cover composition calculated in step (1)            ##
   
   result_payOff <- solveScenario(x = init_payOff,
                           lowerBound = result_filtered$landUse,
