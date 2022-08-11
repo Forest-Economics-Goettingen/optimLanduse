@@ -813,47 +813,46 @@ indicators on the sensitivity of the results (see e.g. Aldea et al.,
 2014, Table 1; Ezquerro et al., 2019, Table 1; Knoke et al., 2020,
 Supporting Information Table S6). Originally, the pay-off matrix shows
 to which degree all indicators are fulfilled on average when the
-landscape is optimized by means of only one indicator. The fulfillment
-of these non-optimized indicators reveals synergies or antagonisms. A
-robust pendant to this approach of can be easily conducted with the
-*optimLanduse* package as the degrees of fulfillment are delivered
-straightaway using the *calcPerformance* function.
+landscape is optimized for only one indicator. The fulfillment of these
+non-optimized indicators reveals synergies or antagonisms between the
+indicators. A robust pendant to this approach can be easily conducted
+with the *optimLanduse* package as the degrees of fulfillment are
+delivered straightaway using the *calcPerformance* function.
 
 In contrast to the original approach, each indicator has a set of
 performances
 (![U_i](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;U_i "U_i"),
 Equations 2 and 3 in Husmann et al. (n.d.); Fig. 3 and 4 visualize the
-sets indicator performances). Following the robust philosophy, we picked
-the worst performance out of the set of uncertainties for each
+sets of indicator performances). Following the robust philosophy, we
+selected the worst performance out of the set of uncertainties for each
 indicator. The resulting worst performances of the non-optimized
-indicators reveal the extend to which relative degree those indicators
-are fulfilled under the worst-case uncertainty scenario. It therewith
+indicators reveal the relative extent to which these indicators are
+fulfilled under the worst-case uncertainty scenario. It therewith
 reveals to which degree the indicators are antagonistic or synergistic.
 The indicator performances are expressed in relation to the
 best-possible fulfillment of the respective indicators (Equation 3 of
 Husmann et al. (n.d.)). In contrast to the original approach, we thus
-calculate the relative degrees of fulfillment.
+calculate relative degrees of fulfillment for each indicator.
 
 The following code calculates a pay-off matrix using the *apply*
 function. For this, *payOffFun* encloses all calculation steps.
 *payOffFun* expects the name of the indicator that is to be considered
 in the optimization *x* and the data in the *optimLanduse* format *dat*.
 In *payOffFun*, firstly (1), the land-cover composition is optimized
-considering the one indicator defined in *x* only. The resulting
-land-cover composition is then (2) passed as lower and as upper bounds
-to the land-cover optimization that considers all indicators.
-Accordingly, the solution of the second optimization (2) is strictly
-limited to the result of the first optimization taking into account the
-indicator *x* only. The second optimization only aims to prepare an
-*optimLanduse* object from which the performances of all indicators can
-be calculated. It deliveres the performances of all indicators, when
-only the indicator *x* is considered in the optimization. From the set
-of the calculated performances for each indicator, only the minimum
-performance is taken (3) and then saved into the pay-off matrix. To sum
-up, each row of the pay-off matrix contains the minimum performances of
-all indicators when the land-cover configuration is optimized
-considering indicator only. The indicators considered for optimization
-are located on the main diagonal of the pay-off matrix.
+considering only the indicator defined in *x* The resulting land-cover
+composition is then (2) passed as lower and as upper bounds to the
+land-cover optimization that considers all indicators. Accordingly, the
+solution of the second optimization (2) is exactly the result of the
+first optimization taking into account the indicator *x* only. The
+second optimization only aims to prepare an *optimLanduse* object from
+which the performances of all indicators can be calculated. It delivers
+the performances of all indicators, when only the indicator *x* is
+considered in the optimization. From the set of the calculated
+performances for each indicator, only the minimum performance is
+selected (3) and then saved into the pay-off matrix. To sum up, each row
+of the pay-off matrix contains the minimum performances of all single
+indicators when the land-cover composition is optimized considering only
+the indicator in the first column.
 
 ``` r
 # Initialize the optimization that considers all indicators outside of the
@@ -926,9 +925,8 @@ knitr::kable(payOff_Matrix, row.names = F)
 
 *Table 3: Performances of all indicators when optimized for single
 indicators only (pay-off matrix). The indicators considered for
-optimization are located on the main diagonal. The other entries in the
-rows contain the performances of the respective not-optimized
-indicators.*
+optimization are located in the first row. The other entries in the rows
+contain the performances of the respective non-optimized indicators.*
 
 It can be followed from the pay-off matrix (Table 3), that e.g., the
 general preferences are fully fulfilled when optimized considering the
