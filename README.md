@@ -854,8 +854,8 @@ of the pay-off matrix contains the minimum performances of all single
 indicators when the land-cover composition is optimized considering only
 one indicator. The name of this indicator considered in the optimization
 is written in the first column of each line. The names of all indicators
-are given in the table header. The performances of these indicators
-considered are consequently obligatory completely fulfilled (performance
+are given in the table header. Consequently, the performances of the
+indicators considered are obligatorily completely fulfilled (performance
 = 1). So that the main diagonal of the matrix contains only ones.
 
 ``` r
