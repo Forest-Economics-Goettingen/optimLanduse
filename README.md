@@ -57,13 +57,13 @@ allocation models, particularly optimization approaches, have proven
 helpful in revealing trade-offs between multiple objectives and services
 provided by different land-cover compositions.
 
-The R package **optimLanduse** provides functions for easy and
-systematic applications of the robust multiobjective land-cover
-composition optimization approach of Knoke et al. (2016). It includes
-tools to determine the land-cover composition that best balances the
-multiple functions and services a landscape can provide, as well as
-tools for a deeper understanding and visualization of the contributions
-of the distinct indicators. The method has been developed and applied
+The R package *optimLanduse* provides functions for easy and systematic
+applications of the robust multiobjective land-cover composition
+optimization approach of Knoke et al. (2016). It includes tools to
+determine the land-cover composition that best balances the multiple
+functions and services a landscape can provide, as well as tools for a
+deeper understanding and visualization of the contributions of the
+distinct indicators. The method has been developed and applied
 previously in a couple of studies, with some examples to be found in the
 [Literature](#6-literature) section. The methodological background of
 the approach can e.g., be found in Knoke et al. (2016) and Husmann et
@@ -99,7 +99,7 @@ install.packages("optimLanduse")
 
 </p>
 
-*Fig. 1: Overview of the functions of the* ***optimLanduse*** *package.
+*Fig. 1: Overview of the functions of the* *optimLanduse* *package.
 Green diamonds: input and output data; blue rectangles: functions; gray
 parallelograms: optional function settings.*
 
@@ -217,7 +217,7 @@ This is followed by a summary of the results of the optimization:
 ## 2.3 Post-Processing
 
 -   *calcPerformance()*: Attaches the portfolio performances of all
-    indicators and scenarios as a data frame to the soved optimLanduse
+    indicators and scenarios as a data frame to the soved *optimLanduse*
     object. The data can be used for straightforward visualization of
     the performance (e.g. Fig. 3). The performance is defined as the
     distance to the maximum achievable level for each indicator and
@@ -230,7 +230,7 @@ this chapter is to introduce the functionality of the packages’
 functions and to explain the relevant in- and output on the example of a
 use-case in Eastern Panama. The data of this study can be accessed in
 *Appendix A* of Gosling et al. (2020) and is also firmly integrated into
-the **optimLanduse** package. It can be accessed via
+the *optimLanduse* package. It can be accessed via
 *exampleData(“exampleGosling.xlsx”)*. The data integrated in the package
 already comes in the required *optimLanduse* format, so that it can be
 used without any data processing.
@@ -594,8 +594,8 @@ contributing indicator among all land-cover types.
 
 The sensitivity of the land-cover compositions towards indicators or
 groups of indicators can be analyzed by either excluding or adding
-indicators of interest and interpreting the differences in the results
-of the distinct optimization. To do so, individual and independent
+indicators and interpreting the differences in the results of the
+distinct optimization. To do so, individual and independent
 optimizations are carried out in- and excluding different (sets of)
 indicators. The set of indicators considered is representative of the
 stakeholders’ preferences and perceptions. Comparison of optimal
@@ -811,34 +811,49 @@ landscapes.
 A pay-off matrix provides information about the influence of single
 indicators on the sensitivity of the results (see e.g. Aldea et al.,
 2014, Table 1; Ezquerro et al., 2019, Table 1; Knoke et al., 2020,
-Supporting Information Table S6). The matrix shows the performances of
-all indicators when only one indicator is considered in the land-cover
-optimization and therewith reveals to which degree the indicators are
-antagonistic. In contrast to Aldea et al. (2014), Ezquerro et al. (2019)
-and, Knoke et al. (2020), we here calculate the relative degree of
-fulfillment of the indicators and not their absolute values. The
-relative degree of fulfillment can easily be taken from the optimLanduse
-object, so that no further calculation are required to obtain a pay-off
-matrix.
+Supporting Information Table S6). Originally, the pay-off matrix shows
+to which degree all indicators are fulfilled on average when the
+landscape is optimized by means of only one indicator. The fulfillment
+of these non-optimized indicators reveals synergies or antagonisms. A
+robust pendant to this approach of can be easily conducted with the
+*optimLanduse* package as the degrees of fulfillment are delivered
+straightaway using the *calcPerformance* function.
+
+In contrast to the original approach, each indicator has a set of
+performances
+(![U_i](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;U_i "U_i"),
+Equations 2 and 3 in Husmann et al. (n.d.); Fig. 3 and 4 visualize the
+sets indicator performances). Following the robust philosophy, we picked
+the worst performance out of the set of uncertainties for each
+indicator. The resulting worst performances of the non-optimized
+indicators reveal the extend to which relative degree those indicators
+are fulfilled under the worst-case uncertainty scenario. It therewith
+reveals to which degree the indicators are antagonistic or synergistic.
+The indicator performances are expressed in relation to the
+best-possible fulfillment of the respective indicators (Equation 3 of
+Husmann et al. (n.d.)). In contrast to the original approach, we thus
+calculate the relative degrees of fulfillment.
 
 The following code calculates a pay-off matrix using the *apply*
 function. For this, *payOffFun* encloses all calculation steps.
 *payOffFun* expects the name of the indicator that is to be considered
-in the optimization *x* and the data in the optimLanduse format *dat*.
+in the optimization *x* and the data in the *optimLanduse* format *dat*.
 In *payOffFun*, firstly (1), the land-cover composition is optimized
 considering the one indicator defined in *x* only. The resulting
-land-cover configuration is then (2) passed as lower and bounds to the
-land-cover optimization that considers all indicators. Accordingly, the
-solution of the second optimization (2) is limited to the result of the
-optimization taking into account the indicator *x* only. The second
-optimization aims to calculate the performances of all indicators when
-optimized considering the indicator *x* only. From the set of the
-calculated performances for each indicator, only the minimum performance
-is taken (3) and saved into the pay-off matrix. To sum up, each row of
-the pay-off matrix contains the minimum performances of all indicators
-when the land-cover configuration is optimized considering indicator
-only. The indicators considered for optimization are located on the main
-diagonal of the resulting pay-off matrix.
+land-cover composition is then (2) passed as lower and as upper bounds
+to the land-cover optimization that considers all indicators.
+Accordingly, the solution of the second optimization (2) is strictly
+limited to the result of the first optimization taking into account the
+indicator *x* only. The second optimization only aims to prepare an
+*optimLanduse* object from which the performances of all indicators can
+be calculated. It deliveres the performances of all indicators, when
+only the indicator *x* is considered in the optimization. From the set
+of the calculated performances for each indicator, only the minimum
+performance is taken (3) and then saved into the pay-off matrix. To sum
+up, each row of the pay-off matrix contains the minimum performances of
+all indicators when the land-cover configuration is optimized
+considering indicator only. The indicators considered for optimization
+are located on the main diagonal of the pay-off matrix.
 
 ``` r
 # Initialize the optimization that considers all indicators outside of the
