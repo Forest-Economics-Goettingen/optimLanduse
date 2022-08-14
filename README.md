@@ -567,7 +567,7 @@ increased from 0% to 9.6% and that of plantation from 0% to 10.2%.
 
 Alley cropping does not appear in any portfolio at any uncertainty
 level. It does not, on average, contribute best to any indicator. At
-least one other land-cover type contributes better each indicator. It
+least one other land-cover type contributes better to each indicator. It
 also contributes the worst (highest) to management complexity. This
 overall negative contribution does not change with increasing
 uncertainty levels. By trend, higher uncertainty levels lead to more
@@ -855,14 +855,14 @@ indicators when the land-cover composition is optimized considering only
 one indicator. The name of this indicator considered in the optimization
 is written in the first column of each line. The names of all indicators
 are given in the table header. Consequently, the performances of the
-indicators considered are obligatorily completely fulfilled (performance
-= 1). So that the main diagonal of the matrix contains only ones.
+indicators considered are obligatorily best fulfilled. So that the main
+diagonal of the matrix contains the highest value of each indicator.
 
 ``` r
 # Initialize the optimization that considers all indicators outside of the
 # apply function saves calculation time
 init_payOff <- initScenario(coefTable = dat, 
-                            uValue = 0,
+                            uValue = 2,
                             optimisticRule = "expectation",
                             fixDistance = NA)
 
@@ -881,7 +881,7 @@ payOffFun <- function(x, dat) {
   # Conduct optimization considering the indicator x only
   
   init_filtered <- initScenario(coefTable = dat_filtered,
-                                uValue = 0,
+                                uValue = 2,
                                 optimisticRule = "expectation",
                                 fixDistance = NA)
   
@@ -916,28 +916,27 @@ knitr::kable(payOff_Matrix, row.names = F)
 
 | Indicators                | Financial stability | General preferences | Investment costs | Labour demand | Liquidity | Long-term income | Management complexity | Meeting household needs | Protecting soil resources | Protecting water supply |
 |:--------------------------|--------------------:|--------------------:|-----------------:|--------------:|----------:|-----------------:|----------------------:|------------------------:|--------------------------:|------------------------:|
-| Financial stability       |               1.000 |               1.000 |            0.074 |         0.205 |     0.836 |            0.911 |                 0.141 |                   0.721 |                     0.465 |                   0.612 |
-| General preferences       |               1.000 |               1.000 |            0.074 |         0.205 |     0.836 |            0.911 |                 0.141 |                   0.721 |                     0.465 |                   0.612 |
-| Investment costs          |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-| Labour demand             |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-| Liquidity                 |               0.614 |               0.913 |            0.000 |         0.167 |     1.000 |            0.928 |                 0.266 |                   0.784 |                     0.000 |                   0.106 |
-| Long-term income          |               0.986 |               0.000 |            0.124 |         0.270 |     0.327 |            1.000 |                 0.242 |                   0.066 |                     0.377 |                   0.536 |
-| Management complexity     |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-| Meeting household needs   |               0.014 |               0.652 |            0.115 |         0.000 |     0.654 |            0.630 |                 0.078 |                   1.000 |                     0.108 |                   0.000 |
-| Protecting soil resources |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-| Protecting water supply   |               0.000 |               0.043 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Financial stability       |               0.805 |               0.371 |            0.007 |         0.122 |     0.492 |            0.881 |                 0.072 |                   0.346 |                     0.231 |                   0.466 |
+| General preferences       |               0.427 |               0.832 |            0.012 |         0.093 |     0.854 |            0.789 |                 0.090 |                   0.669 |                     0.184 |                   0.334 |
+| Investment costs          |               0.000 |               0.000 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Labour demand             |               0.000 |               0.000 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Liquidity                 |               0.134 |               0.579 |            0.000 |         0.061 |     1.000 |            0.780 |                 0.158 |                   0.705 |                     0.000 |                   0.000 |
+| Long-term income          |               0.553 |               0.273 |            0.016 |         0.113 |     0.465 |            0.920 |                 0.106 |                   0.258 |                     0.140 |                   0.338 |
+| Management complexity     |               0.000 |               0.000 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Meeting household needs   |               0.000 |               0.353 |            0.006 |         0.000 |     0.559 |            0.483 |                 0.000 |                   1.000 |                     0.000 |                   0.000 |
+| Protecting soil resources |               0.000 |               0.000 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Protecting water supply   |               0.000 |               0.000 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
 
 *Table 3: Performances of all indicators when optimized for single
 indicators only (pay-off matrix). The indicators considered for
 optimization are located in the first row. The other entries in the rows
 contain the performances of the respective non-optimized indicators.*
 
-It can be followed from the pay-off matrix (Table 3), that e.g., the
-general preferences are fully fulfilled when optimized considering the
-financial stability only (row 1) and vice-versa (row 2). Also, the
-long-term income and the liquidity are fulfilled to high degrees. In
-contrast, farmers’ requirements regarding investment costs are fulfilled
-poorly (0.074).
+It can be followed from the pay-off matrix (Table 3), that e.g.,
+liquidity and long-term income are fulfilled to high degrees when
+optimized considering the general preferences only (row 2). In contrast,
+farmers’ requirements regarding investment costs (0.012) and management
+complexity (0.09) are fulfilled poorly.
 
 When optimized considering the water supply protection only (row 10),
 the indicators most relevant for the farmers (meeting household needs
