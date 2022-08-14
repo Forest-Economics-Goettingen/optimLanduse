@@ -846,17 +846,17 @@ solution of the second optimization (2) is exactly the result of the
 first optimization taking into account the indicator *x* only. The
 second optimization only aims to prepare an *optimLanduse* object from
 which the performances of all indicators can be calculated. It delivers
-the performances of all indicators, when only the indicator *x* is
-considered in the optimization. From the set of the calculated
-performances for each indicator, only the minimum performance is
-selected (3) and then saved into the pay-off matrix. To sum up, each row
-of the pay-off matrix contains the minimum performances of all single
-indicators when the land-cover composition is optimized considering only
-one indicator. The name of this indicator considered in the optimization
-is written in the first column of each line. The names of all indicators
-are given in the table header. Consequently, the performances of the
-indicators considered are obligatorily best fulfilled. So that the main
-diagonal of the matrix contains the highest value of each indicator.
+the performances of all indicators when only the indicator *x* is
+considered in the optimization. From each indicator’s set of calculated
+performances, only the minimum performance is selected (3) and then
+saved into the pay-off matrix. To sum up, each row of the pay-off matrix
+contains the minimum performances of all single indicators when the
+land-cover composition is optimized considering only one indicator. The
+name of this indicator considered in the optimization is written in the
+first column of each line. The names of all indicators are given in the
+table header. Consequently, the performances of the indicators
+considered are obligatorily best fulfilled so that the matrix’s main
+diagonal contains the highest value of each indicator.
 
 ``` r
 # Initialize the optimization that considers all indicators outside of the
