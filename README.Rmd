@@ -568,9 +568,9 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
 
 It can be seen that the land-cover allocation transition under increasing uncertainty levels (Fig. 10) differs slightly from the multifunctional scenario shown above (Fig. 2). The here broadened state space leads to a higher share of pasture under low uncertainty levels as compared to the multifunctional portfolio above (Fig. 5).
 
-<!-- # Suggested citation -->
+# Suggested citation
 
-<!-- Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse: Robust Land-Use Optimization. R package version 1.1.0. <https://CRAN.R-project.org/package=optimLanduse>. -->
+Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse: Robust Land-Use Optimization. R package version 1.1.0. <https://CRAN.R-project.org/package=optimLanduse>.
 
 # Literature
 

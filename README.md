@@ -35,7 +35,9 @@ Supplement to the manuscript MEE-22-04-344
         Matrix</a>
     -   <a href="#44-the-use-of-fixdistance"
         id="toc-44-the-use-of-fixdistance">4.4 The use of fixDistance</a>
--   <a href="#5-literature" id="toc-5-literature">5 Literature</a>
+-   <a href="#5-suggested-citation" id="toc-5-suggested-citation">5
+    Suggested citation</a>
+-   <a href="#6-literature" id="toc-6-literature">6 Literature</a>
 
 [![](https://www.r-pkg.org/badges/version/optimLanduse)](https://cran.r-project.org/package=optimLanduse)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/optimLanduse?color=green)](https://cran.r-project.org/package=optimLanduse)
@@ -63,7 +65,7 @@ functions and services a landscape can provide, as well as tools for a
 deeper understanding and visualization of the contributions of the
 distinct indicators. The method has been developed and applied
 previously in a couple of studies, with some examples to be found in the
-[Literature](#5-literature) section. The methodological background of
+[Literature](#6-literature) section. The methodological background of
 the approach can e.g., be found in Knoke et al. (2016) and Husmann et
 al. (n.d.). We here refer to the nomenclature of Husmann et al. (n.d.).
 The package opens the approach of Knoke et al. (2016) to the community
@@ -1020,10 +1022,13 @@ multifunctional scenario shown above (Fig. 2). The here broadened state
 space leads to a higher share of pasture under low uncertainty levels as
 compared to the multifunctional portfolio above (Fig. 5).
 
-<!-- # Suggested citation -->
-<!-- Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse: Robust Land-Use Optimization. R package version 1.1.0. <https://CRAN.R-project.org/package=optimLanduse>. -->
+# 5 Suggested citation
 
-# 5 Literature
+Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse:
+Robust Land-Use Optimization. R package version 1.1.0.
+<https://CRAN.R-project.org/package=optimLanduse>.
+
+# 6 Literature
 
 Aldea, J., Martínez-Peña, F., Romero, C., Diaz-Balteiro, L. (2014):
 Participatory Goal Programming in Forest Management: An Application
