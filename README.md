@@ -1,4 +1,4 @@
-optimLanduse
+Supplement to the manuscript MEE-22-04-344
 ================
 
 -   <a href="#1-introduction" id="toc-1-introduction">1 Introduction</a>
@@ -16,7 +16,7 @@ optimLanduse
     Example Application</a>
 -   <a href="#4-batch-application-and-sensitivity-analysis"
     id="toc-4-batch-application-and-sensitivity-analysis">4 Batch
-    application and sensitivity analysis</a>
+    Application and Sensitivity Analysis</a>
     -   <a href="#41-solving-for-multiple-uncertainty-values"
         id="toc-41-solving-for-multiple-uncertainty-values">4.1 Solving for
         Multiple Uncertainty Values</a>
@@ -35,9 +35,7 @@ optimLanduse
         Matrix</a>
     -   <a href="#44-the-use-of-fixdistance"
         id="toc-44-the-use-of-fixdistance">4.4 The use of fixDistance</a>
--   <a href="#5-suggested-citation" id="toc-5-suggested-citation">5
-    Suggested citation</a>
--   <a href="#6-literature" id="toc-6-literature">6 Literature</a>
+-   <a href="#5-literature" id="toc-5-literature">5 Literature</a>
 
 [![](https://www.r-pkg.org/badges/version/optimLanduse)](https://cran.r-project.org/package=optimLanduse)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/optimLanduse?color=green)](https://cran.r-project.org/package=optimLanduse)
@@ -65,7 +63,7 @@ functions and services a landscape can provide, as well as tools for a
 deeper understanding and visualization of the contributions of the
 distinct indicators. The method has been developed and applied
 previously in a couple of studies, with some examples to be found in the
-[Literature](#6-literature) section. The methodological background of
+[Literature](#5-literature) section. The methodological background of
 the approach can e.g., be found in Knoke et al. (2016) and Husmann et
 al. (n.d.). We here refer to the nomenclature of Husmann et al. (n.d.).
 The package opens the approach of Knoke et al. (2016) to the community
@@ -93,11 +91,11 @@ server. The development version can be found on the GitHub project page.
 install.packages("optimLanduse")
 ```
 
-<p align="center">
+<!-- <p align="center"> -->
+<!-- <img src="./man/figures/flowchart.png" width="781.6" height="452"/> -->
+<!-- </p> -->
 
-<img src="./man/figures/flowchart.png" width="781.6" height="452"/>
-
-</p>
+![](./man/figures/flowchart.png)
 
 *Fig. 1: Overview of the functions of the* *optimLanduse* *package.
 Green diamonds: input and output data; blue rectangles: functions; gray
@@ -127,11 +125,11 @@ data are required:
 *Table 1: Example of the data set from Gosling et al. (2020) to
 illustrate the required data structure.*
 
-<p align="center">
+<!-- <p align="center"> -->
+<!-- <img src="./man/figures/exampleGraphic.png" width="673.4" height="298.2"/> -->
+<!-- </p> -->
 
-<img src="./man/figures/exampleGraphic.png" width="673.4" height="298.2"/>
-
-</p>
+![](./man/figures/exampleGraphic.png)
 
 -   *uValue*: The argument for the uncertainty level
     (![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u"),
@@ -427,8 +425,8 @@ scenarios*
 | Financial stability | High         | Low            | High                  | High                | High              | High          | more is better |    61.31992 |
 | Financial stability | Low          | Low            | High                  | High                | High              | High          | more is better |    72.31477 |
 
-**Comparison of the performance of the currently observed land-cover
-composition to the optimized composition**
+**Comparison of the Performance of the Currently Observed Land-cover
+Composition to the Optimized Composition**
 
 ``` r
 result_current <- solveScenario(x = init,
@@ -512,7 +510,7 @@ approximate the immediate economic success. The generally desirable
 multifunctional portfolio therefore does not promise immediate economic
 success for the farmers.
 
-# 4 Batch application and sensitivity analysis
+# 4 Batch Application and Sensitivity Analysis
 
 ## 4.1 Solving for Multiple Uncertainty Values
 
@@ -813,11 +811,15 @@ indicators on the sensitivity of the results (see e.g. Aldea et al.,
 2014, Table 1; Ezquerro et al., 2019, Table 1; Knoke et al., 2020,
 Supporting Information Table S6). Originally, the pay-off matrix shows
 to which degree all indicators are fulfilled on average when the
-landscape is optimized for only one indicator. The fulfillment of these
-non-optimized indicators reveals synergies or antagonisms between the
-indicators. A robust pendant to this approach can be easily conducted
-with the *optimLanduse* package as the degrees of fulfillment are
-delivered straightaway using the *calcPerformance* function.
+landscape is optimized for only one indicator. The average trade-offs
+between the one (optimized) indicator and all other (non-optimized)
+indicators isare therewith shown as the matrix reveals how all indicator
+perform in a land-cover composition that is optimized towards only one
+indicator. The fulfillment of these non-optimized indicators reveals
+synergies or antagonisms between the indicators. A robust pendant to
+this approach can be easily conducted with the *optimLanduse* package as
+the degrees of fulfillment are delivered straightaway using the
+*calcPerformance* function.
 
 In contrast to the original approach, each indicator has a set of
 performances
@@ -1016,13 +1018,10 @@ multifunctional scenario shown above (Fig. 2). The here broadened state
 space leads to a higher share of pasture under low uncertainty levels as
 compared to the multifunctional portfolio above (Fig. 5).
 
-# 5 Suggested citation
+<!-- # Suggested citation -->
+<!-- Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse: Robust Land-Use Optimization. R package version 1.1.0. <https://CRAN.R-project.org/package=optimLanduse>. -->
 
-Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse:
-Robust Land-Use Optimization. R package version 1.1.0.
-<https://CRAN.R-project.org/package=optimLanduse>.
-
-# 6 Literature
+# 5 Literature
 
 Aldea, J., Martínez-Peña, F., Romero, C., Diaz-Balteiro, L. (2014):
 Participatory Goal Programming in Forest Management: An Application

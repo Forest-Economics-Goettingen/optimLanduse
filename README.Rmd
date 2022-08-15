@@ -1,5 +1,5 @@
 ---
-title: optimLanduse
+title: Supplement to the manuscript MEE-22-04-344
 output: 
   github_document:
     toc: true
@@ -33,11 +33,13 @@ The stable version of the package can be installed using the CRAN server. The de
 install.packages("optimLanduse")
 ```
 
-<p align="center">
+<!-- <p align="center"> -->
 
-<img src="./man/figures/flowchart.png" width="781.6" height="452"/>
+<!-- <img src="./man/figures/flowchart.png" width="781.6" height="452"/> -->
 
-</p>
+<!-- </p> -->
+
+![](./man/figures/flowchart.png)
 
 *Fig. 1: Overview of the functions of the* *optimLanduse* *package. Green diamonds: input and output data; blue rectangles: functions; gray parallelograms: optional function settings.*
 
@@ -49,11 +51,13 @@ The *initScenario()* function combines the user settings with the data into an *
 
 *Table 1: Example of the data set from Gosling et al. (2020) to illustrate the required data structure.*
 
-<p align="center">
+<!-- <p align="center"> -->
 
-<img src="./man/figures/exampleGraphic.png" width="673.4" height="298.2"/>
+<!-- <img src="./man/figures/exampleGraphic.png" width="673.4" height="298.2"/> -->
 
-</p>
+<!-- </p> -->
+
+![](./man/figures/exampleGraphic.png)
 
 -   *uValue*: The argument for the uncertainty level ($f_u$, Equation 4 in Husmann et al. (n.d.)). A higher uValue reflects a higher risk aversion of the decision maker. See the help file of the *initScenario* function for more details.
 
@@ -210,7 +214,7 @@ knitr::kable(performanceExample, row.names = F)
 knitr::kable(performanceExample, row.names = F)
 ```
 
-**Comparison of the performance of the currently observed land-cover composition to the optimized composition**
+**Comparison of the Performance of the Currently Observed Land-cover Composition to the Optimized Composition**
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 result_current <- solveScenario(x = init,
@@ -259,7 +263,7 @@ Setting the arguments for the lower and upper bounds exactly to the currently ob
 Amounting to 0.387, the guaranteed performance of the multifunctional portfolio is considerably higher than the guaranteed performance of the current land-cover composition (0.089). Each of the indicators considered is thus fulfilled by at least 38.7% compared to its individual achievable level in the optimized portfolio. The comparison of the performances of the currently observed land-cover composition (Fig. 4) with the performances of the multifunctional portfolio (Fig. 3) reveals that, for example, the performance of the financial stability is significantly higher in the optimized portfolio. The performance of meeting households needs and liquidity, for example, decreases significantly. The price to be paid for the best-possible compromise is thus a fundamentally lower performance of both indicators that approximate the immediate economic success. The generally desirable multifunctional portfolio therefore does not promise immediate economic success for the farmers.
 
 
-# Batch application and sensitivity analysis
+# Batch Application and Sensitivity Analysis
 
 
 ## Solving for Multiple Uncertainty Values
@@ -446,7 +450,7 @@ The third example is composed of a bundle of indicators that prospectively refle
 
 ## Pay-Off Matrix
 
-A pay-off matrix provides information about the influence of single indicators on the sensitivity of the results (see e.g. Aldea et al., 2014, Table 1; Ezquerro et al., 2019, Table 1; Knoke et al., 2020, Supporting Information Table S6). Originally, the pay-off matrix shows to which degree all indicators are fulfilled on average when the landscape is optimized for only one indicator. The fulfillment of these non-optimized indicators reveals synergies or antagonisms between the indicators. A robust pendant to this approach can be easily conducted with the *optimLanduse* package as the degrees of fulfillment are delivered straightaway using the *calcPerformance* function. 
+A pay-off matrix provides information about the influence of single indicators on the sensitivity of the results (see e.g. Aldea et al., 2014, Table 1; Ezquerro et al., 2019, Table 1; Knoke et al., 2020, Supporting Information Table S6). Originally, the pay-off matrix shows to which degree all indicators are fulfilled on average when the landscape is optimized for only one indicator. The average trade-offs between the one (optimized) indicator and all other (non-optimized) indicators isare therewith shown as the matrix reveals how all indicator perform in a land-cover composition that is optimized towards only one indicator. The fulfillment of these non-optimized indicators reveals synergies or antagonisms between the indicators. A robust pendant to this approach can be easily conducted with the *optimLanduse* package as the degrees of fulfillment are delivered straightaway using the *calcPerformance* function. 
 
 In contrast to the original approach, each indicator has a set of performances ($U_i$, Equations 2 and 3 in Husmann et al. (n.d.); Fig. 3 and 4 visualize the sets of indicator performances). Following the robust philosophy, we selected the worst performance out of the set of uncertainties for each indicator. The resulting worst performances of the non-optimized indicators reveal the relative extent to which these indicators are fulfilled under the worst-case uncertainty scenario. It therewith reveals to which degree the indicators are antagonistic or synergistic. The indicator performances are expressed in relation to the best-possible fulfillment of the respective indicators (Equation 3 of Husmann et al. (n.d.)). In contrast to the original approach, we thus calculate relative degrees of fulfillment for each indicator.
 
@@ -564,9 +568,9 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
 
 It can be seen that the land-cover allocation transition under increasing uncertainty levels (Fig. 10) differs slightly from the multifunctional scenario shown above (Fig. 2). The here broadened state space leads to a higher share of pasture under low uncertainty levels as compared to the multifunctional portfolio above (Fig. 5).
 
-# Suggested citation
+<!-- # Suggested citation -->
 
-Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse: Robust Land-Use Optimization. R package version 1.1.0. <https://CRAN.R-project.org/package=optimLanduse>.
+<!-- Husmann, K., von Groß, V., Fuchs J.M., Bödeker, K. (2022): optimLanduse: Robust Land-Use Optimization. R package version 1.1.0. <https://CRAN.R-project.org/package=optimLanduse>. -->
 
 # Literature
 
