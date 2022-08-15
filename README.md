@@ -557,11 +557,14 @@ land-cover compositions to an increasing risk aversion of the farmers.
 Fig. 5 corresponds to Fig. 3 in Gosling et al. (2020). The higher the
 uncertainty level, the higher the uncertainty spaces of the indicators.
 Here, the composition of land-cover alternatives is relatively stable
-across different uncertainty levels (Fig. 5). Comparing portfolios of
-uValue 0 with uValue 3, the share of forest decreases slightly from
-41.2% to 34.3% and silvopasture from 45.9% to 44.9%. The share of crops
-decreases from 12.9% to 1%. At the same time, the shares of pasture
-increased from 0% to 9.6% and that of plantation from 0% to 10.2%.
+across different uncertainty levels (Fig. 5). An uValue of 0 leads to
+Portfolios without consideration of risk. Here, the results corresponds
+to an ordinary (non-robust) reference point approach. Comparing
+portfolios of uValue 0 with uValue 3, the share of forest decreases
+slightly from 41.2% to 34.3% and silvopasture from 45.9% to 44.9%. The
+share of crops decreases from 12.9% to 1%. At the same time, the shares
+of pasture increased from 0% to 9.6% and that of plantation from 0% to
+10.2%.
 
 Alley cropping does not appear in any portfolio at any uncertainty
 level. It does not, on average, contribute best to any indicator. At
