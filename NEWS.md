@@ -12,6 +12,6 @@ Changes in version 1.1.0
 
 - Modifications regarding the suggestions during the review process of the manuscript "optimLanduse: A Package for Multiobjective Land-cover Composition Optimization under Uncertainty" submitted to "Methods in Ecology and Evolution"
 - The README file on GitHub was extended
-- Particularly the help pages were revised and extended.
+- The help pages were revised and extended.
 - Several examples were added
 - The exampleData function contains a template.
