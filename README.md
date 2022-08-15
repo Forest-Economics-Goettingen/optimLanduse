@@ -239,9 +239,9 @@ Enriching agricultural farms with agroforestry has been promoted as a
 means to enhance ecosystem functioning in farms in Panama, while
 maintaining important economic functions. Gosling et al. (2020)
 therefore used the here presented optimization model to understand
-smallholder farmers’ perceptions and values of agroforestry systems.
+smallholder farmer’s perceptions and values of agroforestry systems.
 They identified 10 relevant indicators for a predefined set of
-land-cover alternatives, which represent the farmers’ goals (such as
+land-cover alternatives, which represent the farmer’s goals (such as
 long and short-term income or labor demand, as well as carbon and water
 regulation). A survey with local farmers provided the empirical basis in
 the form of the farmer’s expectations on the indicator performance of
@@ -709,7 +709,7 @@ Consequently, the guaranteed performance
 also equals the multifunctional portfolio. Therefore, this
 socio-economic portfolio also does not perfectly reflect the currently
 observed land-cover composition. This means that further indicators
-appear to be relevant for the actual farmers’ decisions.
+appear to be relevant for the actual farmer’s decisions.
 
 ### 4.2.2 Ecological
 
@@ -754,7 +754,7 @@ contributions of all other land-cover alternatives in all scenarios
 those of forests. The land-cover composition of the ecologic bundle
 differs fundamentally from the currently observed portfolio. The
 ecological indicators are therefore apparently not sufficient to
-approximate the farmers’ current perceptions.
+approximate the farmer’s current perceptions.
 
 ### 4.2.3 Immediate Economic Success
 
@@ -797,10 +797,10 @@ Corresponding to Fig. 5 of Gosling et al. (2020), this scenario only
 consists of indicators that approximate immediate economic success.
 Indeed, the land-cover composition of this portfolio best reflects the
 portfolio observed in Eastern Panama. Hence, these indicators presumably
-best reflect the farmers’ goals and perceptions in Eastern Panama. The
+best reflect the farmer’s goals and perceptions in Eastern Panama. The
 difference between this portfolio and the desired multifunctional
 portfolio (Fig. 2) highlights the requirements a land-cover alternative
-must fulfill to meet the farmers’ requirements and goals. The
+must fulfill to meet the farmer’s requirements and goals. The
 silvopasture, as defined in Gosling et al. (2020), may not serve the
 requirements of the farmers sufficiently. Since farmers rate liquidity
 and meeting household needs higher than long-term profit and economic
@@ -940,7 +940,7 @@ contain the performances of the respective non-optimized indicators.*
 It can be followed from the pay-off matrix (Table 3), that, e.g.,
 liquidity and long-term income are fulfilled to high degrees when
 optimized considering the general preferences only (row 2). In contrast,
-farmers’ requirements regarding investment costs (0.012) and management
+farmer’s requirements regarding investment costs (0.012) and management
 complexity (0.09) are fulfilled poorly.
 
 When optimized considering only the water supply protection (row 10),
