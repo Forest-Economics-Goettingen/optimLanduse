@@ -2,29 +2,34 @@
 #### Data preparation ####
 ##--##################--##
 
-# Tue Oct 13 15:41:41 2020 ------------------------------
-# Maintainer: Kai Husmann
-# Developer: Kai Husmann, Kai Bödeker, Volker von Groß
+# Tue Jul  5 16:48:59 2022 ------------------------------
 
-#' Transform data to the expected format
+# Main developer: Kai Husmann, Kai Bödeker, Volker von Groß
+
+#' Transform data into the expected format
 #'
-#' The input data must suit to the specific expected optimLanduse format prior to
+#' The input data must suit the specific expected optimLanduse format prior to
 #' initialization and optimization. This function
 #' provides the possibility to easily transform data from the commonly used form
 #' of the exemplary data
-#' \code{\link{exampleData}} into to the expected format. The application of this function
-#' is not mandatory
-#' if you want to transform your data yourself or if your data is not formatted as
-#' the example data. The application example on the
-#' \href{https://gitlab.gwdg.de/forest_economics_goettingen/optimlanduse}{GitLab project page}
-#' provides information about the expected structure. Incomplete rows with NA-values are deleted and an error message is displayed.
+#' \code{\link{exampleData}} into the expected format. Please consider that the application of this function
+#' is not mandatory and in most cases not required. Best practice is to
+#' transform your data yourself into the expected format. Detailed information
+#' about the expected format and possible data processing can be found on the
+#' \href{https://github.com/Forest-Economics-Goettingen/optimLanduse/}{GitHub project page}.
+#' Note that incomplete rows, which include NA-values will be deleted
+#' and an error message will be thrown.
 #'
 #' @param dat Data frame or tibble in the format of the \code{\link{exampleData}}.
-#' @param uncertainty Indicates the column name of the uncertainty in the data.
+#' Please refer to the \href{https://github.com/Forest-Economics-Goettingen/optimLanduse/}{GitHub project page}
+#' for more details.
+#' @param uncertainty Indicates the column name of the uncertainty measure.
 #' Typical is "SE" for standard
 #' error or "SD" for standard deviation.
 #' @param expVAL Indicates the column name of the expected value.
 #' @return A formatted coefficients table with land-use options and indicator values ready for initialization via \code{\link{initScenario}}.
+#' @references Gosling, E., Reith, E., Knoke, T. et al. Exploring farmer perceptions of agroforestry via multi-objective optimisation:
+#' a test application in Eastern Panama. Agroforest Syst 94, 2003–2020 (2020). https://doi.org/10.1007/s10457-020-00519-0
 #' @examples
 #' require(readxl)
 #' dat <- read_xlsx(exampleData("exampleGosling_dataPrep.xlsx"), col_names = TRUE)

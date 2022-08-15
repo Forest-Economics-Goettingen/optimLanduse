@@ -2,28 +2,33 @@
 #### Attach portfolio performance and distance to target ####
 ##--#####################################################--##
 # Wed Jan 29 16:19:22 2020 ------------------------------
-# Maintainer: Kai Husmann
-# Developer: Kai Bödeker, Kai Husmann
+
+# Main developer: Kai Bödeker, Kai Husmann
 
 #' Attach portfolio performance and distance to target
 #'
-#' The function calculates and attaches the portfolio performance.
-#' For a comprehensive interpretation the beta values have to be grouped by
-#' their indicator in a plot  (see example).
-#' Each beta describes the relative proportion to the maximum achievable
-#' (the "target") within its indicator, given the current land use distribution
-#' and the uncertainty scenario set. The lowest beta of all indicators
-#' guarantees that under a worst-case scenario, at least this proportion will be
-#' achieved across all indicators. The solveScenario() function maximizes the
-#' guaranteed performance, or minimizes the distance to the maximum possible.
+#' The Portfolio performances are calculated and attached to the solved
+#' optimLanduse object. Each performance measure describes the relative proportion to the maximum achievable
+#' (the "target") of the indicator, given the current solution. The lowest performance of all indicators
+#' is the degree of fulfillment of the worst performing
+#' indicator. It can thus be interpreted as the guaranteed performance
+#' under the worst-possible scenario. At least this proportion will be
+#' achieved across all indicators.
 #'
-#' For further information see the supplement of Gosling et al (2020), Formula S5 (in the supplement of the paper).
+#' For further information and calculation, see the supplement of Gosling et al. (2020),
+#' Formula S5 (in the supplement of the paper) and also the paragraph
+#' optimLanduse functions and workflow - Post-processing in Husmann et al. (n. d.).
 #'
 #' @param x An optimized optimLanduse object.
 #' @return An optimized optimLanduse object with attached portfolio performance.
 #' @references Gosling, E., Reith, E., Knoke T., Gerique, A., Paul, C. (2020): Exploring
 #' farmer perceptions of agroforestry via multi-objective optimisation: a test application
 #' in Eastern Panama. \emph{Agroforestry Systems} \strong{94}. \doi{10.1007/s10457-020-00519-0}
+#'
+#' Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., Knoke, T. (no date): optimLanduse:
+#' A Package for Multiobjective Land-cover1Composition Optimization under Uncertainty. \emph{Methods
+#' in Ecology and Management}. Under review.
+#'
 #' @examples
 #' require(ggplot2)
 #' require(readxl)

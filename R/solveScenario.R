@@ -2,16 +2,20 @@
 ##--#############################--##
 #### Solve a optimLandUse object ####
 ##--#############################--##
-# Thu Nov 26 09:20:45 2020 ------------------------------
+# Tue Jul  5 17:33:25 2022 ------------------------------
+
+# Main developer: Kai Husmann
 
 #' Perform the optimization
 #'
-#' The function solves the optimization problem, specified by the initialized \emph{optimLanduse} object.
+#' The function solves the optimization framework specified by the initialized \emph{optimLanduse} object.
 #'
-#' The methodological background and the formulation of the optimization framework are described in Knoke et al. (2016).
+#' The methodological background and the formulation of the optimization
+#' framework are described in Knoke et al. (2016) and in Husmann et al. (n d.)
 #'
 #' @param x The initialized \emph{optimLanduse} object. See \code{\link{initScenario}} for the initialization.
-#' @param digitsPrecision Precision of the loss value.
+#' @param digitsPrecision Precision of the loss value. digitsPrecision is the
+#' possibility to influence the calculation time.
 #' @param lowerBound Optional lower bounds for the land-use options. Must be 0 or a vector in the dimension of the land-use options.
 #' @param upperBound Optional upper bounds for the land-use options. Must be 1 or a vector in the dimension of the land-use options.
 #' @return A solved landUse portfolio ready for export or further data processing.
@@ -26,6 +30,10 @@
 #' @references Knoke, T., Paul, C., Hildebrandt, P. et al. (2016): Compositional diversity
 #' of rehabilitated tropical lands supports multiple ecosystem services and
 #' buffers uncertainties. \emph{Nat Commun} \strong{7}, 11877. \doi{10.1038/ncomms11877}
+#'
+#' Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., Knoke, T. (no date): optimLanduse:
+#' A Package for Multiobjective Land-cover1Composition Optimization under Uncertainty. \emph{Methods
+#' in Ecology and Management}. Under review.
 
 
 #' @import lpSolveAPI
