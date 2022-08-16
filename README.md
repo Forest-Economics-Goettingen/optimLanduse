@@ -230,7 +230,7 @@ functions and to explain the most relevant in- and outputs on the
 example of a use-case in Eastern Panama. The data of this study can be
 accessed in *Appendix A* of Gosling et al. (2020) and is also firmly
 integrated into the *optimLanduse* package. The
-*exampleData(“exampleGosling.xlsx”)* function hels loading the data in
+*exampleData(“exampleGosling.xlsx”)* function helps loading the data in
 the environment. The data integrated in the package already comes in the
 required *optimLanduse* format, so that it can be used without any data
 processing.
@@ -278,7 +278,7 @@ init <- initScenario(coefTable = dat,
                      # optimistic contribution of each indicator directly defined
                      # by their average 
                      fixDistance = NA) 
-# 3 is the default
+                     # 3 is the default
 ```
 
 In line with Gosling et al. (2020), we chose the expected value of the
@@ -395,14 +395,14 @@ performances of all individual scenarios is provided by the output
 It follows that these 3 indicators are crucial when discussing future
 land-cover alternatives and concepts. According to Gosling et
 al. (2020), this result is in line with current observed behavior since
-the need for short-term liquidity mainly drives decisions of smallholder
-farmers in the study region. Intermediate-term economic success is not
-relevant until the household consumption is secured. While the
-performances of indicator 1 differ relatively strongly among the
-scenarios, the performances of indicators 3 and 8 are quite similar
-within all scenarios. This is attributed to the larger standard errors
-of this indicator. Thus, it may be worth investigating the particular
-reasons behind this high uncertainty for indicator 1.
+the need for short-term liquidity mainly drives smallholder farmers’
+decisions in the study region. Intermediate-term economic success is not
+relevant until household consumption is secured. While the performances
+of indicator 1 differ relatively strongly among the scenarios, the
+performances of indicators 3 and 8 are quite similar within all
+scenarios. This is attributed to the larger standard errors of this
+indicator. Thus, it may be worth investigating the particular reasons
+behind this high uncertainty for indicator 1.
 
 ``` r
 performance$beta
@@ -493,7 +493,7 @@ provides an objective measure of how an optimization enhances the
 achievements of the overall performance. A deeper look at the
 performances of the indicators reveals which indicators particularly
 benefit from optimization. Due to the compromise nature of the approach,
-indicators can also perfom worse in the optimized portfolio when
+indicators can also perform worse in the optimized portfolio when
 compared to the current land-cover composition.
 
 Amounting to 0.387, the guaranteed performance of the multifunctional
@@ -972,8 +972,8 @@ uncertainty values are smoother. The disadvantage of distinct
 uncertainty spaces is that the distances can no longer be
 straightforwardly interpreted. The distances calculated using different
 uncertainty spaces considered in the denominator and the counter of
-Equation 3 (Husmann et al., n.d.) cannot be interpreted as degree of
-fulfillment any more.
+Equation 3 (Husmann et al., n.d.) cannot be interpreted as a degree of
+fulfillment anymore.
 
 ``` r
 #### uValue 3 ####
