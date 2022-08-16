@@ -1,5 +1,9 @@
 ---
 title: Supplement to the manuscript MEE-22-04-344
+header-includes:
+- \usepackage{pdflscape}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
 output: 
   pdf_document:
     toc: true
@@ -205,9 +209,15 @@ knitr::kable(performanceExample, row.names = F)
 *Table 2: An extract of the scenario table of all indicators created through the calcPerformance() function with the worst performing scenarios*
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
-knitr::kable(performanceExample, row.names = F)
-```
+library(kableExtra)
 
+colnames(performanceExample) <- sub("outcome", "", colnames(performanceExample))
+performanceExample$performance <- round(performanceExample$performance, 1)
+names(performanceExample)[names(performanceExample) == "performance"] <- "perf."
+
+knitr::kable(performanceExample, row.names = F, align=rep('c', 8), booktabs = TRUE, linesep = "") %>%
+  kable_styling(latex_options=c("HOLD_position", "scale_down"))
+```
 **Comparison of the Performance of the Currently Observed Land-cover Composition to the Optimized Composition**
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
@@ -484,8 +494,8 @@ payOffFun <- function(x, dat) {
   ##     to the land-cover composition calculated in step (1)            ##
   
   result_payOff <- solveScenario(x = init_payOff,
-                          lowerBound = result_filtered$landUse,
-                          upperBound = result_filtered$landUse)
+                                 lowerBound = result_filtered$landUse,
+                                 upperBound = result_filtered$landUse)
   
   performance_payOff <- calcPerformance(x = result_payOff)
   
@@ -500,7 +510,7 @@ payOffFun <- function(x, dat) {
 
 # Apply the calculation of the pay-off matrix
 payOff_Matrix<- cbind(payOffDf,
-                 t(apply(payOffDf, 1, payOffFun, dat = dat)))
+                      t(apply(payOffDf, 1, payOffFun, dat = dat)))
 
 names(payOff_Matrix) <- c("Indicators", payOff_Matrix$indicator)
 
@@ -508,10 +518,20 @@ knitr::kable(payOff_Matrix, row.names = F)
 
 ```
 
-*Table 3: Performances of all indicators when optimized for single indicators only (pay-off matrix). The indicators considered for optimization are located in the first row. The other entries in the rows contain the performances of the respective non-optimized indicators.*
+\newpage
+\blandscape
+*Table 3: Performances of all indicators when optimized for single indicators only (pay-off matrix). The indicators considered for optimization are located in the first row. The other entries in the rows contain the performances of the respective non-optimized indicators.* 
+
+\renewcommand{\arraystretch}{1.5}
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
-knitr::kable(payOff_Matrix, row.names = F)
+
+knitr::kable(payOff_Matrix, format = "latex", row.names = F, align=rep("c", length(payOff_Matrix)), booktabs = TRUE, linesep = "") %>%
+  column_spec(column = 1:11, width = "2.3cm", latex_valign = "m") %>% 
+  #row_spec(row = 0:11, align = "center") %>% 
+  kable_styling(latex_options=c("HOLD_position", "scale_down"), font_size = 12)
 ```
+\elandscape
+\newpage
 
 It can be followed from the pay-off matrix (Table 3), that, e.g., liquidity and long-term income are fulfilled to high degrees when optimized considering the general preferences only (row 2). In contrast, farmer's requirements regarding investment costs (0.012) and management complexity (0.09) are fulfilled poorly.
 
