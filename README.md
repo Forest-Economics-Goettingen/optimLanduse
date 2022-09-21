@@ -522,13 +522,13 @@ applyDf <- data.frame(u = seq(0, 3, .5))
 applyFun <- function(x) {
   init <- initScenario(dat, uValue = x, optimisticRule = "expectation", fixDistance = NA)
   result <- solveScenario(x = init)
-  return(c(result$beta, as.matrix(result$landUse)))
+  output <- c(result$beta, as.matrix(result$landUse))
+  names(output) <- c("beta", names(result$landUse))
+  return(output)
 }
 
 applyDf <- cbind(applyDf,
                  t(apply(applyDf, 1, applyFun)))
-
-names(applyDf) <- c("u", "beta", names(result$landUse))
 
 applyDf[, c(3 : 8)] <- applyDf[, c(3 : 8)] * 100
 
