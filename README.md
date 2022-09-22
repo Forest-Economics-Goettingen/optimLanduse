@@ -1,4 +1,4 @@
-Supplement to the manuscript MEE-22-04-344
+optimLanduse - Robust Land-cover Optimization
 ================
 
 -   <a href="#1-introduction" id="toc-1-introduction">1 Introduction</a>
