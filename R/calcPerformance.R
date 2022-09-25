@@ -8,12 +8,13 @@
 #' Attach portfolio performance and distance to target
 #'
 #' The Portfolio performances are calculated and attached to the solved
-#' optimLanduse object. Each performance measure describes the relative proportion to the maximum achievable
-#' (the "target") of the indicator, given the current solution. The lowest performance of all indicators
-#' is the degree of fulfillment of the worst performing
-#' indicator. It can thus be interpreted as the guaranteed performance
-#' under the worst-possible scenario. At least this proportion will be
-#' achieved across all indicators.
+#' optimLanduse object. Each performance measure describes the relative
+#' proportion to the maximum achievable (the "target") of the indicator,
+#' given the current land use distribution and the uncertainty scenario set.
+#' The lowest performing scenario of all indicators is the degree of minimal
+#' fulfillment under the worst-possible outcome.
+#' It can thus be interpreted as the guaranteed performance.
+#' At least this proportion will be achieved across all indicators.
 #'
 #' For further information and calculation, see the supplement of Gosling et al. (2020),
 #' Formula S5 (in the supplement of the paper) and also the paragraph

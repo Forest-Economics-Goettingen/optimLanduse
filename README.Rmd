@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 When managing ecosystems, the question arises as to how to simultaneously combat biodiversity loss and maintain ecosystem functioning while improving human welfare. Designing multifunctional landscapes means deciding upon the composition and configuration of land-cover types, given that landscape patterns drive the landscape\`s ecological value and its ability to satisfy societal demands. Land-cover allocation models, particularly optimization approaches, have proven helpful in revealing trade-offs between multiple objectives and services provided by different land-cover compositions.
 
-The R package *optimLanduse* provides functions for easy and systematic applications of the robust multiobjective land-cover composition optimization approach of Knoke et al. (2016). It includes tools to determine the land-cover composition that best balances the multiple functions and services a landscape can provide, as well as tools for a deeper understanding and visualization of the contributions of the distinct indicators. The method has been developed and applied previously in a couple of studies, with some examples to be found in the [Literature] section. The methodological background of the approach can, e.g., be found in Knoke et al. (2016) and Husmann et al. (n.d.). We here refer to the nomenclature of Husmann et al. (n.d.). The package opens the approach of Knoke et al. (2016) to the community of landscape planners and provides opportunities for systematic or batch applications. To further enhance this, we have designed a shiny dashboard for the package to get a brief idea of its functionalities and to faciliate the usage of the package, see <http://rshiny.gwdg.de/apps/optimLanduse/>. The current package version optimizes land-cover compositions, but aspects of configuration may be added in the future.
+The R package *optimLanduse* provides functions for easy and systematic applications of the robust multiobjective land-cover composition optimization approach of Knoke et al. (2016). It includes tools to determine the land-cover composition that best balances the multiple functions and services a landscape can provide, as well as tools for a deeper understanding and visualization of the contributions of the distinct indicators. The method has been developed and applied previously in a couple of studies, with some examples to be found in the [Literature] section. The methodological background of the approach can, e.g., be found in Knoke et al. (2016) and Husmann et al. (n.d.). We here refer to the nomenclature of Husmann et al. (n.d.). The package opens the approach of Knoke et al. (2016) to the community of landscape planners and provides opportunities for systematic or batch applications. To further enhance this, we have designed a shiny dashboard for the package to get a brief idea of its functionalities and to facilitate the usage of the package, see <http://rshiny.gwdg.de/apps/optimLanduse/>. The current package version optimizes land-cover compositions, but aspects of configuration may be added in the future.
 
 # Detailed Description of the Functions’ In- and Outputs
 
@@ -131,20 +131,17 @@ result <- solveScenario(x = init)
 
 # Visualize the farm composition
 result$landUse %>% gather(key = landCoverOption,
-                          value = landCoverShare, 1 : 6) %>% 
-  mutate(portfolio = "Optimal farm composition",
-         landCoverShare = landCoverShare * 100) %>% 
-  ggplot(aes(y = landCoverShare, x = portfolio, fill = landCoverOption)) + 
-  geom_bar(position = "stack", stat = "identity") + 
-  theme_classic() +
-  theme(text = element_text(size = 14)) +
-  scale_fill_startrek() +
-  labs(y = "Allocated share (%)") +
+                          value = landCoverShare) %>% 
+  ggplot(aes(y = landCoverShare*100, x="", fill = landCoverOption)) + 
+   geom_bar(position = "stack", stat = "identity") + 
+   theme_classic() +
+   scale_fill_startrek() +
+   xlab("Optimal land-use composition")+
+   ylab( "Allocated share (%)") +
+   theme(text = element_text(size = 14),
+         legend.title=element_blank()) +
   scale_y_continuous(breaks = seq(0, 100, 10), 
-                     limits = c(0, 100)) +
-  theme(axis.title.x = element_blank(),
-        axis.ticks.x = element_blank()) + 
-  guides(fill=guide_legend(title = ""))
+                     limits = c(0, 100))
 ```
 
 *Fig. 2: Composition of the optimized farm (based on data of Gosling et al. (2020)), including all indicators. Each land-cover option is shown in an allocated share (%).*

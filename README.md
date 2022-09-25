@@ -1,44 +1,44 @@
 optimLanduse - Robust Land-cover Optimization
 ================
 
--   <a href="#1-introduction" id="toc-1-introduction">1 Introduction</a>
--   <a href="#2-detailed-description-of-the-functions-in--and-outputs"
-    id="toc-2-detailed-description-of-the-functions-in--and-outputs">2
-    Detailed Description of the Functions’ In- and Outputs</a>
-    -   <a href="#21-initialization-and-input"
-        id="toc-21-initialization-and-input">2.1 Initialization and Input</a>
-    -   <a href="#22-solver-and-list-with-results"
-        id="toc-22-solver-and-list-with-results">2.2 Solver and List with
-        results</a>
-    -   <a href="#23-post-processing" id="toc-23-post-processing">2.3
-        Post-Processing</a>
--   <a href="#3-example-application" id="toc-3-example-application">3
-    Example Application</a>
--   <a href="#4-batch-application-and-sensitivity-analysis"
-    id="toc-4-batch-application-and-sensitivity-analysis">4 Batch
-    Application and Sensitivity Analysis</a>
-    -   <a href="#41-solving-for-multiple-uncertainty-values"
-        id="toc-41-solving-for-multiple-uncertainty-values">4.1 Solving for
-        Multiple Uncertainty Values</a>
-    -   <a
-        href="#42-selecting-specific-indicator-bundles---investigating-the-indicators-sensitivities"
-        id="toc-42-selecting-specific-indicator-bundles---investigating-the-indicators-sensitivities">4.2
-        Selecting Specific Indicator Bundles - Investigating the Indicator’s
-        Sensitivities</a>
-        -   <a href="#421-socio-economic" id="toc-421-socio-economic">4.2.1
-            Socio-economic</a>
-        -   <a href="#422-ecological" id="toc-422-ecological">4.2.2 Ecological</a>
-        -   <a href="#423-immediate-economic-success"
-            id="toc-423-immediate-economic-success">4.2.3 Immediate Economic
-            Success</a>
-    -   <a href="#43-pay-off-matrix" id="toc-43-pay-off-matrix">4.3 Pay-Off
-        Matrix</a>
-    -   <a href="#44-the-use-of-fixdistance"
-        id="toc-44-the-use-of-fixdistance">4.4 The Use of
-        <em>fixDistance</em></a>
--   <a href="#5-suggested-citation" id="toc-5-suggested-citation">5
-    Suggested citation</a>
--   <a href="#6-literature" id="toc-6-literature">6 Literature</a>
+- <a href="#1-introduction" id="toc-1-introduction">1 Introduction</a>
+- <a href="#2-detailed-description-of-the-functions-in--and-outputs"
+  id="toc-2-detailed-description-of-the-functions-in--and-outputs">2
+  Detailed Description of the Functions’ In- and Outputs</a>
+  - <a href="#21-initialization-and-input"
+    id="toc-21-initialization-and-input">2.1 Initialization and Input</a>
+  - <a href="#22-solver-and-list-with-results"
+    id="toc-22-solver-and-list-with-results">2.2 Solver and List with
+    results</a>
+  - <a href="#23-post-processing" id="toc-23-post-processing">2.3
+    Post-Processing</a>
+- <a href="#3-example-application" id="toc-3-example-application">3
+  Example Application</a>
+- <a href="#4-batch-application-and-sensitivity-analysis"
+  id="toc-4-batch-application-and-sensitivity-analysis">4 Batch
+  Application and Sensitivity Analysis</a>
+  - <a href="#41-solving-for-multiple-uncertainty-values"
+    id="toc-41-solving-for-multiple-uncertainty-values">4.1 Solving for
+    Multiple Uncertainty Values</a>
+  - <a
+    href="#42-selecting-specific-indicator-bundles---investigating-the-indicators-sensitivities"
+    id="toc-42-selecting-specific-indicator-bundles---investigating-the-indicators-sensitivities">4.2
+    Selecting Specific Indicator Bundles - Investigating the Indicator’s
+    Sensitivities</a>
+    - <a href="#421-socio-economic" id="toc-421-socio-economic">4.2.1
+      Socio-economic</a>
+    - <a href="#422-ecological" id="toc-422-ecological">4.2.2 Ecological</a>
+    - <a href="#423-immediate-economic-success"
+      id="toc-423-immediate-economic-success">4.2.3 Immediate Economic
+      Success</a>
+  - <a href="#43-pay-off-matrix" id="toc-43-pay-off-matrix">4.3 Pay-Off
+    Matrix</a>
+  - <a href="#44-the-use-of-fixdistance"
+    id="toc-44-the-use-of-fixdistance">4.4 The Use of
+    <em>fixDistance</em></a>
+- <a href="#5-suggested-citation" id="toc-5-suggested-citation">5
+  Suggested citation</a>
+- <a href="#6-literature" id="toc-6-literature">6 Literature</a>
 
 [![](https://www.r-pkg.org/badges/version/optimLanduse)](https://cran.r-project.org/package=optimLanduse)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/optimLanduse?color=green)](https://cran.r-project.org/package=optimLanduse)
@@ -73,7 +73,7 @@ The package opens the approach of Knoke et al. (2016) to the community
 of landscape planners and provides opportunities for systematic or batch
 applications. To further enhance this, we have designed a shiny
 dashboard for the package to get a brief idea of its functionalities and
-to faciliate the usage of the package, see
+to facilitate the usage of the package, see
 <http://rshiny.gwdg.de/apps/optimLanduse/>. The current package version
 optimizes land-cover compositions, but aspects of configuration may be
 added in the future.
@@ -110,117 +110,115 @@ The *initScenario()* function combines the user settings with the data
 into an *optimLanduse*-object ready for solving. The following input
 data are required:
 
--   *coefTable*: The package is only capable of processing a
-    long-oriented type of data structure (Table 1). All combinations of
-    land-cover (landUse) alternatives and indicators must be listed
-    vertically. Each row must contain the average expectation, the
-    uncertainty, and the direction (more is better/ less is better) of
-    the respective land-cover and indicator combination. The column
-    names of the table must exactly follow the nomenclature displayed
-    below. You can also find this format in the built-in example tables
-    **exampleGosling.xlsx** or **exampleEmpty.xlsx**. The help files of
-    the *exampleData()* and *initScenario()* functions contain more
-    details regarding the required data format. An empty template
-    incl. the predefined headings can be accessed via
-    *exampleData(“exampleEmpty.xlsx”)*. All further columns in the
-    coefTable will be dropped.
+- *coefTable*: The package is only capable of processing a long-oriented
+  type of data structure (Table 1). All combinations of land-cover
+  (landUse) alternatives and indicators must be listed vertically. Each
+  row must contain the average expectation, the uncertainty, and the
+  direction (more is better/ less is better) of the respective
+  land-cover and indicator combination. The column names of the table
+  must exactly follow the nomenclature displayed below. You can also
+  find this format in the built-in example tables
+  **exampleGosling.xlsx** or **exampleEmpty.xlsx**. The help files of
+  the *exampleData()* and *initScenario()* functions contain more
+  details regarding the required data format. An empty template
+  incl. the predefined headings can be accessed via
+  *exampleData(“exampleEmpty.xlsx”)*. All further columns in the
+  coefTable will be dropped.
 
 *Table 1: Example of the data set from Gosling et al. (2020) to
 illustrate the required data structure.*
 
 ![](./man/figures/exampleGraphic.png)
 
--   *uValue*: The argument for the uncertainty level
-    (![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u"),
-    Equation 4 in Husmann et al., n.d.). A higher uValue reflects a
-    higher risk aversion of the decision maker. See the help file of the
-    *initScenario()* function for more details.
+- *uValue*: The argument for the uncertainty level
+  (![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u"),
+  Equation 4 in Husmann et al., n.d.). A higher uValue reflects a higher
+  risk aversion of the decision maker. See the help file of the
+  *initScenario()* function for more details.
 
--   *optimisticRule*: Specifies whether the optimistic contributions of
-    each indicator should be defined either directly by their average,
-    or by their average plus their uncertainty (if more is better) or
-    minus their uncertainty (if less is better). The former option is
-    most frequently used in recent literature and therefore builds the
-    default.
+- *optimisticRule*: Specifies whether the optimistic contributions of
+  each indicator should be defined either directly by their average, or
+  by their average plus their uncertainty (if more is better) or minus
+  their uncertainty (if less is better). The former option is most
+  frequently used in recent literature and therefore builds the default.
 
--   *fixDistance*: Optional numeric value that defines distinct
-    uncertainty levels for the calculation of the uncertainty space and
-    the averaged distances of a certain land-cover composition (see
-    Equation 9 in Husmann et al., n. d.). Passing NA disables
-    fixDistance. The uncertainty space is then defined by the uValue.
+- *fixDistance*: Optional numeric value that defines distinct
+  uncertainty levels for the calculation of the uncertainty space and
+  the averaged distances of a certain land-cover composition (see
+  Equation 9 in Husmann et al., n. d.). Passing NA disables fixDistance.
+  The uncertainty space is then defined by the uValue.
 
 ## 2.2 Solver and List with results
 
 The *solveScenario()* function takes the initialized
 *optimLanduse*-object and only a few optional solver-specific arguments.
 
--   *digitsPrecision*: Provides the only possibility for the user to
-    influence the calculation time. As the solving process has no
-    stochastic element, the calculation times depend almost only on the
-    number of digits calculated only.
+- *digitsPrecision*: Provides the only possibility for the user to
+  influence the calculation time. As the solving process has no
+  stochastic element, the calculation times depend almost only on the
+  number of digits calculated only.
 
--   *lowerBound* & *upperBound*: Optional bounds for the land-cover
-    alternatives. The lower bound must be 0 or a vector with lower
-    bounds in the dimension of the number of land-cover alternatives.
-    The upper bound, respectively, must be 1 or a vector with upper
-    bounds. Choosing 0 and 1 (the defaults) as boundaries for all
-    decision variables, means that no land-cover alternative is forced
-    into the portfolio and that no land-cover alternative is assigned a
-    maximum.
+- *lowerBound* & *upperBound*: Optional bounds for the land-cover
+  alternatives. The lower bound must be 0 or a vector with lower bounds
+  in the dimension of the number of land-cover alternatives. The upper
+  bound, respectively, must be 1 or a vector with upper bounds. Choosing
+  0 and 1 (the defaults) as boundaries for all decision variables, means
+  that no land-cover alternative is forced into the portfolio and that
+  no land-cover alternative is assigned a maximum.
 
 The returned *list with results* contains different information on the
 optimization model. It first repeats the settings of the
 *initScenario()*. These include:
 
--   *scenarioSettings*: A data frame with the *uValue* and the
-    *optimisticRule*.
--   *scenarioTable*: A data frame with one row for each combination of
-    worst-case and best-case outcomes of all indicators (thus the number
-    of rows equals the number of scenarios
-    ![N_S](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N_S "N_S")
-    in Husmann et al., n.d.). The columns contain relevant calculation
-    steps for the optimization program. *adjSem\** are the uncertainty
-    adjusted indicators
-    (![R\_{liu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;R_%7Bliu%7D "R_{liu}")
-    in Husmann et al., n.d.). *minAdjSem* are the minimum uncertainty
-    adjusted indicators
-    ![min(R\_{liu})](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;min%28R_%7Bliu%7D%29 "min(R_{liu})")
-    and
-    ![max(R\_{liu})](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;max%28R_%7Bliu%7D%29 "max(R_{liu})")
-    the maximum uncertainty adjusted indicators. diffAdjSem are the
-    range between these uncertainty adjusted indicators
-    ![\delta\_{\text{min,max}\_{iu}}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cdelta_%7B%5Ctext%7Bmin%2Cmax%7D_%7Biu%7D%7D "\delta_{\text{min,max}_{iu}}").
--   *coefObjective*: The optimization program is translated into a
-    linear program with
-    ![N_L](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N_L "N_L")
-    (number of land-cover options) coefficients for the inner solution.
-    The inner solution is solved using the *lpSolveAPI()* function of
-    the **lpSolveApi** package. *coefObjective* is the data frame that
-    contains these coefficients.
--   *coefConstraint*: A data frame with the respective constraints for
-    the inner solution solved by *lpsolveAPI()*.
--   *distance*: The distance of each scenario to its own theoretically
-    best-achievable contribution (reference). See Equation 3 in Husmann
-    et al. (n.d.).
+- *scenarioSettings*: A data frame with the *uValue* and the
+  *optimisticRule*.
+- *scenarioTable*: A data frame with one row for each combination of
+  worst-case and best-case outcomes of all indicators (thus the number
+  of rows equals the number of scenarios
+  ![N_S](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N_S "N_S")
+  in Husmann et al., n.d.). The columns contain relevant calculation
+  steps for the optimization program. *adjSem\** are the uncertainty
+  adjusted indicators
+  (![R\_{liu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;R_%7Bliu%7D "R_{liu}")
+  in Husmann et al., n.d.). *minAdjSem* are the minimum uncertainty
+  adjusted indicators
+  ![min(R\_{liu})](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;min%28R_%7Bliu%7D%29 "min(R_{liu})")
+  and
+  ![max(R\_{liu})](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;max%28R_%7Bliu%7D%29 "max(R_{liu})")
+  the maximum uncertainty adjusted indicators. diffAdjSem are the range
+  between these uncertainty adjusted indicators
+  ![\delta\_{\text{min,max}\_{iu}}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cdelta_%7B%5Ctext%7Bmin%2Cmax%7D_%7Biu%7D%7D "\delta_{\text{min,max}_{iu}}").
+- *coefObjective*: The optimization program is translated into a linear
+  program with
+  ![N_L](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N_L "N_L")
+  (number of land-cover options) coefficients for the inner solution.
+  The inner solution is solved using the *lpSolveAPI()* function of the
+  **lpSolveApi** package. *coefObjective* is the data frame that
+  contains these coefficients.
+- *coefConstraint*: A data frame with the respective constraints for the
+  inner solution solved by *lpsolveAPI()*.
+- *distance*: The distance of each scenario to its own theoretically
+  best-achievable contribution (reference). See Equation 3 in Husmann et
+  al. (n.d.).
 
 This is followed by a summary of the results of the optimization:
 
--   ![\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta"):
-    The maximum distance of the worst performing scenario (Equation 1 in
-    Husmann et al., n.d.).
--   *landUse*: The resulting land-cover composition after the
-    optimization.
+- ![\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta"):
+  The maximum distance of the worst performing scenario (Equation 1 in
+  Husmann et al., n.d.).
+- *landUse*: The resulting land-cover composition after the
+  optimization.
 
 ## 2.3 Post-Processing
 
--   *calcPerformance()*: Attaches the portfolio performances of all
-    indicators and scenarios as a data frame to the soved *optimLanduse*
-    object. The data can be used for straightforward visualization of
-    the performance (e.g. Fig. 3). The performance is defined as the
-    relative distance to the maximum achievable level for each indicator
-    and uncertainty scenario. It calculates as 1 -
-    ![d\_{iu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d_%7Biu%7D "d_{iu}")
-    (Equation 8, Husmann et al., n.d.)
+- *calcPerformance()*: Attaches the portfolio performances of all
+  indicators and scenarios as a data frame to the soved *optimLanduse*
+  object. The data can be used for straightforward visualization of the
+  performance (e.g. Fig. 3). The performance is defined as the relative
+  distance to the maximum achievable level for each indicator and
+  uncertainty scenario. It calculates as 1 -
+  ![d\_{iu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d_%7Biu%7D "d_{iu}")
+  (Equation 8, Husmann et al., n.d.)
 
 # 3 Example Application
 
@@ -295,20 +293,17 @@ result <- solveScenario(x = init)
 
 # Visualize the farm composition
 result$landUse %>% gather(key = landCoverOption,
-                          value = landCoverShare, 1 : 6) %>% 
-  mutate(portfolio = "Optimal farm composition",
-         landCoverShare = landCoverShare * 100) %>% 
-  ggplot(aes(y = landCoverShare, x = portfolio, fill = landCoverOption)) + 
-  geom_bar(position = "stack", stat = "identity") + 
-  theme_classic() +
-  theme(text = element_text(size = 14)) +
-  scale_fill_startrek() +
-  labs(y = "Allocated share (%)") +
+                          value = landCoverShare) %>% 
+  ggplot(aes(y = landCoverShare*100, x="", fill = landCoverOption)) + 
+   geom_bar(position = "stack", stat = "identity") + 
+   theme_classic() +
+   scale_fill_startrek() +
+   xlab("Optimal land-use composition")+
+   ylab( "Allocated share (%)") +
+   theme(text = element_text(size = 14),
+         legend.title=element_blank()) +
   scale_y_continuous(breaks = seq(0, 100, 10), 
-                     limits = c(0, 100)) +
-  theme(axis.title.x = element_blank(),
-        axis.ticks.x = element_blank()) + 
-  guides(fill=guide_legend(title = ""))
+                     limits = c(0, 100))
 ```
 
 <img src="README_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
