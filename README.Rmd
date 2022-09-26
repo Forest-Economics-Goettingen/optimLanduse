@@ -26,6 +26,7 @@ The R package *optimLanduse* provides functions for easy and systematic applicat
 
 This chapter provides a brief overview of the package functions (Fig. 1). For detailed information on methodological background, functions, and workflow please also refer to Husmann et al. (n.d.). We further refer the reader to the respective help pages of the package for more information.
 
+
 The stable version of the package can be installed using the CRAN server. The development version can be found on the GitHub project page.
 
 ```{r, results='hide',message=FALSE, warning=FALSE, fig.height = 3, fig.width = 4, eval=FALSE}
