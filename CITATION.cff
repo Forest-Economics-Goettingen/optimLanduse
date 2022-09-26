@@ -13,6 +13,9 @@ authors:
     - family-names: Bödeker
     given-names: Kai
     orcid: https://orcid.org/0000-0002-5307-5108
+    - family-names: Paul
+    given-names: Carola
+    orcid: https://orcid.org/0000-0002-6257-2026
     
 title: Forest-Economics-Goettingen/optimLanduse: optimLanduse
 version: v1.1.1
