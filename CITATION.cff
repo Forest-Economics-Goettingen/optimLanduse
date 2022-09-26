@@ -1,0 +1,19 @@
+cff-version: 1.1.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Husmann
+    given-names: Kai
+    orcid: https://orcid.org/0000-0003-2970-4709
+   - family-names: von Groß
+    given-names: Volker
+    orcid: https://orcid.org/0000-0001-7372-0066
+    - family-names: Fuchs
+    given-names: Jasper
+    orcid: https://orcid.org/0000-0001-5951-7897
+    - family-names: Bödeker
+    given-names: Kai
+    orcid: https://orcid.org/0000-0002-5307-5108
+    
+title: Forest-Economics-Goettingen/optimLanduse: optimLanduse
+version: v1.1.1
+date-released: 2022-09-26
