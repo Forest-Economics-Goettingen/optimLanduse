@@ -4,5 +4,8 @@ authors:
   - family-names: "Husmann"
     given-names: "Kai"
     orcid: "https://orcid.org/0000-0003-2970-4709"
+    - family-names: "von Groß"
+    given-names: "Volker"
+    orcid: "https://orcid.org/0000-0001-7372-0066"
 title: "Forest-Economics-Goettingen/optimLanduse: optimLanduse"
 version: v1.1.1
