@@ -15,3 +15,7 @@
 * The help pages were revised and extended.
 * Several examples were added
 * The exampleData function contains a template.
+
+# opzimLanduse 1.1.2
+
+* Suggested citation updated after acceptance of the package description in Methods in Ecology and Management
