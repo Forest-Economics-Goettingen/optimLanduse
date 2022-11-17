@@ -11,7 +11,7 @@
 #' The function solves the optimization framework specified by the initialized \emph{optimLanduse} object.
 #'
 #' The methodological background and the formulation of the optimization
-#' framework are described in Knoke et al. (2016) and in Husmann et al. (n d.)
+#' framework are described in Knoke et al. (2016) and in Husmann et al. (2020)
 #'
 #' @param x The initialized \emph{optimLanduse} object. See \code{\link{initScenario}} for the initialization.
 #' @param digitsPrecision Precision of the loss value. digitsPrecision is the
@@ -31,9 +31,7 @@
 #' of rehabilitated tropical lands supports multiple ecosystem services and
 #' buffers uncertainties. \emph{Nat Commun} \strong{7}, 11877. \doi{10.1038/ncomms11877}
 #'
-#' Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., Knoke, T. (no date): optimLanduse:
-#' A Package for Multiobjective Land-cover1Composition Optimization under Uncertainty. \emph{Methods
-#' in Ecology and Management}. Under review.
+#' @references Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., & Knoke, T. (2022). optimLanduse: A package for multiobjective land-cover composition optimization under uncertainty. Methods in Ecology and Evolution, 00, 1– 10. https://doi.org/10.1111/2041-210X.14000
 
 
 #' @import lpSolveAPI

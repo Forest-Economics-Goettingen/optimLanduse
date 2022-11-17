@@ -11,7 +11,7 @@
 #' The function initializes an \emph{optimLanduse} S3 object on the
 #' basis of a coefficients table. Please note that the coefficients table must follow
 #' the expected \emph{optimLanduse} format. The expected format is explained in the example on the
-#' \href{https://github.com/Forest-Economics-Goettingen/optimLanduse/}{GitHub project page}.
+#' \href{https://github.com/Forest-Economics-Goettingen/optimLanduse/}{GitHub project page} and in the publication in Methods in Ecology and Evolution (Husmann et al. ,2022)
 #'
 #'  Separating the initialization from the optimization is to save
 #'  computation time in batch analysis. The separated function calls allow the
@@ -19,7 +19,7 @@
 #'  optimizations from one initialized object. This could save time in the scenario or
 #'  sensitivity analysis.
 #'
-#'  A detailed description of the input parameters can be found in Husmann et al. (n.d.).
+#'  A detailed description of the input parameters can be found in Husmann et al. (2022).
 #'
 #' @param coefTable Coefficient table in the expected \emph{optimLanduse} format.
 #' @param uValue \emph{u} Value. The uncertainty value delivered in the coefTable is
@@ -33,12 +33,10 @@
 #' An optimization based on \emph{expectation} considers only downside risks.
 #' @param fixDistance This optional numeric value allows to define distinct uncertainty levels for the
 #' calculation of the uncertainty space and the averaged distances of a certain land-cover composition
-#' (see Equation 9 in Husmann et al. (n. d.)). Passing NA disables fixDistance. In this case,
+#' (see Equation 9 in Husmann et al. (2020)). Passing NA disables fixDistance. In this case,
 #' the uncertainty space is defined by uValue.
 #' @return An initialized optimLanduse S3 object ready for optimization.
-#' @references Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., Knoke, T. (no date): optimLanduse:
-#' A Package for Multiobjective Land-cover1Composition Optimization under Uncertainty. \emph{Methods
-#' in Ecology and Management}. Under review.
+#' @references Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., & Knoke, T. (2022). optimLanduse: A package for multiobjective land-cover composition optimization under uncertainty. Methods in Ecology and Evolution, 00, 1– 10. https://doi.org/10.1111/2041-210X.14000
 #' @examples
 #' require(readxl)
 #' dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
