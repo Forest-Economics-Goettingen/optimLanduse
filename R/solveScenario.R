@@ -38,7 +38,8 @@
 
 #' @export
 solveScenario <- function (x, digitsPrecision = 4,
-                           lowerBound = 0, upperBound = 1) {
+                           lowerBound = 0, upperBound = 1,
+                           test) {
 
   coefObjective <- x$coefObjective # Summen aus aller Scenarien der LandUse-Optionen (s. helper Funktion)
   piConstraintCoefficients <- x$coefConstraint # relativie Werte (m. Distanz als Divisor)
