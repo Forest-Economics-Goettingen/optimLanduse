@@ -39,11 +39,16 @@
 #' @export
 solveScenario <- function (x, digitsPrecision = 4,
                            lowerBound = 0, upperBound = 1,
-                           test) {
+                           constraintMatrix = NULL) {
 
   coefObjective <- x$coefObjective # Summen aus aller Scenarien der LandUse-Optionen (s. helper Funktion)
   piConstraintCoefficients <- x$coefConstraint # relativie Werte (m. Distanz als Divisor)
   #tbd. Die Variablen sollte ich noch umbenennen. Von piConstraintCoefficients zu coefConstraint
+
+  if ((!is.null(constraintMatrix) & any(c(lowerBound != 0, upperBound != 1)))) {
+    warning("A constraint matrix and boundaries are defined. The constraint matrix overrides the boundaries settings.")
+    lowerBound <- 0; upperBound <-  1
+  }
 
   precision <- 1 / 10^(digitsPrecision)
   # constraintCoef <- rbind(rep(1, length(coefObjective)), piConstraintCoefficients)
@@ -77,6 +82,16 @@ solveScenario <- function (x, digitsPrecision = 4,
   # Update the right hand side
   lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
 
+  # Update the restrictions if a constraint matrix is delivered.
+  if(!is.null(constraintMatrix)) {
+    for(i in c(1 : dim(constraintMatrix$lhs)[1])) { # modified 2022-11-21
+      lpSolveAPI::add.constraint(lprec = lpaObj,
+                                 xt = t(constraintMatrix$lhs[i,]),
+                                 type = constraintMatrix$type[i],
+                                 rhs = constraintMatrix$rhs[i])
+    }
+  }
+
   statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
   # ein gutes Beispiel zum Lernen: https://rpubs.com/nayefahmad/linear-programming
 
@@ -96,7 +111,11 @@ solveScenario <- function (x, digitsPrecision = 4,
       piConstraintRhs <- c(piConstraintRhs[1], round((piConstraintRhs[1] + piConstraintRhs[2]) / 2, digitsPrecision), piConstraintRhs[2])
     }
 
-    lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
+    if(is.null(constraintMatrix)) {
+      lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
+    } else {
+      lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1]), constraintMatrix$rhs))
+    }
 
 
     (statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj))
@@ -110,7 +129,11 @@ solveScenario <- function (x, digitsPrecision = 4,
 
   if(statusOpt == 2) {
 
-    lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[1], dim(piConstraintCoefficients)[1])))  # Prüfen!!
+    if(is.null(constraintMatrix)) {
+      lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[1], dim(piConstraintCoefficients)[1])))  # Pruefen!!
+    } else {
+      lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[1], dim(piConstraintCoefficients)[1]), constraintMatrix$rhs))
+    }
 
     statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
     retPiConstraintRhs <- piConstraintRhs[1]
