@@ -44,6 +44,7 @@ solveScenario <- function (x, digitsPrecision = 4,
   coefObjective <- x$coefObjective # Summen aus aller Scenarien der LandUse-Optionen (s. helper Funktion)
   piConstraintCoefficients <- x$coefConstraint # relativie Werte (m. Distanz als Divisor)
   #tbd. Die Variablen sollte ich noch umbenennen. Von piConstraintCoefficients zu coefConstraint
+  #tbd. Hier macht es Sinn abzufangen, dass fixDistance aus ist, wenn eine Constraint Matrix übergeben ist.
 
   if ((!is.null(constraintMatrix) & any(c(lowerBound != 0, upperBound != 1)))) {
     warning("A constraint matrix and boundaries are defined. The constraint matrix overrides the boundaries settings.")
