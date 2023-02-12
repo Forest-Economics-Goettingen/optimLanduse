@@ -35,6 +35,8 @@
 #' @references Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., & Knoke, T. (2022). optimLanduse: A package for multiobjective land-cover composition optimization under uncertainty. Methods in Ecology and Evolution, 00, 1– 10. https://doi.org/10.1111/2041-210X.14000
 #' @examples
 #' require(readxl)
+#' plan(multisession)
+#'
 #' coefTable <- read_xlsx(exampleData("exampleGosling.xlsx"))
 #'
 #'
@@ -53,7 +55,6 @@
 #' @export
 autoSearch <- function(coefTable, landUseObs, uValue){
 
-  plan(multisession)
 
   landUseObs <- landUseObs[order(landUseObs$landUse),]
 
