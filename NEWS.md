@@ -19,3 +19,8 @@
 # opzimLanduse 1.1.2
 
 * Suggested citation updated after acceptance of the package description in Methods in Ecology and Management
+
+# optimLanduse 1.1.3
+
+* autoSearch function added. 
+* Readme updated

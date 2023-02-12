@@ -18,7 +18,7 @@
 #'
 #' For further information and calculation, see the supplement of Gosling et al. (2020),
 #' Formula S5 (in the supplement of the paper) and also the paragraph
-#' optimLanduse functions and workflow - Post-processing in Husmann et al. (2020).
+#' optimLanduse functions and workflow - Post-processing in Husmann et al. (2022).
 #'
 #' @param x An optimized optimLanduse object.
 #' @return An optimized optimLanduse object with attached portfolio performance.
