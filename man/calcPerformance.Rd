@@ -25,7 +25,7 @@ At least this proportion will be achieved across all indicators.
 \details{
 For further information and calculation, see the supplement of Gosling et al. (2020),
 Formula S5 (in the supplement of the paper) and also the paragraph
-optimLanduse functions and workflow - Post-processing in Husmann et al. (2020).
+optimLanduse functions and workflow - Post-processing in Husmann et al. (2022).
 }
 \examples{
 require(ggplot2)

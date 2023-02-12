@@ -15,7 +15,7 @@
 #' optimization is then performed using the \emph{initScenario} and
 #' \emph{solveScenario} functions of the package. How these functions work
 #' in detail (incl. example code) can be seen in the help of the respective
-#' function in the package and the README from \citet{husmann_optimlanduse_2022}.
+#' function in the package and the README from Husmann et al. (2022).
 #' The result is added to the respective list entry. In addition, each entry is
 #' appended with the currently observed land-use portfolio and the land-use
 #' portfolio when all indicators are optimized together. Out of this list, we
@@ -47,6 +47,7 @@
 #'                        uValue = 2)
 
 #' @import future.apply
+#' @importFrom utils combn
 #'
 #' @export
 autoSearch <- function(coefTable, landUseObs, uValue){
@@ -113,11 +114,11 @@ autoSearch <- function(coefTable, landUseObs, uValue){
   combList <- Filter(function(x) !all(is.na(x$BrayCurtis_MF)), combList)
 
   bestResult <- min(sapply(combList, function(x) x$BrayCurtis_OBS))
-  bestResult_OBS <<- Filter(function(x) x$BrayCurtis_OBS == bestResult, combList)
+  bestResultObs <- Filter(function(x) x$BrayCurtis_OBS == bestResult, combList)
 
-  coefTable <<- coefTable
 
-  return(combList)
+  return(list(bestResultObs, combList))
 }
+
 
 
