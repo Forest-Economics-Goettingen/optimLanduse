@@ -52,6 +52,8 @@
 #' @export
 autoSearch <- function(coefTable, landUseObs, uValue){
 
+  plan(multisession)
+
   landUseObs <- landUseObs[order(landUseObs$landUse),]
 
   if(any(sort(unique(coefTable$landUse)) != landUseObs$landUse)){stop("Error: Land-use option for the coefTable and landUseObs argument are not the same or in the wrong order")}
