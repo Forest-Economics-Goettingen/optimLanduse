@@ -46,6 +46,7 @@
 #'                        landUseObs = obsLU,
 #'                        uValue = 2)
 
+#' @import future
 #' @import future.apply
 #' @importFrom utils combn
 #'
