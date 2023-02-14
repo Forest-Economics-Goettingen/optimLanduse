@@ -250,17 +250,17 @@ Each of the returned list contains different information, these include:
 - *beta*: The maximum distance of the worst performing scenario
   (Equation 1 in Husmann et al., 2022).
 - *landUseObs*: The observed land-cover composition.
-- *LandUse_MF*: The land-cover composition that result out of optimizing
+- *LandUseMf*: The land-cover composition that result out of optimizing
   all Indicators simultaneously.
-- *beta_MF*: The maximum distance of the worst performing scenario when
+- *betaMf*: The maximum distance of the worst performing scenario when
   setting the arguments for the lower and upper bounds exactly to
-  *LandUse_MF*.
-- *BrayCurtis_OBS*: The Bray-Curtis measure of dissimilarity comparing
+  *LandUseMf*.
+- *BrayCurtisObs*: The Bray-Curtis measure of dissimilarity comparing
   the *result* land-cover composition with the observed land-cover
   composition *landUseObs* (Equation ??? in von Groß et al., 2023).
-- *BrayCurtis_MF*:The Bray-Curtis measure of dissimilarity comparing the
+- *BrayCurtisMf*:The Bray-Curtis measure of dissimilarity comparing the
   *result* land-cover composition with the land-cover composition that
-  optimizes all Indicators simultaneously *landUse_MF*.
+  optimizes all Indicators simultaneously *landUseMf*.
 
 # 3 Example Application
 
@@ -563,6 +563,8 @@ obsLU <- data.frame(landUse = c("Pasture", "Crops", "Forest", "Plantation",
                     share = c(0.59, 0.26, 0.14, 0.01, 0, 0))
 ```
 
+*Table 3: Example of the structure needed for the obsLU argument*
+
 | landUse        | share |
 |:---------------|------:|
 | Pasture        |  0.59 |
@@ -572,14 +574,15 @@ obsLU <- data.frame(landUse = c("Pasture", "Crops", "Forest", "Plantation",
 | Alley Cropping |  0.00 |
 | Silvopasture   |  0.00 |
 
-First we choose the evaluation strategy. In this example we decided to
+First, we choose the evaluation strategy. In this example, we decided to
 run the calculations in parallel on the local machine
 *plan(multisession)*. This greatly reduces the calculation time. It also
-opens up the possibility for developers to modify the function for
-larger data sets that quickly become time-intesive and run it on, for
-example, high performance computing (HPC). In addition, a data frame
-must be created that shows the different land use types in the first
-column and the respective observed land use shares in the second column.
+allows developers to modify the function for larger data sets that
+quickly become time-intensive and run it on, for example,
+high-performance computing (HPC). In addition, a data frame must be
+created that shows the different land-cover types in the first column
+and the respective observed land-cover shares in the second column (see
+Table 3).
 
 ``` r
 combList <- autoSearch(coefTable = dat,
@@ -591,7 +594,25 @@ combList <- autoSearch(coefTable = dat,
 plan(sequential)
 ```
 
-In line with the examples before, we
+![](./man/figures/exampleList.png)
+
+*Figure 5: Example of the resulting list from the autoSearch() function
+to illustrate the elements.*
+
+The list *combList* contains two sub-lists. The first contains the
+result that best describes the currently observed land-cover decision.
+The second contains all indicator combinations (Fig. 5). In our example,
+2^10 -1 combinations (Equation ??? in von Groß et al., 2023). To compare
+the land-cover types of the different indicator combinations with those
+of the currently observed and with the portfolio that optimizes all
+indicators simultaneously, the Bray-Curtis measure of dissimilarity is
+used (for more details, see Equation ??? in von Groß et al., 2023). This
+detailed list of all indicator combinations, their respective
+optimization results and their comparison to the the currently observed
+portfolio and the portfolio that optimizes all indicators simultaneously
+can be used for e. g. identifying different potential transformation
+pathway and trade-offs and synergies between them (Section ??? in von
+Groß et al., 2023).
 
 # 4 Batch Application and Sensitivity Analysis
 
@@ -629,18 +650,18 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
 
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
-*Fig. 5: Theoretically ideal farm compositions under increasing levels
+*Fig. 6: Theoretically ideal farm compositions under increasing levels
 of uncertainty.*
 
-Solving the portfolio (Fig. 5) under increasing assumptions for the
+Solving the portfolio (Fig. 6) under increasing assumptions for the
 uncertainty levels (uValue, respectively
 ![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u")
 in Equation 4 in Husmann et al., 2022) provides the sensitivity of the
 land-cover compositions to an increasing risk aversion of the farmers.
-Fig. 5 corresponds to Fig. 3 in Gosling et al. (2020). The higher the
+Fig. 6 corresponds to Fig. 3 in Gosling et al. (2020). The higher the
 uncertainty level, the higher the uncertainty spaces of the indicators.
 Here, the composition of land-cover alternatives is relatively stable
-across different uncertainty levels (Fig. 5). An uValue of 0 leads to
+across different uncertainty levels (Fig. 6). An uValue of 0 leads to
 Portfolios without consideration of risk. Here, the results corresponds
 to an ordinary (non-robust) reference point approach. Comparing
 portfolios of uValue 0 with uValue 3, the share of forest decreases
@@ -724,11 +745,11 @@ result_socioeconomic$landUse %>% gather(key = landCoverOption,
 
 ![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
-*Fig. 6: Composition of the optimized farm (based on data of Gosling et
+*Fig. 7: Composition of the optimized farm (based on data of Gosling et
 al., 2020), including only socio-economic indicators. Each land-cover
 option is shown in an allocated share (%).*
 
-The first example considers socio-economic indicators only (Fig. 6; see
+The first example considers socio-economic indicators only (Fig. 7; see
 also Fig. 5 of Gosling et al., 2020). The result corresponds to the
 above shown multifunctional portfolio (Fig. 2). This is expected, as all
 indicators relevant to the solution of the multifunctional portfolio
@@ -773,7 +794,7 @@ ggplot(performance_socioeconomic$scenarioTable,
 
 <img src="README_files/figure-gfm/unnamed-chunk-18-1.png" style="display: block; margin: auto;" />
 
-*Fig. 7: The performance of each of the socio-economic indicators. The
+*Fig. 8: The performance of each of the socio-economic indicators. The
 colored points are the achieved levels of the indicators of all
 scenarios. The dotted, horizontal red line illustrates the guaranteed
 performance*
@@ -783,7 +804,7 @@ Husmann et al, 2022).*
 
 An analysis of the performance of the socio-economic indicators shows
 that the performances of the three relevant indicators equal the
-multifunctional portfolio (Fig. 7). The result is still defined by
+multifunctional portfolio (Fig. 8). The result is still defined by
 financial stability, investment costs and meeting household needs.
 Consequently, the guaranteed performance
 ![(1-\beta)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%281-%5Cbeta%29 "(1-\beta)")
@@ -823,13 +844,13 @@ result_ecologic$landUse %>% gather(key = landCoverOption, value = landCoverShare
 
 ![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
-*Fig. 8: Composition of the optimized farm (based on data of Gosling et
+*Fig. 9: Composition of the optimized farm (based on data of Gosling et
 al., 2020), including only ecological indicators. Each land-cover option
 is shown in an allocated share (%).*
 
 As the second example, the ecological indicator group leads to a
-land-cover portfolio comprising of only forests (Fig. 8; corresponds to
-Fig. 5 of Gosling et al., 2020). It can be concluded that all
+land-cover portfolio comprising of only forests (Fig. 9; corresponds to
+Fig. 6 of Gosling et al., 2020). It can be concluded that all
 contributions of all other land-cover alternatives in all scenarios
 (even the optimistic ones) to the ecological indicators are lower than
 those of forests. The land-cover composition of the ecologic bundle
@@ -868,13 +889,13 @@ result_short$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1
 
 ![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
-*Fig. 9: Composition of the optimized farm (based on data of Gosling et
+*Fig. 10: Composition of the optimized farm (based on data of Gosling et
 al., 2020), including the prospective relevant indicators of the farmers
 only. Each land-cover option is shown in an allocated share (%).*
 
 The third example is composed of a bundle of indicators that
-prospectively reflect the farmer’s needs and perceptions (Fig. 9).
-Corresponding to Fig. 5 of Gosling et al. (2020), this scenario only
+prospectively reflect the farmer’s needs and perceptions (Fig. 10).
+Corresponding to Fig. 6 of Gosling et al. (2020), this scenario only
 consists of indicators that approximate immediate economic success.
 Indeed, the land-cover composition of this portfolio best reflects the
 portfolio observed in Eastern Panama. Hence, these indicators presumably
@@ -1000,7 +1021,7 @@ names(payOff_Matrix) <- c("Indicators", payOff_Matrix$indicator)
 knitr::kable(payOff_Matrix, row.names = F)
 ```
 
-*Table 3: Performances of all indicators when optimized for single
+*Table 4: Performances of all indicators when optimized for single
 indicators only (pay-off matrix). The indicators considered for
 optimization are located in the first row. The other entries in the rows
 contain the performances of the respective non-optimized indicators.*
@@ -1018,7 +1039,7 @@ contain the performances of the respective non-optimized indicators.*
 | Protecting soil resources |               0.000 |               0.000 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
 | Protecting water supply   |               0.000 |               0.000 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
 
-It can be followed from the pay-off matrix (Table 3), that, e.g.,
+It can be followed from the pay-off matrix (Table 4), that, e.g.,
 liquidity and long-term income are fulfilled to high degrees when
 optimized considering the general preferences only (row 2). In contrast,
 farmer’s requirements regarding investment costs (0.012) and management
@@ -1026,7 +1047,7 @@ complexity (0.09) are fulfilled poorly.
 
 When optimized considering only the water supply protection (row 10),
 the indicators most relevant for the farmers (meeting household needs
-and Liquidity, Fig. 9) perform very poorly (0.0). This shows that the
+and Liquidity, Fig. 10) perform very poorly (0.0). This shows that the
 water supply function is clearly antagonistic to the farmer’s
 requirements.
 
@@ -1092,14 +1113,14 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
 
 ![](README_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
-*Fig. 10: Theoretically ideal farm compositions using the fixDistance
+*Fig. 11: Theoretically ideal farm compositions using the fixDistance
 argument and increasing levels of uncertainty.*
 
 It can be seen that the land-cover allocation transition under
-increasing uncertainty levels (Fig. 10) differs slightly from the
+increasing uncertainty levels (Fig. 11) differs slightly from the
 multifunctional scenario shown above (Fig. 2). The here broadened state
 space leads to a higher share of pasture under low uncertainty levels as
-compared to the multifunctional portfolio above (Fig. 5).
+compared to the multifunctional portfolio above (Fig. 7).
 
 # 5 Suggested citation
 
