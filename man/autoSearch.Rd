@@ -4,7 +4,13 @@
 \alias{autoSearch}
 \title{Optimize all possible indicator combinations}
 \usage{
-autoSearch(coefTable, landUseObs, uValue)
+autoSearch(
+  coefTable,
+  landUseObs,
+  uValue = 1,
+  optimisticRule = "expectation",
+  fixDistance = 3
+)
 }
 \arguments{
 \item{coefTable}{Coefficient table in the expected \emph{optimLanduse} format.}
@@ -16,6 +22,17 @@ conain the land-use options. The second colum the respective shares.}
 multiplied with this u value. The value, therefore, enables scenario analyses with differing
 uncertainties in relation to indicator values. Higher u values can be interpreted as a higher
 risk aversion of the decision maker.}
+
+\item{optimisticRule}{Either \emph{expectation} or \emph{uncertaintyAdjustedExpectation}.
+The rule indicates whether the optimistic outcomes of an indicator are directly
+reflected by their expectations or if the indicator is calculated as expectation +
+uncertainty when "more is better" or expectation - uncertainty respectively when "less is better".
+An optimization based on \emph{expectation} considers only downside risks.}
+
+\item{fixDistance}{This optional numeric value allows to define distinct uncertainty levels for the
+calculation of the uncertainty space and the averaged distances of a certain land-cover composition
+(see Equation 9 in Husmann et al. (2020)). Passing NA disables fixDistance. In this case,
+the uncertainty space is defined by uValue.}
 }
 \value{
 A list with all possible indicator combinations, their respective optimization results and the
@@ -38,7 +55,7 @@ land-use decisions. An example and further explanation is given in the README
 }
 \examples{
 require(readxl)
-require(future)
+require(future.apply)
 plan(multisession)
 
 coefTable <- read_xlsx(exampleData("exampleGosling.xlsx"))
@@ -50,8 +67,11 @@ obsLU <- data.frame(landUse = c("Pasture", "Crops", "Forest", "Plantation",
 
 combList <- autoSearch(coefTable = coefTable,
                        landUseObs = obsLU,
-                       uValue = 2)
+                       uValue = 2,
+                       optimisticRule = "expectation",
+                       fixDistance = 3)
 plan(sequential)
+
 }
 \references{
 Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., & Knoke, T. (2022). optimLanduse: A package for multiobjective land-cover composition optimization under uncertainty. Methods in Ecology and Evolution, 00, 1– 10. https://doi.org/10.1111/2041-210X.14000

@@ -10,8 +10,9 @@ optimLanduse - Robust Land-cover Optimization
   - <a href="#22-solver-and-list-with-results"
     id="toc-22-solver-and-list-with-results">2.2 Solver and List with
     results</a>
-  - <a href="#23-post-processing" id="toc-23-post-processing">2.3
-    Post-Processing</a>
+  - <a href="#23-post-processing-and-additional-functions"
+    id="toc-23-post-processing-and-additional-functions">2.3 Post-Processing
+    and additional Functions</a>
 - <a href="#3-example-application" id="toc-3-example-application">3
   Example Application</a>
 - <a href="#4-batch-application-and-sensitivity-analysis"
@@ -92,7 +93,7 @@ server. The development version can be found on the GitHub project page.
 
 ``` r
 # If not already installed
-install.packages("optimLanduse")
+#install.packages("optimLanduse")
 ```
 
 <!-- <p align="center"> -->
@@ -210,16 +211,56 @@ This is followed by a summary of the results of the optimization:
 - *landUse*: The resulting land-cover composition after the
   optimization.
 
-## 2.3 Post-Processing
+## 2.3 Post-Processing and additional Functions
 
-- *calcPerformance()*: Attaches the portfolio performances of all
-  indicators and scenarios as a data frame to the soved *optimLanduse*
-  object. The data can be used for straightforward visualization of the
-  performance (e.g. Fig. 3). The performance is defined as the relative
-  distance to the maximum achievable level for each indicator and
-  uncertainty scenario. It calculates as 1 -
-  ![d\_{iu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d_%7Biu%7D "d_{iu}")
-  (Equation 8, Husmann et al., 2022)
+The *calcPerformance()* function attaches the portfolio performances of
+all indicators and scenarios as a data frame to the solved
+*optimLanduse* object. The data can be used for straightforward
+visualization of the performance (e.g. Fig. 3). The performance is
+defined as the relative distance to the maximum achievable level for
+each indicator and uncertainty scenario. It calculates as 1 -
+![d\_{iu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d_%7Biu%7D "d_{iu}")
+(Equation 8, Husmann et al., 2022)
+
+The *autoSearch()* function Generates a list of all possible indicator
+combinations of the *coefTable* with their respective optimization
+results and the result that identifies the indicators that are best
+describing the current land-use decisions. The indicator combinations
+are converted into a list format, where each combination corresponds to
+a list entry. For each of these list entries, an optimization is then
+performed using the *initScenario()* and *solveScenario()* functions of
+the package. The result is added to the respective list entry. In
+addition, each entry is appended with the currently observed land-use
+portfolio and the land-use portfolio when all indicators are optimized
+together. This list can than be filtered and ordered to e. g. identify
+different potential transformation pathway and trade-offs and synergies
+between them. To allow the user the same option settings, the
+*initScenario()* arguments *uValue*, *optimisticRule* and *fixDistance*
+can be adjusted. The *landUseObs* has to be a data frame with two
+columns. The first column has to conain the land-use options. The second
+colum the respective shares.
+
+Each of the returned list contains different information, these include:
+
+- *indicator*: The indicator combination that got optimized.
+- *uValue*: The uValue that was used for the optimization.
+- *LandUseOptions*: An overview of the Optimized land-use options.
+- *result*: The resulting land-cover composition after the optimization
+  for the indicator combination.
+- *beta*: The maximum distance of the worst performing scenario
+  (Equation 1 in Husmann et al., 2022).
+- *landUseObs*: The observed land-cover composition.
+- *LandUse_MF*: The land-cover composition that result out of optimizing
+  all Indicators simultaneously.
+- *beta_MF*: The maximum distance of the worst performing scenario when
+  setting the arguments for the lower and upper bounds exactly to
+  *LandUse_MF*.
+- *BrayCurtis_OBS*: The Bray-Curtis measure of dissimilarity comparing
+  the *result* land-cover composition with the observed land-cover
+  composition *landUseObs* (Equation ??? in von Groß et al., 2023).
+- *BrayCurtis_MF*:The Bray-Curtis measure of dissimilarity comparing the
+  *result* land-cover composition with the land-cover composition that
+  optimizes all Indicators simultaneously *landUse_MF*.
 
 # 3 Example Application
 
@@ -254,6 +295,7 @@ in Tables 1 and 2 in Gosling et al. (2020).
 ``` r
 library(optimLanduse)
 library(readxl)
+library(future.apply) ## required only for autoSearch()-function
 library(ggplot2)
 library(tidyverse)
 library(ggsci)
@@ -508,6 +550,49 @@ approximate the immediate economic success. The generally desirable
 multifunctional portfolio therefore does not promise immediate economic
 success for the farmers.
 
+**Calculating a List of all possible Indicator Combinations and their
+Respective Optimization Result**
+
+``` r
+# Select evaluation strategy
+plan(multisession)
+
+# Define data frame for observed land-use shares
+obsLU <- data.frame(landUse = c("Pasture", "Crops", "Forest", "Plantation",
+                                "Alley Cropping", "Silvopasture"),
+                    share = c(0.59, 0.26, 0.14, 0.01, 0, 0))
+```
+
+| landUse        | share |
+|:---------------|------:|
+| Pasture        |  0.59 |
+| Crops          |  0.26 |
+| Forest         |  0.14 |
+| Plantation     |  0.01 |
+| Alley Cropping |  0.00 |
+| Silvopasture   |  0.00 |
+
+First we choose the evaluation strategy. In this example we decided to
+run the calculations in parallel on the local machine
+*plan(multisession)*. This greatly reduces the calculation time. It also
+opens up the possibility for developers to modify the function for
+larger data sets that quickly become time-intesive and run it on, for
+example, high performance computing (HPC). In addition, a data frame
+must be created that shows the different land use types in the first
+column and the respective observed land use shares in the second column.
+
+``` r
+combList <- autoSearch(coefTable = dat,
+                       landUseObs = obsLU,
+                       uValue = 2,
+                       optimisticRule = "expectation",
+                       fixDistance = NA)                       
+# End the parallelization process
+plan(sequential)
+```
+
+In line with the examples before, we
+
 # 4 Batch Application and Sensitivity Analysis
 
 ## 4.1 Solving for Multiple Uncertainty Values
@@ -542,7 +627,7 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
         legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 *Fig. 5: Theoretically ideal farm compositions under increasing levels
 of uncertainty.*
@@ -637,7 +722,7 @@ result_socioeconomic$landUse %>% gather(key = landCoverOption,
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 *Fig. 6: Composition of the optimized farm (based on data of Gosling et
 al., 2020), including only socio-economic indicators. Each land-cover
@@ -686,7 +771,7 @@ ggplot(performance_socioeconomic$scenarioTable,
            vjust = -1)
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-15-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/unnamed-chunk-18-1.png" style="display: block; margin: auto;" />
 
 *Fig. 7: The performance of each of the socio-economic indicators. The
 colored points are the achieved levels of the indicators of all
@@ -736,7 +821,7 @@ result_ecologic$landUse %>% gather(key = landCoverOption, value = landCoverShare
   guides(fill=guide_legend(title=""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 *Fig. 8: Composition of the optimized farm (based on data of Gosling et
 al., 2020), including only ecological indicators. Each land-cover option
@@ -781,7 +866,7 @@ result_short$landUse %>% gather(key = landCoverOption, value = landCoverShare, 1
   guides(fill = guide_legend(title = ""))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 *Fig. 9: Composition of the optimized farm (based on data of Gosling et
 al., 2020), including the prospective relevant indicators of the farmers
@@ -1005,7 +1090,7 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
         legend.position = "bottom")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 *Fig. 10: Theoretically ideal farm compositions using the fixDistance
 argument and increasing levels of uncertainty.*

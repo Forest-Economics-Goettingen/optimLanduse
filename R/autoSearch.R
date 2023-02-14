@@ -30,12 +30,21 @@
 #' multiplied with this u value. The value, therefore, enables scenario analyses with differing
 #' uncertainties in relation to indicator values. Higher u values can be interpreted as a higher
 #' risk aversion of the decision maker.
+#' @param optimisticRule Either \emph{expectation} or \emph{uncertaintyAdjustedExpectation}.
+#' The rule indicates whether the optimistic outcomes of an indicator are directly
+#' reflected by their expectations or if the indicator is calculated as expectation +
+#' uncertainty when "more is better" or expectation - uncertainty respectively when "less is better".
+#' An optimization based on \emph{expectation} considers only downside risks.
+#' @param fixDistance This optional numeric value allows to define distinct uncertainty levels for the
+#' calculation of the uncertainty space and the averaged distances of a certain land-cover composition
+#' (see Equation 9 in Husmann et al. (2020)). Passing NA disables fixDistance. In this case,
+#' the uncertainty space is defined by uValue.
 #' @return A list with all possible indicator combinations, their respective optimization results and the
 #' indicator set best describing the observed land-use decision.
 #' @references Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., & Knoke, T. (2022). optimLanduse: A package for multiobjective land-cover composition optimization under uncertainty. Methods in Ecology and Evolution, 00, 1– 10. https://doi.org/10.1111/2041-210X.14000
 #' @examples
 #' require(readxl)
-#' require(future)
+#' require(future.apply)
 #' plan(multisession)
 #'
 #' coefTable <- read_xlsx(exampleData("exampleGosling.xlsx"))
@@ -47,15 +56,17 @@
 #'
 #' combList <- autoSearch(coefTable = coefTable,
 #'                        landUseObs = obsLU,
-#'                        uValue = 2)
+#'                        uValue = 2,
+#'                        optimisticRule = "expectation",
+#'                        fixDistance = 3)
 #' plan(sequential)
-
+#'
 #' @import future
 #' @import future.apply
 #' @importFrom utils combn
 #'
 #' @export
-autoSearch <- function(coefTable, landUseObs, uValue){
+autoSearch <- function(coefTable, landUseObs, uValue = 1, optimisticRule = "expectation", fixDistance = 3){
 
   landUseObs <- landUseObs[order(landUseObs$landUse),]
 
@@ -66,9 +77,9 @@ autoSearch <- function(coefTable, landUseObs, uValue){
   coefTable <- coefTable[order(coefTable$landUse),]
 
   #### Calculate optimal result for later BC comparison ####
-  init_MF <- initScenario(coefTable, uValue = uValue, optimisticRule = "expectation")
-  result_MF <- solveScenario(x = init_MF)
-  LandUse_MF<- as.numeric(result_MF$landUse[, order(colnames(result_MF$landUse))])
+  initMf <- initScenario(coefTable, uValue = uValue, optimisticRule = optimisticRule, fixDistance = fixDistance)
+  resultMf <- solveScenario(x = initMf)
+  LandUseMf<- as.numeric(resultMf$landUse[, order(colnames(resultMf$landUse))])
 
   #### Create all indicator combinations ####
   combInd <- do.call(c, lapply(seq_along(unique(coefTable$indicator)),
@@ -80,7 +91,7 @@ autoSearch <- function(coefTable, landUseObs, uValue){
   applyFun <- function(x, y) {
     coefTable <- y[y$indicator %in% x$indicator,]
     coefTable <- coefTable[order(coefTable$landUse),]
-    init <- initScenario(coefTable, uValue = uValue, optimisticRule = "expectation")
+    init <- initScenario(coefTable, uValue = uValue, optimisticRule = optimisticRule, fixDistance = fixDistance)
     result <- solveScenario(x = init)
     return(list(names(result$landUse), t(result$landUse), result$beta))
   }
@@ -95,35 +106,32 @@ autoSearch <- function(coefTable, landUseObs, uValue){
     combList[[k]]$result <- unlist(landUseResults[[k]][2], use.names = FALSE)
     combList[[k]]$beta <- unlist(landUseResults[[k]][3], use.names = FALSE)
     combList[[k]]$landUseObs <- landUseObs
-    combList[[k]]$LandUse_MF <- LandUse_MF
+    combList[[k]]$LandUseMf <- LandUseMf
   }
   betaMFfun <- function(x) {
-    result <- solveScenario(init_MF, lowerBound = x$result,
+    result <- solveScenario(initMf, lowerBound = x$result,
                             upperBound = x$result)
     return(list(result$beta))
   }
-  beta_MF <- future_lapply(combList, betaMFfun)
+  betaMf <- future_lapply(combList, betaMFfun)
 
   #### Add Bray-Curtis to every list entry ####
   BcList <- future_lapply(combList, function(x){sum(abs(x$result - x$landUseObs)) / 2 * 100})
-  BCList.two <- future_lapply(combList, function(x){sum(abs(x$result - x$LandUse_MF)) / 2 * 100})
+  BCList.two <- future_lapply(combList, function(x){sum(abs(x$result - x$LandUseMf)) / 2 * 100})
 
   for(BCloop in c(1 : length(combList))){
-    combList[[BCloop]]$beta_MF <- unlist(beta_MF[BCloop], use.names = FALSE)
-    combList[[BCloop]]$BrayCurtis_OBS <- unlist(BcList[BCloop], use.names = FALSE)
-    combList[[BCloop]]$BrayCurtis_MF <- unlist(BCList.two[BCloop], use.names = FALSE)
+    combList[[BCloop]]$betaMf <- unlist(betaMf[BCloop], use.names = FALSE)
+    combList[[BCloop]]$BrayCurtisObs <- unlist(BcList[BCloop], use.names = FALSE)
+    combList[[BCloop]]$BrayCurtisMf <- unlist(BCList.two[BCloop], use.names = FALSE)
   }
 
   ## Delete NA (No Optimum Found)
-  combList <- Filter(function(x) !all(is.na(x$BrayCurtis_OBS)), combList)
-  combList <- Filter(function(x) !all(is.na(x$BrayCurtis_MF)), combList)
+  combList <- Filter(function(x) !all(is.na(x$BrayCurtisObs)), combList)
+  combList <- Filter(function(x) !all(is.na(x$BrayCurtisMf)), combList)
 
-  bestResult <- min(sapply(combList, function(x) x$BrayCurtis_OBS))
-  bestResultObs <- Filter(function(x) x$BrayCurtis_OBS == bestResult, combList)
+  bestResult <- min(sapply(combList, function(x) x$BrayCurtisObs))
+  bestResultObs <- Filter(function(x) x$BrayCurtisObs == bestResult, combList)
 
 
   return(list(bestResultObs, combList))
 }
-
-
-
