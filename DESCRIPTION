@@ -32,6 +32,6 @@ Description: Robust multi-criteria land-allocation optimization that explicitly 
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.2.1
-Imports: gurobi (>= 10.0-1), tidyr (>= 1.1.2), dplyr (>= 1.0.0)
+Imports: lpSolveAPI (>= 5.5.2.0-17.7), tidyr (>= 1.1.2), dplyr (>= 1.0.0)
 Suggests: readxl, ggplot2
 URL: https://github.com/Forest-Economics-Goettingen/optimLanduse/
