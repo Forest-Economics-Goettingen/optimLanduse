@@ -41,7 +41,8 @@ solveScenario <- function (x, digitsPrecision = 4,
                            lowerBound = 0, upperBound = 1,
                            constraintMatrix = NULL) {
 
-  params <- list(OutputFlag=0)
+  params <- list(OutputFlag=0,
+                 presolve=0)
 
   if ((!is.null(constraintMatrix) & any(c(lowerBound != 0, upperBound != 1)))) {
     warning("A constraint matrix and boundaries are defined. The constraint matrix overrides the boundaries settings.")
