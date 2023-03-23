@@ -4,7 +4,13 @@
 \alias{solveScenario}
 \title{Perform the optimization}
 \usage{
-solveScenario(x, digitsPrecision = 4, lowerBound = 0, upperBound = 1)
+solveScenario(
+  x,
+  digitsPrecision = 4,
+  lowerBound = 0,
+  upperBound = 1,
+  constraintMatrix = NULL
+)
 }
 \arguments{
 \item{x}{The initialized \emph{optimLanduse} object. See \code{\link{initScenario}} for the initialization.}

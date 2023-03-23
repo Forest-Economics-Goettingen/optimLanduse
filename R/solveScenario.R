@@ -34,17 +34,14 @@
 #' @references Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., & Knoke, T. (2022). optimLanduse: A package for multiobjective land-cover composition optimization under uncertainty. Methods in Ecology and Evolution, 00, 1– 10. https://doi.org/10.1111/2041-210X.14000
 
 
-#' @import lpSolveAPI
+#' @import gurobi
 
 #' @export
 solveScenario <- function (x, digitsPrecision = 4,
                            lowerBound = 0, upperBound = 1,
                            constraintMatrix = NULL) {
 
-  coefObjective <- x$coefObjective # Summen aus aller Scenarien der LandUse-Optionen (s. helper Funktion)
-  piConstraintCoefficients <- x$coefConstraint # relativie Werte (m. Distanz als Divisor)
-  #tbd. Die Variablen sollte ich noch umbenennen. Von piConstraintCoefficients zu coefConstraint
-  #tbd. Hier macht es Sinn abzufangen, dass fixDistance aus ist, wenn eine Constraint Matrix übergeben ist.
+  params <- list(OutputFlag=0)
 
   if ((!is.null(constraintMatrix) & any(c(lowerBound != 0, upperBound != 1)))) {
     warning("A constraint matrix and boundaries are defined. The constraint matrix overrides the boundaries settings.")
@@ -52,53 +49,40 @@ solveScenario <- function (x, digitsPrecision = 4,
   }
 
   precision <- 1 / 10^(digitsPrecision)
-  # constraintCoef <- rbind(rep(1, length(coefObjective)), piConstraintCoefficients)
-  constraintDirection <- c("==", rep(">=", dim(piConstraintCoefficients)[1]))
-  piConstraintRhs <- c(0, .6, 1) # ein Vektor mit Werten für "beta", der immer enger und enger wird
-  # piConstraintRhsFeasible <- rep(FALSE, 3)
-  emergencyStop <- 1000
 
-  # Init lpa Object
-  lpaObj <- lpSolveAPI::make.lp(nrow = 0, ncol = length(coefObjective))
-  lpSolveAPI::set.objfn(lprec = lpaObj, obj = coefObjective)
-  lpSolveAPI::add.constraint(lprec = lpaObj, xt = rep(1, length(coefObjective)),
-                 type = "=", rhs = 1)
-  apply(piConstraintCoefficients,
-        1,
-        function(x) {lpSolveAPI::add.constraint(lprec = lpaObj, xt = x, type = ">=", rhs = piConstraintRhs[2])}
-  )
+  coefObjective <- x$coefObjective
+  piConstraintCoefficients <- x$coefConstraint
+  piConstraintRhs <- c(0, .6, 1)
 
+  model <- list()
+  model$A <- rbind(rep(1, length(coefObjective)), piConstraintCoefficients)
+  model$obj <- coefObjective
+  model$modelsense <- "max"
+  model$rhs <- c(1, rep(piConstraintRhs[2], nrow(piConstraintCoefficients)))
+  model$sense <- c("=", rep(">=", nrow(piConstraintCoefficients)))
   if (any(lowerBound > 0)) { # lower bounds
-    # tbd. Hier fehlen noch mehrere Prüfungen (Anzahl und Reihenfolge der Optionen, Summe der Restiktionen < 1)
-    lpSolveAPI::set.bounds(lprec = lpaObj, lower = lowerBound)
-  }
+    model$lb <- lowerBound
+  } else{model$lb <- rep(0, length(coefObjective))}
   if (any(upperBound < 1)) { # upper bounds
-    # tbd. s. o.
-    lpSolveAPI::set.bounds(lprec = lpaObj, upper = upperBound)
-  }
+    model$lb <- upperBound
+  } else{model$ub <- rep(Inf, length(coefObjective))}
 
-  lpSolveAPI::lp.control(lprec = lpaObj, sense = "max")
-  counter <- 1 # 1 as the first iteration is outside the loop
-
-  # Update the right hand side
-  lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
-
-  # Update the restrictions if a constraint matrix is delivered.
   if(!is.null(constraintMatrix)) {
-    for(i in c(1 : dim(constraintMatrix$lhs)[1])) { # modified 2022-11-21
-      lpSolveAPI::add.constraint(lprec = lpaObj,
-                                 xt = t(constraintMatrix$lhs[i,]),
-                                 type = constraintMatrix$type[i],
-                                 rhs = constraintMatrix$rhs[i])
+    for(i in c(1 : dim(constraintMatrix$lhs)[1])) {
+      model$A <- rbind(model$A, t(constraintMatrix$lhs[i,]))
+      model$sense <- c(model$sense, constraintMatrix$type[i])
+      model$rhs <- c(model$rhs, constraintMatrix$rhs[i])
     }
   }
 
-  statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
-  # ein gutes Beispiel zum Lernen: https://rpubs.com/nayefahmad/linear-programming
+  result <- gurobi(model, params)
+  (statusOpt <- result$status)
+
+  counter <- 1
+  emergencyStop <- 1000
 
   # Stepwise approximation loop
   while (counter < emergencyStop) {
-    solutionFeasible <- TRUE
 
     counter <- counter + 1
     #if (refreshCoef) {
@@ -106,20 +90,20 @@ solveScenario <- function (x, digitsPrecision = 4,
     # Hier könnten dynamische Parameter eingegeben werden
     #}
 
-    if (statusOpt == 0) {
+    if (statusOpt == "OPTIMAL") {
       piConstraintRhs <- c(piConstraintRhs[2], round((piConstraintRhs[2] + piConstraintRhs[3]) / 2, digitsPrecision), piConstraintRhs[3])
     } else {
       piConstraintRhs <- c(piConstraintRhs[1], round((piConstraintRhs[1] + piConstraintRhs[2]) / 2, digitsPrecision), piConstraintRhs[2])
     }
 
     if(is.null(constraintMatrix)) {
-      lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
+      model$rhs <- c(1, rep(piConstraintRhs[2], nrow(piConstraintCoefficients)))
     } else {
-      lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1]), constraintMatrix$rhs))
+      model$rhs <- c(1, rep(piConstraintRhs[2], nrow(piConstraintCoefficients)), constraintMatrix$rhs)
     }
 
-
-    (statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj))
+    result <- gurobi(model, params)
+    (statusOpt <- result$status)
 
     #if(all(c(piConstraintRhs[3] - piConstraintRhs[2], piConstraintRhs[2] - piConstraintRhs[1]) <= precision)) { # Prüfen!
     if(piConstraintRhs[3] - piConstraintRhs[1] <= precision) {
@@ -127,31 +111,33 @@ solveScenario <- function (x, digitsPrecision = 4,
     }
   }
 
-
-  if(statusOpt == 2) {
+  if(statusOpt != "OPTIMAL") {
 
     if(is.null(constraintMatrix)) {
-      lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[1], dim(piConstraintCoefficients)[1])))  # Pruefen!!
+      model$rhs <- c(1, rep(piConstraintRhs[1], nrow(piConstraintCoefficients)))
     } else {
-      lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[1], dim(piConstraintCoefficients)[1]), constraintMatrix$rhs))
+      model$rhs <- c(1, rep(piConstraintRhs[1], nrow(piConstraintCoefficients)), constraintMatrix$rhs)
     }
 
-    statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
+    result <- gurobi(model, params)
+    (statusOpt <- result$status)
+
     retPiConstraintRhs <- piConstraintRhs[1]
   } else {
     retPiConstraintRhs <- piConstraintRhs[2]
   }
 
 
-  if(statusOpt != 0) {
-    cat(paste0("No optimum found. Status code "), statusOpt, " (see solve.lpExtPtr {lpSolveAPI} documentation).")
+  if(statusOpt != "OPTIMAL") {
+    cat(paste0("No optimum found. Status code "), statusOpt, " (see gurobi() {gurobi} documentation).")
     x$status <- "no optimum found"
     x$beta <- NA
     x$landUse[1, ] <- rep(NA, length(coefObjective))
   } else {
     x$status <- "optimized"
     x$beta <- 1 - round(retPiConstraintRhs, digitsPrecision)
-    x$landUse[1, ] <- lpSolveAPI::get.variables(lpaObj)
+    x$landUse[1, ] <- result$x
   }
   return(x)
 }
+
