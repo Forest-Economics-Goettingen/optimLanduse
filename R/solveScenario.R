@@ -20,12 +20,12 @@
 #' @param upperBound Optional upper bounds for the land-use options. Must be 1 or a vector in the dimension of the land-use options.
 #' @return A solved landUse portfolio ready for export or further data processing.
 #' @examples
-#' require(readxl)
-#' dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
-#' init <- initScenario(dat, uValue = 2,
-#'                      optimisticRule = "expectation",
-#'                      fixDistance = 3)
-#' result <- solveScenario(x = init)
+require(readxl)
+dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
+init <- initScenario(dat, uValue = 2,
+                     optimisticRule = "expectation",
+                     fixDistance = 3)
+result <- solveScenario(x = init)
 #'
 #' @references Knoke, T., Paul, C., Hildebrandt, P. et al. (2016): Compositional diversity
 #' of rehabilitated tropical lands supports multiple ecosystem services and
@@ -136,11 +136,13 @@ solveScenario <- function (x, digitsPrecision = 4,
 
     result_list$status <- "no optimum found"
     result_list$beta <- NA
-    result_list$landUse[1, ] <- rep(NA, length(coefObjective))
+    result_list$landUse <- x$landUse[1, ]
+    result_list$landUse <- result$x
   } else {
     result_list$status <- "optimized"
     result_list$beta <- 1 - round(retPiConstraintRhs, digitsPrecision)
-    result_list$landUse[1, ] <- result$x
+    result_list$landUse <- x$landUse[1, ]
+    result_list$landUse <- result$x
   }
   return(result_list)
 }
