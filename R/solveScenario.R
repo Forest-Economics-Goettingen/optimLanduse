@@ -142,6 +142,6 @@ solveScenario <- function (x, digitsPrecision = 4,
     result_list$beta <- 1 - round(retPiConstraintRhs, digitsPrecision)
     result_list$landUse[1, ] <- result$x
   }
-  return(x)
+  return(result_list)
 }
 
