@@ -130,16 +130,17 @@ solveScenario <- function (x, digitsPrecision = 4,
     retPiConstraintRhs <- piConstraintRhs[2]
   }
 
-
+  result_list <- list()
   if(statusOpt != "OPTIMAL") {
     cat(paste0("No optimum found. Status code "), statusOpt, " (see gurobi() {gurobi} documentation).")
-    x$status <- "no optimum found"
-    x$beta <- NA
-    x$landUse[1, ] <- rep(NA, length(coefObjective))
+
+    result_list$status <- "no optimum found"
+    result_list$beta <- NA
+    result_list$landUse[1, ] <- rep(NA, length(coefObjective))
   } else {
-    x$status <- "optimized"
-    x$beta <- 1 - round(retPiConstraintRhs, digitsPrecision)
-    x$landUse[1, ] <- result$x
+    result_list$status <- "optimized"
+    result_list$beta <- 1 - round(retPiConstraintRhs, digitsPrecision)
+    result_list$landUse[1, ] <- result$x
   }
   return(x)
 }
