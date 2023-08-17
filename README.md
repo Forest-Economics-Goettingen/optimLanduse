@@ -1,45 +1,29 @@
 optimLanduse - Robust Land-cover Optimization
 ================
 
-- <a href="#1-introduction" id="toc-1-introduction">1 Introduction</a>
-- <a href="#2-detailed-description-of-the-functions-in--and-outputs"
-  id="toc-2-detailed-description-of-the-functions-in--and-outputs">2
-  Detailed Description of the Functions’ In- and Outputs</a>
-  - <a href="#21-initialization-and-input"
-    id="toc-21-initialization-and-input">2.1 Initialization and Input</a>
-  - <a href="#22-solver-and-list-with-results"
-    id="toc-22-solver-and-list-with-results">2.2 Solver and List with
-    results</a>
-  - <a href="#23-post-processing-and-additional-functions"
-    id="toc-23-post-processing-and-additional-functions">2.3 Post-Processing
-    and additional Functions</a>
-- <a href="#3-example-application" id="toc-3-example-application">3
-  Example Application</a>
-- <a href="#4-batch-application-and-sensitivity-analysis"
-  id="toc-4-batch-application-and-sensitivity-analysis">4 Batch
-  Application and Sensitivity Analysis</a>
-  - <a href="#41-solving-for-multiple-uncertainty-values"
-    id="toc-41-solving-for-multiple-uncertainty-values">4.1 Solving for
-    Multiple Uncertainty Values</a>
-  - <a
-    href="#42-selecting-specific-indicator-bundles---investigating-the-indicators-sensitivities"
-    id="toc-42-selecting-specific-indicator-bundles---investigating-the-indicators-sensitivities">4.2
-    Selecting Specific Indicator Bundles - Investigating the Indicator’s
-    Sensitivities</a>
-    - <a href="#421-socio-economic" id="toc-421-socio-economic">4.2.1
-      Socio-economic</a>
-    - <a href="#422-ecological" id="toc-422-ecological">4.2.2 Ecological</a>
-    - <a href="#423-immediate-economic-success"
-      id="toc-423-immediate-economic-success">4.2.3 Immediate Economic
-      Success</a>
-  - <a href="#43-pay-off-matrix" id="toc-43-pay-off-matrix">4.3 Pay-Off
-    Matrix</a>
-  - <a href="#44-the-use-of-fixdistance"
-    id="toc-44-the-use-of-fixdistance">4.4 The Use of
-    <em>fixDistance</em></a>
-- <a href="#5-suggested-citation" id="toc-5-suggested-citation">5
-  Suggested citation</a>
-- <a href="#6-literature" id="toc-6-literature">6 Literature</a>
+- [1 Introduction](#1-introduction)
+- [2 Detailed Description of the Functions’ In- and
+  Outputs](#2-detailed-description-of-the-functions-in--and-outputs)
+  - [2.1 Initialization and Input](#21-initialization-and-input)
+  - [2.2 Solver and List with results](#22-solver-and-list-with-results)
+  - [2.3 Post-Processing and additional
+    Functions](#23-post-processing-and-additional-functions)
+- [3 Example Application](#3-example-application)
+- [4 Batch Application and Sensitivity
+  Analysis](#4-batch-application-and-sensitivity-analysis)
+  - [4.1 Solving for Multiple Uncertainty
+    Values](#41-solving-for-multiple-uncertainty-values)
+  - [4.2 Selecting Specific Indicator Bundles - Investigating the
+    Indicator’s
+    Sensitivities](#42-selecting-specific-indicator-bundles---investigating-the-indicators-sensitivities)
+    - [4.2.1 Socio-economic](#421-socio-economic)
+    - [4.2.2 Ecological](#422-ecological)
+    - [4.2.3 Immediate Economic
+      Success](#423-immediate-economic-success)
+  - [4.3 Pay-Off Matrix](#43-pay-off-matrix)
+  - [4.4 The Use of *fixDistance*](#44-the-use-of-fixdistance)
+- [5 Suggested citation](#5-suggested-citation)
+- [6 Literature](#6-literature)
 
 [![](https://www.r-pkg.org/badges/version/optimLanduse)](https://cran.r-project.org/package=optimLanduse)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/optimLanduse?color=green)](https://cran.r-project.org/package=optimLanduse)
@@ -132,11 +116,10 @@ illustrate the required data structure.*
 
 ![](./man/figures/exampleGraphic.png)
 
-- *uValue*: The argument for the uncertainty level
-  (![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u"),
-  Equation 4 in Husmann et al., 2022). A higher uValue reflects a higher
-  risk aversion of the decision maker. See the help file of the
-  *initScenario()* function for more details.
+- *uValue*: The argument for the uncertainty level ($f_u$, Equation 4 in
+  Husmann et al., 2022). A higher uValue reflects a higher risk aversion
+  of the decision maker. See the help file of the *initScenario()*
+  function for more details.
 
 - *optimisticRule*: Specifies whether the optimistic contributions of
   each indicator should be defined either directly by their average, or
@@ -176,27 +159,18 @@ optimization model. It first repeats the settings of the
   *optimisticRule*.
 - *scenarioTable*: A data frame with one row for each combination of
   worst-case and best-case outcomes of all indicators (thus the number
-  of rows equals the number of scenarios
-  ![N_S](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N_S "N_S")
-  in Husmann et al., 2022). The columns contain relevant calculation
-  steps for the optimization program. *adjSem\** are the uncertainty
-  adjusted indicators
-  (![R\_{liu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;R_%7Bliu%7D "R_{liu}")
+  of rows equals the number of scenarios $N_S$ in Husmann et al., 2022).
+  The columns contain relevant calculation steps for the optimization
+  program. *adjSem\** are the uncertainty adjusted indicators ($R_{liu}$
   in Husmann et al., 2022). *minAdjSem* are the minimum uncertainty
-  adjusted indicators
-  ![min(R\_{liu})](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;min%28R_%7Bliu%7D%29 "min(R_{liu})")
-  and
-  ![max(R\_{liu})](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;max%28R_%7Bliu%7D%29 "max(R_{liu})")
-  the maximum uncertainty adjusted indicators. diffAdjSem are the range
-  between these uncertainty adjusted indicators
-  ![\delta\_{\text{min,max}\_{iu}}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cdelta_%7B%5Ctext%7Bmin%2Cmax%7D_%7Biu%7D%7D "\delta_{\text{min,max}_{iu}}").
+  adjusted indicators $min(R_{liu})$ and $max(R_{liu})$ the maximum
+  uncertainty adjusted indicators. diffAdjSem are the range between
+  these uncertainty adjusted indicators $\delta_{\text{min,max}_{iu}}$.
 - *coefObjective*: The optimization program is translated into a linear
-  program with
-  ![N_L](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;N_L "N_L")
-  (number of land-cover options) coefficients for the inner solution.
-  The inner solution is solved using the *lpSolveAPI()* function of the
-  **lpSolveApi** package. *coefObjective* is the data frame that
-  contains these coefficients.
+  program with $N_L$ (number of land-cover options) coefficients for the
+  inner solution. The inner solution is solved using the *lpSolveAPI()*
+  function of the **lpSolveApi** package. *coefObjective* is the data
+  frame that contains these coefficients.
 - *coefConstraint*: A data frame with the respective constraints for the
   inner solution solved by *lpsolveAPI()*.
 - *distance*: The distance of each scenario to its own theoretically
@@ -205,9 +179,8 @@ optimization model. It first repeats the settings of the
 
 This is followed by a summary of the results of the optimization:
 
-- ![\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta"):
-  The maximum distance of the worst performing scenario (Equation 1 in
-  Husmann et al., 2022).
+- $\beta$: The maximum distance of the worst performing scenario
+  (Equation 1 in Husmann et al., 2022).
 - *landUse*: The resulting land-cover composition after the
   optimization.
 
@@ -218,18 +191,17 @@ all indicators and scenarios as a data frame to the solved
 *optimLanduse* object. The data can be used for straightforward
 visualization of the performance (e.g. Fig. 3). The performance is
 defined as the relative distance to the maximum achievable level for
-each indicator and uncertainty scenario. It calculates as 1 -
-![d\_{iu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d_%7Biu%7D "d_{iu}")
+each indicator and uncertainty scenario. It calculates as 1 - $d_{iu}$
 (Equation 8, Husmann et al., 2022)
 
-The *autoSearch()* function Generates a list of all possible indicator
-combinations of the *coefTable* with their respective optimization
+The *autoSearch()* function generates a list of all possible indicator
+combinations given in *coefTable* with their respective optimization
 results and the result that identifies the indicators that are best
-describing the current land-use decisions. The indicator combinations
-are converted into a list format, where each combination corresponds to
-a list entry. For each of these list entries, an optimization is then
+describing the currently observed land-use portfolio. The indicator
+combinations are exported as a list, where each combination corresponds
+to a list entry. For each of these list entries, an optimization is
 performed using the *initScenario()* and *solveScenario()* functions of
-the package. The result is added to the respective list entry. In
+the package. The result is saved into the respective list entry. In
 addition, each entry is appended with the currently observed land-use
 portfolio and the land-use portfolio when all indicators are optimized
 together. This list can than be filtered and ordered to e. g. identify
@@ -237,8 +209,8 @@ different potential transformation pathway and trade-offs and synergies
 between them. To allow the user the same option settings, the
 *initScenario()* arguments *uValue*, *optimisticRule* and *fixDistance*
 can be adjusted. The *landUseObs* has to be a data frame with two
-columns. The first column has to conain the land-use options. The second
-colum the respective shares.
+columns. The first column has to contain the land-use options. The
+second column the respective shares.
 
 Each of the returned list contains different information, these include:
 
@@ -356,19 +328,18 @@ al. (2020)), including all indicators. Each land-cover option is shown
 in an allocated share (%).*
 
 The resulting optimized farm composition (Fig. 2) corresponds to Fig. 3
-(![f_u=2](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u%3D2 "f_u=2"))
-in Gosling et al. (2020). It can be seen that the farm composition that
-best contributes to all 10 indicators (i.e. the multifunctional
-portfolio) is dominated by silvopasture and forest. According to Gosling
-et al. (2020), this reveals the potential of agroforestry to serve as a
-compromised solution to fulfill multiple ecological and economic
-functions. Recently, however, the observed average farm portfolio of the
-surveyed farms was mainly composed of pasture and cropland with only a
-small share of forest (14%). This reveals that not all of the selected
-objectives currently drive farmer’s land-cover decisions. The
-optimization approach can then be used to dive deeper into the effect of
-different goals on the resulting optimized land-cover composition and
-the effects of uncertainty.
+($f_u=2$) in Gosling et al. (2020). It can be seen that the farm
+composition that best contributes to all 10 indicators (i.e. the
+multifunctional portfolio) is dominated by silvopasture and forest.
+According to Gosling et al. (2020), this reveals the potential of
+agroforestry to serve as a compromised solution to fulfill multiple
+ecological and economic functions. Recently, however, the observed
+average farm portfolio of the surveyed farms was mainly composed of
+pasture and cropland with only a small share of forest (14%). This
+reveals that not all of the selected objectives currently drive farmer’s
+land-cover decisions. The optimization approach can then be used to dive
+deeper into the effect of different goals on the resulting optimized
+land-cover composition and the effects of uncertainty.
 
 **Calculating the Portfolio Performances of the Optimized *optimLanduse*
 Object**
@@ -408,25 +379,21 @@ ggplot(performance$scenarioTable,
 *Fig. 3: The performances of each of the 10 indicators for the ideal
 farm composition. The colored points are the achieved levels of the
 indicators of all scenarios. The dotted, horizontal red line illustrates
-the guaranteed performances*
-![(1-\beta)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%281-%5Cbeta%29 "(1-\beta)")*,
-and thus the robust feasible solution of the program (Equation 1 in
-Husmann et al, 2022).*
+the guaranteed performances* $(1-\beta)$*, and thus the robust feasible
+solution of the program (Equation 1 in Husmann et al, 2022).*
 
 Fig. 3 can be used to further explore the effects of the indicators on
 the modeled land-cover decisions. Looking at the performances of this
-multifunctional farm reveals which indicator equals
-![\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta "\beta")
-and therefore defines the result (Equation 1 in Husmann et al., 2022).
+multifunctional farm reveals which indicator equals $\beta$ and
+therefore defines the result (Equation 1 in Husmann et al., 2022).
 
 Here, the worst performing scenarios of indicators 1 (financial
 stability), 3 (investment costs) and 8 (meeting household needs) have
 equally the largest distances. It can be seen that the portfolio appears
 to be driven by these 3 indicators. In the worst-performing uncertainty
 scenarios, these 3 indicators show the maximum distances across all
-indicators. In other words, the guaranteed performance
-![1-\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1-%5Cbeta "1-\beta")
-of the portfolio is defined by these 3 indicators. A full list with
+indicators. In other words, the guaranteed performance $1-\beta$ of the
+portfolio is defined by these 3 indicators. A full list with
 performances of all individual scenarios is provided by the output
 *scenarioTable* after using the *calcPerformance()* function (Table 2).
 
@@ -516,23 +483,21 @@ ggplot(performance_current$scenarioTable,
 the currently observed land-cover composition. The colored points are
 the achieved levels of the indicators of all scenarios s. The dotted,
 horizontal red line illustrates the guaranteed performance*
-![(1-\beta)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%281-%5Cbeta%29 "(1-\beta)")*,
-thus the robust feasible solution of the program (Equation 1 in Husmann
-et al., 2022).*
+$(1-\beta)$*, thus the robust feasible solution of the program (Equation
+1 in Husmann et al., 2022).*
 
 Setting the arguments for the lower and upper bounds exactly to the
 currently observed land-cover composition forces a solution that
 corresponds to the current land-cover composition (Fig. 4). It allows
 for the comparison and evaluation of the differences of the optimized
 land-cover composition with the currently observed composition.
-Comparing, e.g., the guaranteed performances
-![1-\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1-%5Cbeta "1-\beta")
-provides an objective measure of how an optimization enhances the
-achievements of the overall performance. A deeper look at the
-performances of the indicators reveals which indicators particularly
-benefit from optimization. Due to the compromise nature of the approach,
-indicators can also perform worse in the optimized portfolio when
-compared to the current land-cover composition.
+Comparing, e.g., the guaranteed performances $1-\beta$ provides an
+objective measure of how an optimization enhances the achievements of
+the overall performance. A deeper look at the performances of the
+indicators reveals which indicators particularly benefit from
+optimization. Due to the compromise nature of the approach, indicators
+can also perform worse in the optimized portfolio when compared to the
+current land-cover composition.
 
 Amounting to 0.387, the guaranteed performance of the multifunctional
 portfolio is considerably higher than the guaranteed performance of the
@@ -654,21 +619,19 @@ applyDf %>% gather(key = "land-cover option", value = "land-cover share", -u, -b
 of uncertainty.*
 
 Solving the portfolio (Fig. 6) under increasing assumptions for the
-uncertainty levels (uValue, respectively
-![f_u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;f_u "f_u")
-in Equation 4 in Husmann et al., 2022) provides the sensitivity of the
-land-cover compositions to an increasing risk aversion of the farmers.
-Fig. 6 corresponds to Fig. 3 in Gosling et al. (2020). The higher the
-uncertainty level, the higher the uncertainty spaces of the indicators.
-Here, the composition of land-cover alternatives is relatively stable
-across different uncertainty levels (Fig. 6). An uValue of 0 leads to
-Portfolios without consideration of risk. Here, the results corresponds
-to an ordinary (non-robust) reference point approach. Comparing
-portfolios of uValue 0 with uValue 3, the share of forest decreases
-slightly from 41.2% to 34.3% and silvopasture from 45.9% to 44.9%. The
-share of crops decreases from 12.9% to 1%. At the same time, the shares
-of pasture increased from 0% to 9.6% and that of plantation from 0% to
-10.2%.
+uncertainty levels (uValue, respectively $f_u$ in Equation 4 in Husmann
+et al., 2022) provides the sensitivity of the land-cover compositions to
+an increasing risk aversion of the farmers. Fig. 6 corresponds to Fig. 3
+in Gosling et al. (2020). The higher the uncertainty level, the higher
+the uncertainty spaces of the indicators. Here, the composition of
+land-cover alternatives is relatively stable across different
+uncertainty levels (Fig. 6). An uValue of 0 leads to Portfolios without
+consideration of risk. Here, the results corresponds to an ordinary
+(non-robust) reference point approach. Comparing portfolios of uValue 0
+with uValue 3, the share of forest decreases slightly from 41.2% to
+34.3% and silvopasture from 45.9% to 44.9%. The share of crops decreases
+from 12.9% to 1%. At the same time, the shares of pasture increased from
+0% to 9.6% and that of plantation from 0% to 10.2%.
 
 Alley cropping does not appear in any portfolio at any uncertainty
 level. It does not, on average, contribute best to any indicator (Table
@@ -692,9 +655,8 @@ preferences even if all other indicators are considered as
 worst-possible contributions. This ranking changes after uncertainty
 levels of 1.5 and above. At uncertainty level of 1.5, the worst-possible
 contribution of forests to the general preferences
-(![1 - 0.99 \* 2 = -0.98](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1%20-%200.99%20%2A%202%20%3D%20-0.98 "1 - 0.99 * 2 = -0.98"),
-see Table 1 in Husmann et al., 2022) is then the worst possible
-contributing indicator among all land-cover types.
+($1 - 0.99 * 2 = -0.98$, see Table 1 in Husmann et al., 2022) is then
+the worst possible contributing indicator among all land-cover types.
 
 ## 4.2 Selecting Specific Indicator Bundles - Investigating the Indicator’s Sensitivities
 
@@ -797,21 +759,18 @@ ggplot(performance_socioeconomic$scenarioTable,
 *Fig. 8: The performance of each of the socio-economic indicators. The
 colored points are the achieved levels of the indicators of all
 scenarios. The dotted, horizontal red line illustrates the guaranteed
-performance*
-![(1-\beta)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%281-%5Cbeta%29 "(1-\beta)")*,
-and thus the robust feasible solution of the program (Equation 1 in
-Husmann et al, 2022).*
+performance* $(1-\beta)$*, and thus the robust feasible solution of the
+program (Equation 1 in Husmann et al, 2022).*
 
 An analysis of the performance of the socio-economic indicators shows
 that the performances of the three relevant indicators equal the
 multifunctional portfolio (Fig. 8). The result is still defined by
 financial stability, investment costs and meeting household needs.
-Consequently, the guaranteed performance
-![(1-\beta)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%281-%5Cbeta%29 "(1-\beta)")
-also equals the multifunctional portfolio. Therefore, this
-socio-economic portfolio also does not perfectly reflect the currently
-observed land-cover composition. This means that further indicators
-appear to be relevant for the actual farmer’s decisions.
+Consequently, the guaranteed performance $(1-\beta)$ also equals the
+multifunctional portfolio. Therefore, this socio-economic portfolio also
+does not perfectly reflect the currently observed land-cover
+composition. This means that further indicators appear to be relevant
+for the actual farmer’s decisions.
 
 ### 4.2.2 Ecological
 
@@ -927,16 +886,14 @@ robust pendant to this approach can be easily conducted with the
 straightaway using the *calcPerformance()* function.
 
 In contrast to the original approach, each indicator has a set of
-performances
-(![U_i](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;U_i "U_i"),
-Equations 2 and 3 in Husmann et al., 2022; Fig. 3 and 4 visualize the
-sets of indicator performances). Following the robust philosophy, we
-selected only the worst performance out of the set of uncertainties for
-each indicator. The resulting worst performances of the non-optimized
-indicators reveal the relative extent to which these indicators are
-fulfilled under the worst-case uncertainty scenario. It therewith
-reveals to which degree the indicators are antagonistic or synergistic.
-The indicator performances are expressed in relation to the
+performances ($U_i$, Equations 2 and 3 in Husmann et al., 2022; Fig. 3
+and 4 visualize the sets of indicator performances). Following the
+robust philosophy, we selected only the worst performance out of the set
+of uncertainties for each indicator. The resulting worst performances of
+the non-optimized indicators reveal the relative extent to which these
+indicators are fulfilled under the worst-case uncertainty scenario. It
+therewith reveals to which degree the indicators are antagonistic or
+synergistic. The indicator performances are expressed in relation to the
 best-possible fulfillment of the respective indicators (Equation 3 of
 Husmann et al., 2022). In contrast to the original approach, we thus
 calculate relative degrees of fulfillment for each indicator.
@@ -1055,20 +1012,14 @@ requirements.
 
 It can be advantageous to define distinct uncertainty levels for the
 calculation of the distances to the maximum achievable level (the
-reference)
-![d\_{iu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d_%7Biu%7D "d_{iu}")
-(Equation 3 in Husmann et al., 2022) and the actual distances under a
-certain land-cover composition
-![R\_{liu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;R_%7Bliu%7D "R_{liu}")
-(Equation 5 in Husmann et al., 2022, see also Equation 9). Too narrow
-uncertainty spaces of
-![R\_{liu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;R_%7Bliu%7D "R_{liu}")
-could restrict the state space of the distances too strictly. The
-broader uncertainty spaces allow for higher freedom of
-![R\_{liu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;R_%7Bliu%7D "R_{liu}"),
-which allows to cover more land-cover compositions. The distances are
-thus allowed to be higher. This usually results in a more similar
-composition of the land-cover composition with similar levels of
+reference) $d_{iu}$ (Equation 3 in Husmann et al., 2022) and the actual
+distances under a certain land-cover composition $R_{liu}$ (Equation 5
+in Husmann et al., 2022, see also Equation 9). Too narrow uncertainty
+spaces of $R_{liu}$ could restrict the state space of the distances too
+strictly. The broader uncertainty spaces allow for higher freedom of
+$R_{liu}$, which allows to cover more land-cover compositions. The
+distances are thus allowed to be higher. This usually results in a more
+similar composition of the land-cover composition with similar levels of
 uncertainty. The transitions between the portfolios under rising
 uncertainty values are smoother. The disadvantage of distinct
 uncertainty spaces is that the distances can no longer be

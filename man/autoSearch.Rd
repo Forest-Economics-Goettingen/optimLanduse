@@ -16,7 +16,7 @@ autoSearch(
 \item{coefTable}{Coefficient table in the expected \emph{optimLanduse} format.}
 
 \item{landUseObs}{Data frame with two columns. The first column has to
-conain the land-use options. The second colum the respective shares.}
+contain the land-use options. The second colum the respective shares.}
 
 \item{uValue}{\emph{u} Value. The uncertainty value delivered in the coefTable is
 multiplied with this u value. The value, therefore, enables scenario analyses with differing
@@ -39,14 +39,14 @@ A list with all possible indicator combinations, their respective optimization r
 indicator set best describing the observed land-use decision.
 }
 \description{
-This iterative search function generates a list of all possible indicator.
+This iterative search function generates a list of all possible indicator combinations.
 All indicator combinations are converted into a list format, where each
-combination corresponds to a list entry. for each of these list entries, an
-optimization is then performed using the \emph{initScenario} and
+combination corresponds to a list entry. For each of these list entries, an
+optimization is performed using the \emph{initScenario} and
 \emph{solveScenario} functions of the package. How these functions work
 in detail (incl. example code) can be seen in the help of the respective
 function in the package and the README from Husmann et al. (2022).
-The result is added to the respective list entry. In addition, each entry is
+The results are entirely saved into the respective list entry. In addition, each entry is
 appended with the currently observed land-use portfolio and the land-use
 portfolio when all indicators are optimized together. Out of this list, we
 use the Bray-Curtis measure of dissimilarity to identify the indicators driving current
