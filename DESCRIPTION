@@ -1,6 +1,6 @@
 Package: optimLanduse
 Title: Robust Land-Use Optimization
-Version: 1.1.2
+Version: 1.2.0
 Authors@R:
     c(
     person(given = "Kai",
@@ -31,7 +31,7 @@ Authors@R:
 Description: Robust multi-criteria land-allocation optimization that explicitly accounts for the uncertainty of the indicators in the objective function. Solves the problem of allocating scarce land to various land-use options with regard to multiple, coequal indicators. The method aims to find the land allocation that represents the indicator composition with the best possible trade-off under uncertainty. optimLanduse includes the actual optimization procedure as described by Knoke et al. (2016) <doi:10.1038/ncomms11877> and the post-hoc calculation of the portfolio performance as presented by Gosling et al. (2020) <doi:10.1016/j.jenvman.2020.110248>.
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.1
-Imports: lpSolveAPI (>= 5.5.2.0-17.7), tidyr (>= 1.1.2), dplyr (>= 1.0.0)
+RoxygenNote: 7.2.3
+Imports: lpSolveAPI (>= 5.5.2.0-17.7), tidyr (>= 1.1.2), dplyr (>= 1.0.0), future (>= 1.28.0), future.apply (>= 1.9.0)
 Suggests: readxl, ggplot2
 URL: https://github.com/Forest-Economics-Goettingen/optimLanduse/

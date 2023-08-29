@@ -38,7 +38,7 @@
 #' @import dplyr
 #' @importFrom stats na.omit
 #' @importFrom utils type.convert
-
+#'
 #' @export
 dataPreparation <- function(dat, uncertainty = "SE", expVAL = "mean"){
 
