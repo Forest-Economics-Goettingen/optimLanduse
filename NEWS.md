@@ -16,7 +16,7 @@
 * Several examples were added
 * The exampleData function contains a template.
 
-# opzimLanduse 1.1.2
+# optimLanduse 1.1.2
 
 * Suggested citation updated after acceptance of the package description in Methods in Ecology and Management
 
@@ -24,3 +24,6 @@
 
 * autoSearch function added. 
 * Readme updated
+
+# optimLanduse 1.2.0
+* autoSearch function added: A wrapper that successively calls the solveScenario function and calculates the dissimilarity to a user-defined reference scenario
