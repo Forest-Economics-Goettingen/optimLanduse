@@ -1,4 +1,4 @@
-Winbuilder release as well as devel give one NOTE
+Winbuilder release as well as devel gave one NOTE
 
 Your package optimLanduse_1.2.0.tar.gz has been built (if working) and checked for Windows.
 Installation time in seconds: 9
@@ -10,4 +10,4 @@ Examples with CPU (user + system) or elapsed time > 10s
            user system elapsed
 autoSearch 2.11    0.1   272.3
 
-However, this note cannot be remedied. It is a batch example to illustrate the novel wrapper function, which inevitably requires some amount of computation time to make sense.
+However, this NOTE cannot be remedied. It is a batch example to illustrate the novel wrapper function, which inevitably requires some amount of computation time to make sense.
