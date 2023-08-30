@@ -1,6 +1,6 @@
 citHeader("To cite optimLanduse, please use:")
 
-citEntry(entry = "article",
+bibentry(bibtype = "Article",
   author = c(
     person(given = "Kai",
            family = "Husmann"),
@@ -18,7 +18,7 @@ citEntry(entry = "article",
   journal = "Methods in Ecology and Evolution",
   year = "2022",
   doi = "10.1111/2041-210X.14000",
-  number = 00,
-  pages = "1 - 10",
-  textVersion = " Husmann, K., von Groß, V., Bödeker, K., Fuchs, J. M., Paul, C., & Knoke, T. (2022). optimLanduse: A package for multiobjective land-cover composition optimization under uncertainty. Methods in Ecology and Evolution, 00, 1– 10. https://doi.org/10.1111/2041-210X.14000 "
+  volume = 13,
+  number = 12,
+  pages = "2719 - 2728"
 )

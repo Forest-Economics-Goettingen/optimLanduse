@@ -1,13 +1,13 @@
- 
-## R CMD check results
-There were no ERRORs or WARNINGs. 
+Winbuilder release as well as devel give one NOTE
 
-However there was 1 NOTE
+Your package optimLanduse_1.2.0.tar.gz has been built (if working) and checked for Windows.
+Installation time in seconds: 9
+Check time in seconds: 360
+Status: 1 NOTE
+R version 4.3.1 (2023-06-16 ucrt)
 
-Found the following (possibly) invalid URLs:
-  URL: https://doi.org/10.1111/gcb.15003
-    From: README.md
-    Status: 503
-    Message: Service Unavailable
-    
-We have doublechecked the URL several times. It is correct and it works.
+Examples with CPU (user + system) or elapsed time > 10s
+           user system elapsed
+autoSearch 2.11    0.1   272.3
+
+However, this note cannot be remedied. It is a batch example to illustrate the novel wrapper function, which inevitably requires some amount of computation time to make sense.
