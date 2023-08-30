@@ -60,6 +60,11 @@ plan(multisession)
 
 coefTable <- read_xlsx(exampleData("exampleGosling.xlsx"))
 
+# Subset to save computation time
+
+coefTable <- coefTable[coefTable$indicator \%in\% c("Long-term income",
+                                                 "Liquidity",
+                                                 "Protecting soil resources"),]
 
 obsLU <- data.frame(landUse = c("Pasture", "Crops", "Forest", "Plantation",
                                 "Alley Cropping", "Silvopasture"),
