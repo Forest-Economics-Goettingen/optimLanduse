@@ -16,7 +16,7 @@ autoSearch(
 \item{coefTable}{Coefficient table in the expected \emph{optimLanduse} format.}
 
 \item{landUseObs}{Data frame with two columns. The first column has to
-contain the land-use options. The second colum the respective shares.}
+contain the land-use options. The second column the respective shares.}
 
 \item{uValue}{\emph{u} Value. The uncertainty value delivered in the coefTable is
 multiplied with this u value. The value, therefore, enables scenario analyses with differing
