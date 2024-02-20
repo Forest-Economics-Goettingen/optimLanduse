@@ -27,3 +27,7 @@
 
 # optimLanduse 1.2.0
 * autoSearch function added: A wrapper that successively calls the solveScenario function and calculates the dissimilarity to a user-defined reference scenario
+
+# optimLanduse 1.2.1
+* minor Bugfixes
+* Authors added
