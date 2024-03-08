@@ -38,11 +38,30 @@
 
 #' @export
 solveScenario <- function (x, digitsPrecision = 4,
-                           lowerBound = 0, upperBound = 1) {
+                           lowerBound = 0, upperBound = 1,
+                           paretoY = NA, paretoX = NA,
+                           paretoMaxDistance = NA) {
 
-  coefObjective <- x$coefObjective # Summen aus aller Scenarien der LandUse-Optionen (s. helper Funktion)
-  piConstraintCoefficients <- x$coefConstraint # relativie Werte (m. Distanz als Divisor)
-  #tbd. Die Variablen sollte ich noch umbenennen. Von piConstraintCoefficients zu coefConstraint
+
+  if(is.na(paretoY) & any(is.na(paretoX))) {
+    coefObjective <- x$coefObjective # Summen aus aller Scenarien der LandUse-Optionen (s. helper Funktion)
+    piConstraintCoefficients <- x$coefConstraint # relativie Werte (m. Distanz als Divisor)
+    #tbd. Die Variablen sollte ich noch umbenennen. Von piConstraintCoefficients zu coefConstraint
+  }
+
+  if(!is.na(paretoY) & any(is.na(paretoX)) | is.na(paretoY) & any(!is.na(paretoX))) {
+    stop ("Both, paretoy_y and paretoY either need specific indicator names or NA")
+  }
+
+  if(!is.na(paretoY) & any(!is.na(paretoX))) {
+    coefObjective <- defineObjectiveCoefficients(x$scenarioTable[x$scenarioTable$indicator %in% c(paretoY),])
+    #coefObjective <- defineObjectiveCoefficients(x$scenarioTable[x$scenarioTable$indicator %in% c(paretoY, paretoX),])
+    rows_paretoY <- as.numeric(rownames(x$scenarioTable[x$scenarioTable$indicator %in% paretoY,]))
+    rows_paretoX <- as.numeric(rownames(x$scenarioTable[x$scenarioTable$indicator %in% paretoX,]))
+    #piConstraintCoefficients <- x$coefConstraint[c(rows_paretoY, rows_paretoX), ]
+    piConstraintCoefficients <- x$coefConstraint[rows_paretoY, ]
+    paretoConstraint <- x$coefConstraint[rows_paretoX, ]
+  }
 
   precision <- 1 / 10^(digitsPrecision)
   # constraintCoef <- rbind(rep(1, length(coefObjective)), piConstraintCoefficients)
@@ -55,11 +74,21 @@ solveScenario <- function (x, digitsPrecision = 4,
   lpaObj <- lpSolveAPI::make.lp(nrow = 0, ncol = length(coefObjective))
   lpSolveAPI::set.objfn(lprec = lpaObj, obj = coefObjective)
   lpSolveAPI::add.constraint(lprec = lpaObj, xt = rep(1, length(coefObjective)),
-                 type = "=", rhs = 1)
+                             type = "=", rhs = 1)
+
+  # Add rhs that will be updated - the distance of the optimized Indicator
   apply(piConstraintCoefficients,
         1,
         function(x) {lpSolveAPI::add.constraint(lprec = lpaObj, xt = x, type = ">=", rhs = piConstraintRhs[2])}
   )
+
+  if(!is.na(paretoY) & any(!is.na(paretoX))) {
+    # Add rhs that stays the same - i.e. the minimum distance that has to be achieved for the paretoX variable
+    apply(paretoConstraint,
+          1,
+          function(x) {lpSolveAPI::add.constraint(lprec = lpaObj, xt = x, type = ">=", rhs = paretoMaxDistance)}
+    )
+  }
 
   if (any(lowerBound > 0)) { # lower bounds
     # tbd. Hier fehlen noch mehrere Prüfungen (Anzahl und Reihenfolge der Optionen, Summe der Restiktionen < 1)
@@ -74,7 +103,13 @@ solveScenario <- function (x, digitsPrecision = 4,
   counter <- 1 # 1 as the first iteration is outside the loop
 
   # Update the right hand side
-  lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
+
+  if(!is.na(paretoY) & any(!is.na(paretoX))) {
+    lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1]),
+                                              rep(paretoMaxDistance, dim(paretoConstraint)[1])))
+  } else {
+    lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
+  }
 
   statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
   # ein gutes Beispiel zum Lernen: https://rpubs.com/nayefahmad/linear-programming
@@ -95,8 +130,12 @@ solveScenario <- function (x, digitsPrecision = 4,
       piConstraintRhs <- c(piConstraintRhs[1], round((piConstraintRhs[1] + piConstraintRhs[2]) / 2, digitsPrecision), piConstraintRhs[2])
     }
 
-    lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
-
+    if(!is.na(paretoY) & any(!is.na(paretoX))) {
+      lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1]),
+                                                rep(paretoMaxDistance, dim(paretoConstraint)[1])))
+    } else {
+      lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[2], dim(piConstraintCoefficients)[1])))
+    }
 
     (statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj))
 
@@ -109,14 +148,18 @@ solveScenario <- function (x, digitsPrecision = 4,
 
   if(statusOpt == 2) {
 
-    lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[1], dim(piConstraintCoefficients)[1])))  # Prüfen!!
+    if(!is.na(paretoY) & any(!is.na(paretoX))) {
+      lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[1], dim(piConstraintCoefficients)[1]),
+                                                rep(paretoMaxDistance, dim(paretoConstraint)[1])))  # Prüfen!!
+    } else {
+      lpSolveAPI::set.rhs(lprec = lpaObj, b = c(1, rep(piConstraintRhs[1], dim(piConstraintCoefficients)[1])))
+    }
 
     statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
     retPiConstraintRhs <- piConstraintRhs[1]
   } else {
     retPiConstraintRhs <- piConstraintRhs[2]
   }
-
 
   if(statusOpt != 0) {
     cat(paste0("No optimum found. Status code "), statusOpt, " (see solve.lpExtPtr {lpSolveAPI} documentation).")
