@@ -43,7 +43,7 @@ solveScenario <- function (x, digitsPrecision = 4,
   coefObjective <- x$coefObjective # Summen aus aller Scenarien der LandUse-Optionen (s. helper Funktion)
   piConstraintCoefficients <- x$coefConstraint # relativie Werte (m. Distanz als Divisor)
   #tbd. Die Variablen sollte ich noch umbenennen. Von piConstraintCoefficients zu coefConstraint
-
+  # New comments blabla
   precision <- 1 / 10^(digitsPrecision)
   # constraintCoef <- rbind(rep(1, length(coefObjective)), piConstraintCoefficients)
   constraintDirection <- c("==", rep(">=", dim(piConstraintCoefficients)[1]))
