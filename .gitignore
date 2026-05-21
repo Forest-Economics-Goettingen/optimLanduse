@@ -1,2 +1,13 @@
 .Rhistory
 .Rproj.user
+.RData
+.Rapp.history
+
+# Local working sandbox: parallel implementations checked out side-by-side
+# on master. Not part of the package source.
+branches/
+
+# Auto-generated previews of the reformulation reports
+BETA_REFORMULATION_REPORT.html
+AUTOSEARCH_REFORMULATION_REPORT.html
+*.md.html
