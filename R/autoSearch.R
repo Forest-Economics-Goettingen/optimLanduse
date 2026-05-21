@@ -53,7 +53,7 @@
 #'
 #' coefTable <- coefTable[coefTable$indicator %in% c("Long-term income",
 #'                                                  "Liquidity",
-#'                                                  "Protecting soil resources"),]
+#'                                                  "Protecting soil resources")]
 #'
 #' obsLU <- data.frame(landUse = c("Pasture", "Crops", "Forest", "Plantation",
 #'                                 "Alley Cropping", "Silvopasture"),
@@ -68,75 +68,172 @@
 #'
 #' @import future
 #' @import future.apply
+#' @import lpSolveAPI
 #' @importFrom utils combn
 #'
 #' @export
-autoSearch <- function(coefTable, landUseObs, uValue = 1, optimisticRule = "expectation", fixDistance = 3){
+autoSearch <- function(coefTable, landUseObs, uValue = 1,
+                       optimisticRule = "expectation", fixDistance = 3) {
 
-  landUseObs <- landUseObs[order(landUseObs$landUse),]
+  landUseObs <- landUseObs[order(landUseObs$landUse), ]
 
-  if(any(sort(unique(coefTable$landUse)) != landUseObs$landUse)){stop("Error: Land-use option for the coefTable and landUseObs argument are not the same or in the wrong order")}
+  if (any(sort(unique(coefTable$landUse)) != landUseObs$landUse)) {
+    stop("Error: Land-use option for the coefTable and landUseObs argument are not the same or in the wrong order")
+  }
 
   landUseObs <- as.vector(unlist(Filter(is.numeric, landUseObs)))
-
-  coefTable <- coefTable[order(coefTable$landUse),]
+  coefTable  <- coefTable[order(coefTable$landUse), ]
 
   #### Calculate optimal result for later BC comparison ####
-  initMf <- initScenario(coefTable, uValue = uValue, optimisticRule = optimisticRule, fixDistance = fixDistance)
-  resultMf <- solveScenario(x = initMf)
-  LandUseMf<- as.numeric(resultMf$landUse[, order(colnames(resultMf$landUse))])
+  initMf    <- initScenario(coefTable, uValue = uValue,
+                            optimisticRule = optimisticRule,
+                            fixDistance = fixDistance)
+  resultMf  <- solveScenario(x = initMf)
+  LandUseMf <- as.numeric(resultMf$landUse[, order(colnames(resultMf$landUse))])
+
+  #### Pre-compute pieces used per subset in Block 1 ####
+  # Each subset is a row-filter of the full scenarioTable by indicator.
+  # defineConstraintCoefficients and defineObjectiveCoefficients operate
+  # row-wise, so we run them ONCE on the full table and then row-slice
+  # per subset (instead of re-running initScenario every iteration).
+  scenarioTable_full <- initMf$scenarioTable
+  empty_landUse      <- initMf$landUse
+
+  cc_full <- defineConstraintCoefficients(scenarioTable_full)
+
+  # Per-row contributions to coefObjective. Subset coefObjective is then
+  # just colSums over the rows belonging to that subset's indicators.
+  adjSem_cols  <- grep("^adjSem", names(scenarioTable_full))
+  adjSem_mat   <- as.matrix(scenarioTable_full[, adjSem_cols])
+  storage.mode(adjSem_mat) <- "double"
+  sign_per_row <- ifelse(scenarioTable_full$direction == "less is better", -1, 1)
+  contrib_full <- (adjSem_mat * sign_per_row) /
+                  scenarioTable_full$diffAdjSem * 100
+
+  # Indicator -> row-index maps for the two matrices.
+  rows_by_ind    <- split(seq_len(nrow(scenarioTable_full)),
+                          scenarioTable_full$indicator)
+  rows_cc_by_ind <- split(seq_len(nrow(cc_full)), cc_full[, "indicator"])
 
   #### Create all indicator combinations ####
   combInd <- do.call(c, lapply(seq_along(unique(coefTable$indicator)),
-                               combn, x = unique(coefTable$indicator), simplify = FALSE))
+                               combn, x = unique(coefTable$indicator),
+                               simplify = FALSE))
   names(combInd) <- rep("indicator", length(combInd))
   combList <- split(combInd, seq(length(combInd)))
 
-  #### Create applyFun-function for the future_lappy function ####
-  applyFun <- function(x, y) {
-    coefTable <- y[y$indicator %in% x$indicator,]
-    coefTable <- coefTable[order(coefTable$landUse),]
-    init <- initScenario(coefTable, uValue = uValue, optimisticRule = optimisticRule, fixDistance = fixDistance)
-    result <- solveScenario(x = init)
-    return(list(names(result$landUse), t(result$landUse), result$beta))
+  #### Block 1: per-subset row-slice + solveScenario (parallel) ####
+  applyFun <- function(x) {
+    obj_rows <- unlist(rows_by_ind[x$indicator],    use.names = FALSE)
+    cc_rows  <- unlist(rows_cc_by_ind[x$indicator], use.names = FALSE)
+    init_subset <- list(
+      coefObjective  = colSums(contrib_full[obj_rows, , drop = FALSE]),
+      coefConstraint = cc_full[cc_rows, , drop = FALSE],
+      landUse        = empty_landUse
+    )
+    result <- solveScenario(x = init_subset)
+    list(names(result$landUse), t(result$landUse), result$beta)
   }
-
-  #### Calculation of the results for every indicator combination
-  landUseResults <- future_lapply(combList, applyFun, y = coefTable)
+  landUseResults <- future_lapply(combList, applyFun, future.seed = TRUE)
 
   # Adding results and information values to the list
-  for(k in c(1 : length(combList))){
-    combList[[k]]$uValue <- uValue
+  for (k in c(1 : length(combList))) {
+    combList[[k]]$uValue         <- uValue
     combList[[k]]$LandUseOptions <- unlist(landUseResults[[k]][1], use.names = FALSE)
-    combList[[k]]$result <- unlist(landUseResults[[k]][2], use.names = FALSE)
-    combList[[k]]$beta <- unlist(landUseResults[[k]][3], use.names = FALSE)
-    combList[[k]]$landUseObs <- landUseObs
-    combList[[k]]$LandUseMf <- LandUseMf
-  }
-  betaMFfun <- function(x) {
-    result <- solveScenario(initMf, lowerBound = x$result,
-                            upperBound = x$result)
-    return(list(result$beta))
-  }
-  betaMf <- future_lapply(combList, betaMFfun)
-
-  #### Add Bray-Curtis to every list entry ####
-  BcList <- future_lapply(combList, function(x){sum(abs(x$result - x$landUseObs)) / 2 * 100})
-  BCList.two <- future_lapply(combList, function(x){sum(abs(x$result - x$LandUseMf)) / 2 * 100})
-
-  for(BCloop in c(1 : length(combList))){
-    combList[[BCloop]]$betaMf <- unlist(betaMf[BCloop], use.names = FALSE)
-    combList[[BCloop]]$BrayCurtisObs <- unlist(BcList[BCloop], use.names = FALSE)
-    combList[[BCloop]]$BrayCurtisMf <- unlist(BCList.two[BCloop], use.names = FALSE)
+    combList[[k]]$result         <- unlist(landUseResults[[k]][2], use.names = FALSE)
+    combList[[k]]$beta           <- unlist(landUseResults[[k]][3], use.names = FALSE)
+    combList[[k]]$landUseObs     <- landUseObs
+    combList[[k]]$LandUseMf      <- LandUseMf
   }
 
-  ## Delete NA (No Optimum Found)
+  # Drop subsets whose LP solve returned NA shares (infeasible). Skips
+  # wasted work in Block 2 and avoids passing NA bounds to lpSolveAPI.
+  n_before  <- length(combList)
+  combList  <- Filter(function(x) !anyNA(x$result), combList)
+  n_dropped <- n_before - length(combList)
+  if (n_dropped > 0) {
+    cat("autoSearch: dropped", n_dropped,
+        "infeasible subset(s) of", n_before, "total.\n")
+  }
+
+  #### Block 2: clamped solves with a REUSED LP (sequential) ####
+  # The constraint matrix and rhs are identical for every iteration
+  # (they all come from initMf); only the variable bounds change.
+  # Build the LP once with lpSolveAPI directly, then per subset just
+  # call set.bounds + solve + get.variables. Phase 2 is skipped because
+  # clamping every x_i fixes the portfolio - phase 1 already returns the
+  # unique answer (beta = min_s coef_s * x in zero pivots).
+  #
+  # Block 2 stays sequential: the lpSolveAPI handle is a C pointer
+  # (externalptr) that does not survive crossing a worker process
+  # boundary. With the reuse trick Block 2 runs in 1-2 seconds anyway,
+  # below the threshold where parallelism would pay for its overhead.
+  lpa     <- .buildBlock2LP(initMf)
+  nLulc   <- length(initMf$coefObjective)
+  betaIdx <- nLulc + 1L
+
+  betaMf <- vector("list", length(combList))
+  for (k in seq_along(combList)) {
+    shares <- combList[[k]]$result
+    lpSolveAPI::set.bounds(lpa,
+                           lower = c(shares, -1),
+                           upper = c(shares,  2))
+    lpSolveAPI::solve.lpExtPtr(lpa)
+    betaOpt    <- lpSolveAPI::get.variables(lpa)[betaIdx]
+    betaMf[[k]] <- 1 - round(betaOpt, 4)
+  }
+
+  #### Bray-Curtis (cheap; sequential lapply) ####
+  BcList     <- lapply(combList, function(x) {sum(abs(x$result - x$landUseObs)) / 2 * 100})
+  BCList.two <- lapply(combList, function(x) {sum(abs(x$result - x$LandUseMf))  / 2 * 100})
+
+  for (BCloop in c(1 : length(combList))) {
+    combList[[BCloop]]$betaMf        <- betaMf[[BCloop]]
+    combList[[BCloop]]$BrayCurtisObs <- BcList[[BCloop]]
+    combList[[BCloop]]$BrayCurtisMf  <- BCList.two[[BCloop]]
+  }
+
+  ## Defence-in-depth: drop any subset that still has NA in BrayCurtis.
+  ## After the Block-1 NA filter this should never remove anything.
   combList <- Filter(function(x) !all(is.na(x$BrayCurtisObs)), combList)
   combList <- Filter(function(x) !all(is.na(x$BrayCurtisMf)), combList)
 
-  bestResult <- min(sapply(combList, function(x) x$BrayCurtisObs))
+  bestResult    <- min(sapply(combList, function(x) x$BrayCurtisObs))
   bestResultObs <- Filter(function(x) x$BrayCurtisObs == bestResult, combList)
 
-
   return(list(bestResultObs, combList))
+}
+
+## Build the Block-2 LP once from an init object. Internal helper for
+## autoSearch; not exported. Mirrors the LP construction in
+## solveScenario but stops at the "ready to set bounds + solve" point so
+## the caller can re-clamp variables per subset and reuse the same LP.
+.buildBlock2LP <- function(init) {
+  coefObjective <- init$coefObjective
+  piC <- init$coefConstraint[, -1]
+  storage.mode(piC) <- "double"
+
+  nLulc <- length(coefObjective)
+  nDist <- nrow(piC)
+  nRows <- 1L + nDist
+
+  A <- matrix(0, nrow = nRows, ncol = nLulc + 1L)
+  A[1L, seq_len(nLulc)]      <- 1
+  A[2L:nRows, seq_len(nLulc)] <- piC
+  A[2L:nRows, nLulc + 1L]    <- -1
+
+  rhs    <- c(1, rep(0, nDist))
+  ctypes <- c("=", rep(">=", nDist))
+
+  lpa <- lpSolveAPI::make.lp(nrow = nRows, ncol = nLulc + 1L)
+  for (j in seq_len(nLulc + 1L)) {
+    lpSolveAPI::set.column(lpa, j, A[, j])
+  }
+  # set.objfn AFTER set.column - set.column zeros that column's
+  # objective coefficient on this lpSolveAPI version.
+  lpSolveAPI::set.objfn(lpa, obj = c(rep(0, nLulc), 1))   # max beta
+  lpSolveAPI::set.rhs(lpa, b = rhs)
+  lpSolveAPI::set.constr.type(lpa, types = ctypes)
+  lpSolveAPI::lp.control(lpa, sense = "max")
+  lpa
 }
