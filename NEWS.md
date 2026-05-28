@@ -27,3 +27,8 @@
 
 # optimLanduse 1.2.0
 * autoSearch function added: A wrapper that successively calls the solveScenario function and calculates the dissimilarity to a user-defined reference scenario
+
+# optimLanduse 2.0.0
+* solveScenario: replaced the iterative beta-bisection scheme with a single-LP formulation
+* autoSearch: skip per-subset initialisation, reuse the Block-2 LP across iterations, and parallelise Block 1
+* Authors Carola Paul and Thomas Knoke added
