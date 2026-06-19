@@ -5,8 +5,6 @@
 ^README.Rmd
 ^CRAN-SUBMISSION$
 ^CITATION.cff
-^\.positai$
-^\.claude$
 ^branches$
 ^test_.*\.R$
 ^.*_REPORT\.(md|html)$
