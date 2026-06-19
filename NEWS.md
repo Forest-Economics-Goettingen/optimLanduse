@@ -31,3 +31,9 @@
 # optimLanduse 1.2.1
 * minor Bugfixes
 * Authors added
+
+# optimLanduse 2.0.0
+* solveScenario: added Pareto optimisation (paretoY, paretoX, paretoMaxDistance) and land-use restrictions (landUseRestriction)
+* solveScenario: replaced the iterative beta-bisection scheme with a single-LP formulation
+* autoSearch: skip per-subset initialisation, reuse the Block-2 LP across iterations, and parallelise Block 1
+* Authors Carola Paul and Thomas Knoke added

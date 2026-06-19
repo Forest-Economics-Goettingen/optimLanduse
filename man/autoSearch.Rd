@@ -64,7 +64,7 @@ coefTable <- read_xlsx(exampleData("exampleGosling.xlsx"))
 
 coefTable <- coefTable[coefTable$indicator \%in\% c("Long-term income",
                                                  "Liquidity",
-                                                 "Protecting soil resources"),]
+                                                 "Protecting soil resources"), ]
 
 obsLU <- data.frame(landUse = c("Pasture", "Crops", "Forest", "Plantation",
                                 "Alley Cropping", "Silvopasture"),

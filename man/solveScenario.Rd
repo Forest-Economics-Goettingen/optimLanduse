@@ -4,7 +4,16 @@
 \alias{solveScenario}
 \title{Perform the optimization}
 \usage{
-solveScenario(x, digitsPrecision = 4, lowerBound = 0, upperBound = 1)
+solveScenario(
+  x,
+  digitsPrecision = 4,
+  lowerBound = 0,
+  upperBound = 1,
+  landUseRestriction = NA,
+  paretoY = NA,
+  paretoX = NA,
+  paretoMaxDistance = NA
+)
 }
 \arguments{
 \item{x}{The initialized \emph{optimLanduse} object. See \code{\link{initScenario}} for the initialization.}
@@ -15,6 +24,14 @@ possibility to influence the calculation time.}
 \item{lowerBound}{Optional lower bounds for the land-use options. Must be 0 or a vector in the dimension of the land-use options.}
 
 \item{upperBound}{Optional upper bounds for the land-use options. Must be 1 or a vector in the dimension of the land-use options.}
+
+\item{landUseRestriction}{Optional named numeric vector imposing an upper-bound restriction on the shares of individual land-use options. The names must be a subset of the land-use options of the initialized optimLanduse object; each value sets the maximum allowed share for that option. Passing NA (the default) disables the restriction.}
+
+\item{paretoY}{Optional character vector naming the indicator(s) used as the objective (the Y dimension) when computing a point of the Pareto frontier. Must be supplied together with paretoX. Passing NA (the default) disables the Pareto formulation and performs the standard optimization.}
+
+\item{paretoX}{Optional character vector naming the indicator(s) used as the constraint (the X dimension) of the Pareto optimization. Must be supplied together with paretoY. Passing NA disables the Pareto formulation.}
+
+\item{paretoMaxDistance}{Optional numeric value giving the minimum level that the paretoX indicator(s) must attain, i.e. the threshold along the X dimension that constrains the Pareto optimization. Passing NA disables the Pareto formulation.}
 }
 \value{
 A solved landUse portfolio ready for export or further data processing.
@@ -29,9 +46,12 @@ framework are described in Knoke et al. (2016) and in Husmann et al. (2022)
 \examples{
 require(readxl)
 dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
-init <- initScenario(dat, uValue = 2,
+
+init <- initScenario(dat,
+                     uValue = 2,
                      optimisticRule = "expectation",
                      fixDistance = 3)
+
 result <- solveScenario(x = init)
 
 }
