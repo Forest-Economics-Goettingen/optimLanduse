@@ -48,7 +48,7 @@ defineConstraintCoefficients <- function (scenarioTable) {
                   ~{(maxAdjSem - .) / diffAdjSem},
                   .names = "{.col}_modified"))
 
-  tempTableMore %>% bind_rows(tempTableLess) %>% select(indicator, ends_with("modified")) %>% as.matrix() %>%
+  tempTableMore %>% bind_rows(tempTableLess) %>% select("indicator", ends_with("modified")) %>% as.matrix() %>%
     ## added indicator to later get access to right ConstraintCoefficients
     return()
 }

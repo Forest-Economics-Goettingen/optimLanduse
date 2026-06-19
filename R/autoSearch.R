@@ -53,7 +53,7 @@
 #'
 #' coefTable <- coefTable[coefTable$indicator %in% c("Long-term income",
 #'                                                  "Liquidity",
-#'                                                  "Protecting soil resources")]
+#'                                                  "Protecting soil resources"), ]
 #'
 #' obsLU <- data.frame(landUse = c("Pasture", "Crops", "Forest", "Plantation",
 #'                                 "Alley Cropping", "Silvopasture"),
@@ -66,7 +66,6 @@
 #'                        fixDistance = 3)
 #' plan(sequential)
 #'
-#' @import future
 #' @import future.apply
 #' @import lpSolveAPI
 #' @importFrom utils combn
@@ -152,8 +151,8 @@ autoSearch <- function(coefTable, landUseObs, uValue = 1,
   combList  <- Filter(function(x) !anyNA(x$result), combList)
   n_dropped <- n_before - length(combList)
   if (n_dropped > 0) {
-    cat("autoSearch: dropped", n_dropped,
-        "infeasible subset(s) of", n_before, "total.\n")
+    message("autoSearch: dropped ", n_dropped,
+            " infeasible subset(s) of ", n_before, " total.")
   }
 
   #### Block 2: clamped solves with a REUSED LP (sequential) ####

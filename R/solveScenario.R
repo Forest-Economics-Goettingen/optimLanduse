@@ -18,8 +18,22 @@
 #' possibility to influence the calculation time.
 #' @param lowerBound Optional lower bounds for the land-use options. Must be 0 or a vector in the dimension of the land-use options.
 #' @param upperBound Optional upper bounds for the land-use options. Must be 1 or a vector in the dimension of the land-use options.
+#' @param landUseRestriction Optional named numeric vector imposing an upper-bound restriction on the shares of individual land-use options. The names must be a subset of the land-use options of the initialized optimLanduse object; each value sets the maximum allowed share for that option. Passing NA (the default) disables the restriction.
+#' @param paretoY Optional character vector naming the indicator(s) used as the objective (the Y dimension) when computing a point of the Pareto frontier. Must be supplied together with paretoX. Passing NA (the default) disables the Pareto formulation and performs the standard optimization.
+#' @param paretoX Optional character vector naming the indicator(s) used as the constraint (the X dimension) of the Pareto optimization. Must be supplied together with paretoY. Passing NA disables the Pareto formulation.
+#' @param paretoMaxDistance Optional numeric value giving the minimum level that the paretoX indicator(s) must attain, i.e. the threshold along the X dimension that constrains the Pareto optimization. Passing NA disables the Pareto formulation.
 #' @return A solved landUse portfolio ready for export or further data processing.
 #' @examples
+#' require(readxl)
+#' dat <- read_xlsx(exampleData("exampleGosling.xlsx"))
+#'
+#' init <- initScenario(dat,
+#'                      uValue = 2,
+#'                      optimisticRule = "expectation",
+#'                      fixDistance = 3)
+#'
+#' result <- solveScenario(x = init)
+#'
 #' @references Knoke, T., Paul, C., Hildebrandt, P. et al. (2016): Compositional diversity
 #' of rehabilitated tropical lands supports multiple ecosystem services and
 #' buffers uncertainties. \emph{Nat Commun} \strong{7}, 11877. \doi{10.1038/ncomms11877}
@@ -57,11 +71,12 @@ solveScenario <- function (x, digitsPrecision = 4,
   }
 
   if(any(!is.na(landUseRestriction)) & !all(names(landUseRestriction) %in% names(x$landUse))) {
-    print(names(landUseRestriction)[!names(landUseRestriction) %in% names(x$landUse)])
-    stop("The landUseRestriction argument must be a subset of the landUse options.")
+    invalidNames <- names(landUseRestriction)[!names(landUseRestriction) %in% names(x$landUse)]
+    stop("The landUseRestriction argument must be a subset of the landUse options. ",
+         "Unknown option(s): ", paste(invalidNames, collapse = ", "), ".")
   }
 
-  # Single-LP reformulation: beta is decision variable #N+1.
+  # Single-LP formulation: beta is decision variable #N+1.
   #
   #   max  beta
   #   s.t. sum_i x_i           = 1
@@ -69,12 +84,11 @@ solveScenario <- function (x, digitsPrecision = 4,
   #        coef_s * x - beta  >= 0   for each scenario s
   #        coef_p * x         >= paretoMaxDistance           (optional Pareto)
   #
-  # Replaces the prior bisection over beta (~14 solves of the same LP).
-  # The matrix is built column-wise via set.column: 40k+ rows at N=12 made
-  # per-row add.constraint() the dominant cost — column-wise is ~one C call
-  # per variable instead of one per row. Phase 2 re-fixes beta and maximises
-  # coefObjective * x so the returned portfolio matches the bisection version
-  # at the same optimal beta.
+  # The constraint matrix is assembled in R and pushed column-wise via
+  # set.column: at N = 12 there are 40k+ rows, so a per-row add.constraint()
+  # build would dominate the runtime (one C call per row vs. one per variable).
+  # Two phases: Phase 1 maximises beta; Phase 2 fixes beta at its optimum and
+  # maximises coefObjective * x, which selects a unique portfolio at that beta.
 
   hasRestr  <- all(!is.na(landUseRestriction))
   hasPareto <- any(!is.na(paretoY)) & any(!is.na(paretoX))
@@ -143,8 +157,8 @@ solveScenario <- function (x, digitsPrecision = 4,
   statusOpt <- lpSolveAPI::solve.lpExtPtr(lpaObj)
 
   if (statusOpt != 0) {
-    cat(paste0("No optimum found. Status code "), statusOpt,
-        " (see solve.lpExtPtr {lpSolveAPI} documentation).")
+    message("No optimum found. Status code ", statusOpt,
+            " (see solve.lpExtPtr {lpSolveAPI} documentation).")
     x$status <- "no optimum found"
     x$beta <- NA
     x$landUse[1, ] <- rep(NA, nLulc)
@@ -154,8 +168,8 @@ solveScenario <- function (x, digitsPrecision = 4,
   phase1Vars <- lpSolveAPI::get.variables(lpaObj)
   betaOpt    <- phase1Vars[betaIdx]
 
-  # Phase 2: fix beta and maximise coefObjective * x to reproduce the original
-  # tie-breaker (bisection ended with this same objective at the optimal beta).
+  # Phase 2: fix beta at its optimum and maximise coefObjective * x as a
+  # tie-breaker, so a unique portfolio is returned when several attain that beta.
   lpSolveAPI::set.bounds(lprec = lpaObj,
                          lower = c(lowerVec, betaOpt),
                          upper = c(upperVec, betaOpt))
