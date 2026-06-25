@@ -1,1 +1,7 @@
-The package has been successfully checked locally, using winbuilder and rhub.
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
+## revdepcheck results
+
+*Wow, no problems at all. :)*
