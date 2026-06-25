@@ -81,7 +81,9 @@ server. The development version can be found on the GitHub project page.
 ```
 
 <!-- <p align="center"> -->
+
 <!-- <img src="./man/figures/flowchart.png" width="781.6" height="452"/> -->
+
 <!-- </p> -->
 
 ![](./man/figures/flowchart.png)
@@ -321,7 +323,7 @@ result$landUse %>% gather(key = landCoverOption,
                      limits = c(0, 100))
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/unnamed-chunk-4-1.png" alt="" style="display: block; margin: auto;" />
 
 *Fig. 2: Composition of the optimized farm (based on data of Gosling et
 al. (2020)), including all indicators. Each land-cover option is shown
@@ -374,7 +376,7 @@ ggplot(performance$scenarioTable,
            vjust = -1)
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/unnamed-chunk-5-1.png" alt="" style="display: block; margin: auto;" />
 
 *Fig. 3: The performances of each of the 10 indicators for the ideal
 farm composition. The colored points are the achieved levels of the
@@ -413,7 +415,7 @@ behind this high uncertainty for indicator 1.
 performance$beta
 ```
 
-    ## [1] 0.6132
+    ## [1] 0.6131
 
 ``` r
 performanceExample <- head(performance$scenarioTable[,c(1 : 8, 31)], n = 4)
@@ -425,12 +427,12 @@ knitr::kable(performanceExample, row.names = F)
 through the calcPerformance() function with the worst performing
 scenarios*
 
-| indicator           | outcomeCrops | outcomePasture | outcomeAlley Cropping | outcomeSilvopasture | outcomePlantation | outcomeForest | direction      | performance |
-|:--------------------|:-------------|:---------------|:----------------------|:--------------------|:------------------|:--------------|:---------------|------------:|
-| Financial stability | High         | High           | High                  | High                | High              | High          | more is better |    61.31992 |
-| Financial stability | Low          | High           | High                  | High                | High              | High          | more is better |    72.31477 |
-| Financial stability | High         | Low            | High                  | High                | High              | High          | more is better |    61.31992 |
-| Financial stability | Low          | Low            | High                  | High                | High              | High          | more is better |    72.31477 |
+| indicator | outcomeCrops | outcomePasture | outcomeAlley Cropping | outcomeSilvopasture | outcomePlantation | outcomeForest | direction | performance |
+|:---|:---|:---|:---|:---|:---|:---|:---|---:|
+| Financial stability | High | High | High | High | High | High | more is better | 61.31193 |
+| Financial stability | Low | High | High | High | High | High | more is better | 72.30905 |
+| Financial stability | High | Low | High | High | High | High | more is better | 61.31193 |
+| Financial stability | Low | Low | High | High | High | High | more is better | 72.30905 |
 
 **Comparison of the Performance of the Currently Observed Land-cover
 Composition to the Optimized Composition**
@@ -477,7 +479,7 @@ ggplot(performance_current$scenarioTable,
            vjust = -1)
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-11-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/unnamed-chunk-11-1.png" alt="" style="display: block; margin: auto;" />
 
 *Fig. 4: The performance of each of the 10 indicators for the result of
 the currently observed land-cover composition. The colored points are
@@ -727,7 +729,7 @@ performance_socioeconomic$scenarioTable$performance <-
 performance_socioeconomic$beta
 ```
 
-    ## [1] 0.6132
+    ## [1] 0.6131
 
 ``` r
 ggplot(performance_socioeconomic$scenarioTable,
@@ -754,7 +756,7 @@ ggplot(performance_socioeconomic$scenarioTable,
            vjust = -1)
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-18-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/unnamed-chunk-18-1.png" alt="" style="display: block; margin: auto;" />
 
 *Fig. 8: The performance of each of the socio-economic indicators. The
 colored points are the achieved levels of the indicators of all
@@ -983,18 +985,18 @@ indicators only (pay-off matrix). The indicators considered for
 optimization are located in the first row. The other entries in the rows
 contain the performances of the respective non-optimized indicators.*
 
-| Indicators                | Financial stability | General preferences | Investment costs | Labour demand | Liquidity | Long-term income | Management complexity | Meeting household needs | Protecting soil resources | Protecting water supply |
-|:--------------------------|--------------------:|--------------------:|-----------------:|--------------:|----------:|-----------------:|----------------------:|------------------------:|--------------------------:|------------------------:|
-| Financial stability       |               0.805 |               0.371 |            0.007 |         0.122 |     0.492 |            0.881 |                 0.072 |                   0.346 |                     0.231 |                   0.466 |
-| General preferences       |               0.427 |               0.832 |            0.012 |         0.093 |     0.854 |            0.789 |                 0.090 |                   0.669 |                     0.184 |                   0.334 |
-| Investment costs          |               0.000 |               0.000 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-| Labour demand             |               0.000 |               0.000 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-| Liquidity                 |               0.134 |               0.579 |            0.000 |         0.061 |     1.000 |            0.780 |                 0.158 |                   0.705 |                     0.000 |                   0.000 |
-| Long-term income          |               0.553 |               0.273 |            0.016 |         0.113 |     0.465 |            0.920 |                 0.106 |                   0.258 |                     0.140 |                   0.338 |
-| Management complexity     |               0.000 |               0.000 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-| Meeting household needs   |               0.000 |               0.353 |            0.006 |         0.000 |     0.559 |            0.483 |                 0.000 |                   1.000 |                     0.000 |                   0.000 |
-| Protecting soil resources |               0.000 |               0.000 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
-| Protecting water supply   |               0.000 |               0.000 |            1.000 |         1.000 |     0.000 |            0.000 |                 1.000 |                   0.000 |                     1.000 |                   1.000 |
+| Indicators | Financial stability | General preferences | Investment costs | Labour demand | Liquidity | Long-term income | Management complexity | Meeting household needs | Protecting soil resources | Protecting water supply |
+|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Financial stability | 0.805 | 0.371 | 0.007 | 0.122 | 0.492 | 0.881 | 0.072 | 0.345 | 0.231 | 0.466 |
+| General preferences | 0.427 | 0.832 | 0.012 | 0.093 | 0.854 | 0.789 | 0.090 | 0.669 | 0.184 | 0.333 |
+| Investment costs | 0.000 | 0.000 | 1.000 | 1.000 | 0.000 | 0.000 | 1.000 | 0.000 | 1.000 | 1.000 |
+| Labour demand | 0.000 | 0.000 | 1.000 | 1.000 | 0.000 | 0.000 | 1.000 | 0.000 | 1.000 | 1.000 |
+| Liquidity | 0.134 | 0.579 | 0.000 | 0.061 | 1.000 | 0.780 | 0.158 | 0.705 | 0.000 | 0.000 |
+| Long-term income | 0.553 | 0.277 | 0.016 | 0.113 | 0.468 | 0.920 | 0.106 | 0.261 | 0.140 | 0.337 |
+| Management complexity | 0.000 | 0.000 | 1.000 | 1.000 | 0.000 | 0.000 | 1.000 | 0.000 | 1.000 | 1.000 |
+| Meeting household needs | 0.000 | 0.353 | 0.006 | 0.000 | 0.559 | 0.483 | 0.000 | 1.000 | 0.000 | 0.000 |
+| Protecting soil resources | 0.000 | 0.000 | 1.000 | 1.000 | 0.000 | 0.000 | 1.000 | 0.000 | 1.000 | 1.000 |
+| Protecting water supply | 0.000 | 0.000 | 1.000 | 1.000 | 0.000 | 0.000 | 1.000 | 0.000 | 1.000 | 1.000 |
 
 It can be followed from the pay-off matrix (Table 4), that, e.g.,
 liquidity and long-term income are fulfilled to high degrees when
